@@ -3,6 +3,7 @@ package Lab3;
 import Lab4.MyDirtyException;
 
 public abstract class Predmet extends Bog implements Put, FindDirt {
+    double value;
     protected boolean put;
     public Predmet(String name, boolean put){
         super(name);
@@ -18,17 +19,24 @@ public abstract class Predmet extends Bog implements Put, FindDirt {
         return put;
     }
 
+    public double getValue(){return value;}
+
     public static class Shlyapa extends Predmet{
         //    public boolean put = true;
         double dirty;
-        public Shlyapa(String name, double dirty){
+        int size;
+        public Shlyapa(String name, int size){
             super(name);
-            this.dirty = dirty;
+            this.size = size;
 
         }
         public Shlyapa(String name){
             super(name);
             dirty = Math.random();
+        }
+        @Override
+        public double getValue(){
+            return Double.valueOf(size);
         }
         //  @Override
         public boolean IfDirty(){
@@ -77,6 +85,10 @@ public abstract class Predmet extends Bog implements Put, FindDirt {
             this.mineralka = mineralka;
         }
         // на неё нужно садиться
+        @Override
+        public double getValue(){
+            return mineralka;
+        }
         @Override
         public boolean getPuttable(){
             return put;
