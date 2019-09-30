@@ -15,6 +15,14 @@ public class Sumka extends Predmet {
         this.ves = ves;
         this.dirty = dirty;
     }
+    public Sumka (String name, double ves){
+        super(name);
+        this.ves = ves;
+    }
+    @Override
+    public double getValue(){
+        return ves;
+    }
   //  @Override
     public boolean IfDirty(){
         if (dirty == 0) return false;

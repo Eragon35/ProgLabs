@@ -3,7 +3,6 @@ package Lab3;
 import java.util.Random;
 
 public enum Palace {
-    //    public class Lab3.Palace extends java.lang.Enum {
     Train(-1),
     SanKomarik(6.00),
     Brohenville(3.00),
@@ -22,28 +21,6 @@ public enum Palace {
 
     public double getTime() {
         return this.time;
-    }
-
-    public String toString() {
-        switch (this) {
-            case Train:
-                return "Train";
-            case Dagestan:
-                return "Dagestan";
-            case ITMO:
-                return "ITMO";
-            case Brohenville:
-                return "Brohenville";
-            case SanKomarik:
-                return "SanKomarik";
-            case Restoran:
-                return "Restoran";
-            case USA:
-                return "USA";
-            case Vyazma:
-                return "Vyazma";
-        }
-        return null;
     }
 
     public static Palace randomPlace() {

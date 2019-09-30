@@ -43,9 +43,10 @@ public class Humanoid extends Bog implements Skill, Comparable<Humanoid> {
         setPlace(p);
     }
 
+
     @Override
-    public int compareTo(Humanoid o) {
-        return 0;
+    public int compareTo(Humanoid h) {
+        return name.compareTo(h.getName());
     }
 }
 
