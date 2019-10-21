@@ -26,28 +26,42 @@ public class OutputFile {
         int id = 0;
 
         for (Humanoid key : map.keySet()) {
-            outputStreamWriter.write(String.valueOf(id) + ",human,name" + key.getName() + "\n");
-            //write name + place (it's 2 lines)
+            StringBuilder builder = new StringBuilder(String.valueOf(id));
+            builder.delete(0,builder.length());
+            builder.append(id).append(",human,name,").append(key.getName()).append("\n");
+            builder.append(id).append(",human,place,").append(key.getPlace()).append("\n");
+            outputStream.write(builder.toString().getBytes());
+            builder.delete(0,builder.length());
+//            outputStreamWriter.write(String.valueOf(id) + ",human,name" + key.getName() + "\n");
             List<Predmet> bagazh = map.get(key);
             if (bagazh != null) {
                 for (Predmet predmet : bagazh){
-                    switch (predmet.getClass().toString()) {
-                        case "Butilka":
-                            outputStreamWriter.write(String.valueOf(id) + ",butilka,name" + String.valueOf(predmet.getName()) + "\n" +
-                                    String.valueOf(id) + ",butilka,mineralka" + String.valueOf(predmet.getValue()) + "\n");
-                            break;
-                        case "Shlyapa":
-                            outputStreamWriter.write(String.valueOf(id) + ",shlyapa,name" + String.valueOf(predmet.getName()) + "\n" +
-                                    String.valueOf(id) + ",shlyapa,size" + String.valueOf(predmet.getValue()) + "\n");
-                            break;
-                        case "Sumka":
-                            outputStreamWriter.write(String.valueOf(id) + ",sumka,name" + String.valueOf(predmet.getName()) + "\n" +
-                                    String.valueOf(id) + ",sumka,ves" + String.valueOf(predmet.getValue()) + "\n");
-                            break;
+                    if (predmet.getClass().toString().contains("Predmet$Butilka"))
+                    {
+                            builder.append(id).append(",butilka,name,").append(predmet.getName()).append("\n").append(id).append(",butilka,mineralka,").append(predmet.getValue()).append("\n");
+                            outputStream.write(builder.toString().getBytes());
+                            builder.delete(0,builder.length());
+                    }
+
+                    if (predmet.getClass().toString().contains("Predmet$Shlyapa"))
+                    {
+                            builder.append(id).append(",shlyapa,name,").append(predmet.getName()).append("\n").append(id).append(",shlyapa,size,").append(predmet.getValue()).append("\n");
+                            outputStream.write(builder.toString().getBytes());
+                            builder.delete(0,builder.length());
+                    }
+                    if (predmet.getClass().toString().contains("Sumka")){
+                            builder.append(id).append(",sumka,name,").append(predmet.getName()).append("\n").append(id).append(",sumka,ves,").append(predmet.getValue()).append("\n");
+                            outputStream.write(builder.toString().getBytes());
+                            builder.delete(0,builder.length());
+
                         }
                     }
             }
-            else outputStreamWriter.write(String.valueOf(id) + "bagazh, size, null\n");
+            else {
+                builder.append(id).append(",bagazh,size,null\n");
+                outputStream.write(builder.toString().getBytes());
+                builder.delete(0,builder.length());
+            }
             id++;
         }
         }catch (IOException e){

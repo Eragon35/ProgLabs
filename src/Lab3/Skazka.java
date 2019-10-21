@@ -4,8 +4,10 @@ import Lab4.MyNullFoodException;
 import Lab5.Console;
 import Lab5.InputFile;
 import Lab5.OutputFile;
-import com.google.gson.Gson;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.*;
 
 public class Skazka {
@@ -20,7 +22,7 @@ public class Skazka {
     }
 
 
-    public static void main(String[] args) { //map + things
+    public static void main(String[] args) throws Exception { //map + things
         int porchii;
         Pismak alexey_evgenievich = new Pismak("Pismak", Palace.ITMO);
         alexey_evgenievich.Skill();
@@ -56,35 +58,40 @@ public class Skazka {
         System.out.println("\nBeging of Lab5, variant 11180");
 //        start();
         String s = " ";
-        Gson gson = new Gson();
-        List<Predmet> things = new LinkedList<>();
-        SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
+        String file;
+        SortedMap<Humanoid, List<Predmet>> map = new TreeMap<Humanoid, List<Predmet>>();
         Date date = new Date();
-//        if (args.length > 0) InputFile.parser(args[0], map);
-//        else {
-//            System.out.println("FileNotFoundException: файл для обращения не задан");
-//            java.lang.System.exit(0);
-//        }
-        //TODO add exists() or createNewFile()
 
-        datePublic = date;
-
-        // some weird test stuff
-
-        Lab3.Predmet items[] = {borjomi, chernaya};
+        List<Predmet> things = new LinkedList<Predmet>();
+        SortedMap<Humanoid, List<Predmet>> map_test = new TreeMap<>();
         things.add(borjomi);
         things.add(chernaya);
         Lab3.Humanoid tourist = new Lab3.Humanoid("Gena", Lab3.Palace.ITMO);
         map.put(tourist, things);
+        Sumka chemodan = new Sumka("чемодан",15);
         map.put(alexey_evgenievich, things);
-        map.put(new Humanoid( "Обама", Palace.USA), null);
-        map.put(new Humanoid("Левушка", Palace.Vyazma), null);
+        List <Predmet> things2 = new LinkedList<Predmet>();
+        things2.add(chemodan);
+        map.put(new Humanoid("Левушка", Palace.Vyazma), things2);
+        map.put(new Humanoid( "Обама", Palace.USA), things2);
+        datePublic = date;
+
+
 
         /**
         * консольный ввод
          */
         OutputFile.writeCSV("test.csv", map);
-//                s = "exit";
+        InputFile.parser("test.csv", map_test);
+        OutputFile.writeCSV("test_1.csv", map_test);
+        if (args.length > 0) {
+            InputFile.parser(args[0], map);
+            file = args[0];
+        }
+        else {
+            System.out.println("FileNotFoundException: файл для обращения не задан");
+            java.lang.System.exit(0);
+        }
         while (!s.equals("exit")) {
             System.out.print("Введите команду:");
             Scanner scanner = new Scanner(System.in);
@@ -92,6 +99,7 @@ public class Skazka {
             //str = str.replaceAll("\\s", "");
             //System.out.println(str);
             Console.reader(map, str);
+//            OutputFile.writeCSV(file, map);
 
             s = str;
         }

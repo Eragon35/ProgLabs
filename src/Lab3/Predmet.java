@@ -24,8 +24,8 @@ public abstract class Predmet extends Bog implements Put, FindDirt {
     public static class Shlyapa extends Predmet{
         //    public boolean put = true;
         double dirty;
-        int size;
-        public Shlyapa(String name, int size){
+        double size;
+        public Shlyapa(String name, double size){
             super(name);
             this.size = size;
 

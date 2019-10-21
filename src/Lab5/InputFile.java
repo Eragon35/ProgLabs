@@ -6,6 +6,7 @@ import Lab3.Predmet;
 import Lab3.Sumka;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -17,20 +18,42 @@ public class InputFile {
 /** @param fileName – from whom would be data read
  * @param map – SortedMap in which data would be written
  */
-    public static void parser(String fileName, SortedMap map) throws IOException {
+    public static void parser(String fileName, SortedMap map) throws IOException, NullPointerException {
         final LineNumberReader lnr = new LineNumberReader(new FileReader(fileName));
         int linesCount = 0;
         while(null != lnr.readLine()) {
             linesCount++;
         }
+        linesCount = linesCount/2;
         String[] names = new String[linesCount];
         Palace[] places = new Palace[linesCount]; // да,да, да — ебучий костыль, но надо было определить как-то массивы имён и мест
-        List<Predmet>[] things = (List<Predmet>[]) new List[linesCount];
+
+        String[] name_b = new String[linesCount];
+        String[] name_sh = new String[linesCount];
+        String[] name_sm = new String[linesCount];
+        Double[] size = new Double[linesCount];
+        Double[] ves = new Double[linesCount];
+        Double[] mineralka = new Double[linesCount];
+//        List<List<Predmet>> things =  new ArrayList<List<Predmet>>();
+//        things[5].add(new Predmet.Butilka("Shishkin les", 0.5));
+        ArrayList<Predmet>[] things = new ArrayList[linesCount];
+        ArrayList<Humanoid> people = new ArrayList<Humanoid>();
+        int last_id = 0;
+
+        // initializing
+        for (int i = 0; i < linesCount; i++) {
+            things[i] = new ArrayList<Predmet>();
+            name_b[i] = "";
+            name_sh[i] = "";
+            name_sm[i] = "";
+        }
+
         try  {
 
             Scanner scanner = new Scanner(new File(fileName));
             while (scanner.hasNextLine()) {
                 String line[] = scanner.nextLine().split(",");
+                last_id = Integer.parseInt(line[0]);
                 /**
                  * In case of type we add humans to array "people" and objects to arraylist "things"
                  */
@@ -46,17 +69,39 @@ public class InputFile {
                         }
                         break;
                     case "butilka":
-                        things[Integer.parseInt(line[0])].add(new Predmet.Butilka(line[2],Double.valueOf(line[3])));
+                        switch (line[2]) {
+                            case "name":
+                                name_b[Integer.parseInt(line[0])] = line[3];
+                                break;
+                            case "mineralka":
+                                mineralka[Integer.parseInt(line[0])] = Double.valueOf(line[3]);
+                                break;
+                        }
                         break;
                     case "shlyapa":
-                        things[Integer.parseInt(line[0])].add(new Predmet.Shlyapa(line[2],Integer.valueOf(line[3])));
+                        switch (line[2]) {
+                            case "name":
+                                name_sh[Integer.parseInt(line[0])] = line[3];
+                                break;
+                            case "size":
+                                size [Integer.parseInt(line[0])]= Double.valueOf(line[3]);
+                                break;
+                        }
                         break;
                     case "sumka":
-                        things[Integer.parseInt(line[0])].add(new Sumka(line[2],Double.valueOf(line[3])));
+                        switch (line[2]) {
+                            case "name":
+                                name_sm [Integer.parseInt(line[0])]= line[3];
+                                break;
+                            case "ves":
+                                ves [Integer.parseInt(line[0])]= Double.valueOf(line[3]);
+                                break;
+                        }
                         break;
-                    case "bagazh":
-                        things[Integer.parseInt(line[0])] = null;
-                        break;
+//                    case "bagazh":
+//                        List<Predmet> nll = new ArrayList<>();
+////                        things.add(Integer.parseInt(line[0]), nll );
+//                        break;
                 }
 
             }
@@ -65,13 +110,22 @@ public class InputFile {
         } catch (FileNotFoundException | ArrayIndexOutOfBoundsException e){
             e.printStackTrace();
         }
-        if (things.length != names.length){
-            System.out.println("Error in reading file");
+        for (int i = 0; i < linesCount; i++){
+            if (name_b[i].length() > 0){
+                things[i].add(new Predmet.Butilka(name_b[i],mineralka[i]));
+//                things.add(i, (List<Predmet>) new Predmet.Butilka(name_b[i],mineralka[i]));
+            }
+            if (name_sh[i].length() > 0){
+                things[i].add(new Predmet.Shlyapa(name_sh[i],size[i]));
+            }
+            if (name_sm[i].length() > 0){
+                things[i].add(new Sumka(name_sm[i],ves[i]));
+            }
         }
-        else for (int i = 0; i < names.length;i++ ){
-            map.put(new Humanoid(names[i],places[i]),things[i]);
-        }
-        }
-
+         for (int i = 0; i < (last_id+1); i++){
+                people.add(new Humanoid(names[i],places[i]));
+                map.put(people.get(i),things[i]);
+            }
 
     }
+}
