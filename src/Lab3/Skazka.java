@@ -98,7 +98,8 @@ public class Skazka {
             String str = scanner.nextLine();
             //str = str.replaceAll("\\s", "");
             //System.out.println(str);
-            Console.reader(map, str);
+            if (str.contains("null")) System.out.println("Параметр не может быль null");
+            else Console.reader(map, str);
 //            OutputFile.writeCSV(file, map);
 
             s = str;
