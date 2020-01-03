@@ -17,43 +17,31 @@ public class OutputFile {
      * @param fileName – to whom data would be written
      * @param map – SortedMap from which data would be read
      */
-    public static void writeCSV(String fileName, SortedMap<Humanoid, List<Predmet>> map){
+    private static int id = 0;
+    private static StringBuilder builder = new StringBuilder(String.valueOf(id));
 
+    public static void writeCSV(String fileName, SortedMap<Humanoid, List<Predmet>> map){
+        id = 0;
         try {
             OutputStream outputStream = new FileOutputStream(fileName);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
-//        File file = new File(fileName);
-        int id = 0;
 
         for (Humanoid key : map.keySet()) {
-            StringBuilder builder = new StringBuilder(String.valueOf(id));
             builder.delete(0,builder.length());
             builder.append(id).append(",human,name,").append(key.getName()).append("\n");
             builder.append(id).append(",human,place,").append(key.getPlace()).append("\n");
             outputStream.write(builder.toString().getBytes());
             builder.delete(0,builder.length());
-//            outputStreamWriter.write(String.valueOf(id) + ",human,name" + key.getName() + "\n");
             List<Predmet> bagazh = map.get(key);
             if (bagazh != null) {
                 for (Predmet predmet : bagazh){
-                    if (predmet.getClass().toString().contains("Predmet$Butilka"))
-                    {
-                            builder.append(id).append(",butilka,name,").append(predmet.getName()).append("\n").append(id).append(",butilka,mineralka,").append(predmet.getValue()).append("\n");
-                            outputStream.write(builder.toString().getBytes());
-                            builder.delete(0,builder.length());
+                    if (predmet.getClass().toString().contains("Predmet$Butilka")) {
+                        appender("butilka", outputStream, predmet);
                     }
-
-                    if (predmet.getClass().toString().contains("Predmet$Shlyapa"))
-                    {
-                            builder.append(id).append(",shlyapa,name,").append(predmet.getName()).append("\n").append(id).append(",shlyapa,size,").append(predmet.getValue()).append("\n");
-                            outputStream.write(builder.toString().getBytes());
-                            builder.delete(0,builder.length());
+                    if (predmet.getClass().toString().contains("Predmet$Shlyapa")) {
+                        appender("shlyapa", outputStream, predmet);
                     }
-                    if (predmet.getClass().toString().contains("Sumka")){
-                            builder.append(id).append(",sumka,name,").append(predmet.getName()).append("\n").append(id).append(",sumka,ves,").append(predmet.getValue()).append("\n");
-                            outputStream.write(builder.toString().getBytes());
-                            builder.delete(0,builder.length());
-
+                    if (predmet.getClass().toString().contains("Sumka")) {
+                        appender("sumka", outputStream, predmet);
                         }
                     }
             }
@@ -64,10 +52,17 @@ public class OutputFile {
             }
             id++;
         }
-        }catch (IOException e){
+        }catch (IOException e) {
             System.out.print("File for writing not found,\nTry again");
             e.printStackTrace();
         }
+
     }
+    private static void appender (String s, OutputStream outputStream, Predmet predmet) throws IOException {
+        builder.append(id).append(",").append(s).append(",name,").append(predmet.getName()).append("\n").append(id).append(",").append(s).append(",value,").append(predmet.getValue()).append("\n");
+        outputStream.write(builder.toString().getBytes());
+        builder.delete(0,builder.length());
+    }
+
 }
 

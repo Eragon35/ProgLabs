@@ -1,20 +1,20 @@
 0,human,name,Gena
 0,human,place,ITMO
 0,butilka,name,Из под крана
-0,butilka,mineralka,0.32
+0,butilka,value,0.32
 0,shlyapa,name,Черная
-0,shlyapa,size,15.0
+0,shlyapa,value,15.0
 1,human,name,Pismak
 1,human,place,ITMO
 1,butilka,name,Из под крана
-1,butilka,mineralka,0.32
+1,butilka,value,0.32
 1,shlyapa,name,Черная
-1,shlyapa,size,15.0
+1,shlyapa,value,15.0
 2,human,name,Левушка
 2,human,place,Vyazma
 2,sumka,name,чемодан
-2,sumka,ves,15.0
+2,sumka,value,15.0
 3,human,name,Обама
 3,human,place,USA
 3,sumka,name,чемодан
-3,sumka,ves,15.0
+3,sumka,value,15.0

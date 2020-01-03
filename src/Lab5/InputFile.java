@@ -6,7 +6,6 @@ import Lab3.Predmet;
 import Lab3.Sumka;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -34,10 +33,8 @@ public class InputFile {
         Double[] size = new Double[linesCount];
         Double[] ves = new Double[linesCount];
         Double[] mineralka = new Double[linesCount];
-//        List<List<Predmet>> things =  new ArrayList<List<Predmet>>();
-//        things[5].add(new Predmet.Butilka("Shishkin les", 0.5));
         ArrayList<Predmet>[] things = new ArrayList[linesCount];
-        ArrayList<Humanoid> people = new ArrayList<Humanoid>();
+        ArrayList<Humanoid> people = new ArrayList<>();
         int last_id = 0;
 
         // initializing
@@ -49,7 +46,6 @@ public class InputFile {
         }
 
         try  {
-
             Scanner scanner = new Scanner(new File(fileName));
             while (scanner.hasNextLine()) {
                 String line[] = scanner.nextLine().split(",");
@@ -73,7 +69,7 @@ public class InputFile {
                             case "name":
                                 name_b[Integer.parseInt(line[0])] = line[3];
                                 break;
-                            case "mineralka":
+                            case "value":
                                 mineralka[Integer.parseInt(line[0])] = Double.valueOf(line[3]);
                                 break;
                         }
@@ -83,7 +79,7 @@ public class InputFile {
                             case "name":
                                 name_sh[Integer.parseInt(line[0])] = line[3];
                                 break;
-                            case "size":
+                            case "value":
                                 size [Integer.parseInt(line[0])]= Double.valueOf(line[3]);
                                 break;
                         }
@@ -93,17 +89,12 @@ public class InputFile {
                             case "name":
                                 name_sm [Integer.parseInt(line[0])]= line[3];
                                 break;
-                            case "ves":
+                            case "value":
                                 ves [Integer.parseInt(line[0])]= Double.valueOf(line[3]);
                                 break;
                         }
                         break;
-//                    case "bagazh":
-//                        List<Predmet> nll = new ArrayList<>();
-////                        things.add(Integer.parseInt(line[0]), nll );
-//                        break;
                 }
-
             }
             scanner.close();
 
@@ -113,7 +104,6 @@ public class InputFile {
         for (int i = 0; i < linesCount; i++){
             if (name_b[i].length() > 0){
                 things[i].add(new Predmet.Butilka(name_b[i],mineralka[i]));
-//                things.add(i, (List<Predmet>) new Predmet.Butilka(name_b[i],mineralka[i]));
             }
             if (name_sh[i].length() > 0){
                 things[i].add(new Predmet.Shlyapa(name_sh[i],size[i]));
