@@ -39,20 +39,19 @@ public class InputFile {
 
         // initializing
         for (int i = 0; i < linesCount; i++) {
-            things[i] = new ArrayList<Predmet>();
+            things[i] = new ArrayList<>();
             name_b[i] = "";
             name_sh[i] = "";
             name_sm[i] = "";
         }
 
-        try  {
-            Scanner scanner = new Scanner(new File(fileName));
+        try (Scanner scanner = new Scanner(new File(fileName))) {
             while (scanner.hasNextLine()) {
-                String line[] = scanner.nextLine().split(",");
+                String[] line = scanner.nextLine().split(",");
                 last_id = Integer.parseInt(line[0]);
-                /**
-                 * In case of type we add humans to array "people" and objects to arraylist "things"
-                 */
+
+                // In case of type we add humans to array "people" and objects to arraylist "things"
+
                 switch (line[1]) {
                     case "human":
                         switch (line[2]){
@@ -96,7 +95,6 @@ public class InputFile {
                         break;
                 }
             }
-            scanner.close();
 
         } catch (FileNotFoundException | ArrayIndexOutOfBoundsException e){
             e.printStackTrace();

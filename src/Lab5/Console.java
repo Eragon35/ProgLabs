@@ -10,13 +10,7 @@ import com.google.gson.*;
  */
 
 public class Console {
-    private static GsonBuilder builder = new GsonBuilder();
-    private static List<Predmet> baggage = new LinkedList<Predmet>();
-    private static String helptxt = "remove_all {element}: удалить из коллекции все элементы, эквивалентные заданному\nremove {String key}: " +
-            "удалить элемент из коллекции по его ключу\nshow: вывести в стандартный поток вывода все элементы коллекции в строковом представлении" +
-            "\nadd_if_max {element}: добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции" +
-            "\ninfo: вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\ninsert " +
-            "{String key} {element}: добавить новый элемент с заданным ключом\nremove_lower {element}: удалить из коллекции все элементы, меньшие, чем заданный\n";
+    private static List<Predmet> baggage = new LinkedList<>();
 
     /**
      * @param map is SortedMap which contains all data
@@ -41,9 +35,14 @@ public class Console {
         //str.replaceAll(" ","");
 
 
+        String helptxt = "remove_all {element}: удалить из коллекции все элементы, эквивалентные заданному\nremove {String key}: " +
+                "удалить элемент из коллекции по его ключу\nshow: вывести в стандартный поток вывода все элементы коллекции в строковом представлении" +
+                "\nadd_if_max {element}: добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции" +
+                "\ninfo: вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\ninsert " +
+                "{String key} {element}: добавить новый элемент с заданным ключом\nremove_lower {element}: удалить из коллекции все элементы, меньшие, чем заданный\n";
         switch (comand) {
             case 1:
-                String a1[] = str.split("remove_all", 2);
+                String[] a1 = str.split("remove_all", 2);
                 String a11 = a1[1];
                 Integer hashCode;
                 try{
@@ -60,7 +59,7 @@ public class Console {
                         addBaggage(jsonObject, "sumka");
                     }
                     if(!a11.contains("sumka") && !a11.contains("shlyapa") && !a11.contains("butilka") && a11.contains("null")) baggage = null;
-                    List <Humanoid> keysToDelete = new LinkedList<Humanoid>();
+                    List <Humanoid> keysToDelete = new LinkedList<>();
                     hashCode = baggage.hashCode();
                     for (Humanoid key: map.keySet()) {
                         if (hashCode.equals(map.get(key).hashCode())) keysToDelete.add(key);
@@ -87,9 +86,11 @@ public class Console {
 
                     Humanoid keyDelete2 = null;
     //                Humanoid removedHuman = new Humanoid(name, palace);
+                    //TODO check if Humanoid has method equals and why i can't remove inside cycle
                     for (Humanoid key : map.keySet()) {
                         if ((key.getName().equals(name))&& (key.getPlace().equals(palace)))
                             keyDelete2 = new Humanoid(key.getName(), key.getPlace());
+//                            map.remove(keyDelete2);
                     }
                     map.remove(keyDelete2);
                 } catch (JsonSyntaxException e){
@@ -103,10 +104,14 @@ public class Console {
                 for (Humanoid key : map.keySet()) {
                     System.out.println("Human: name = " + key.getName() + ", place = " + key.getPlace() +";");
                     List<Predmet> bagazh = map.get(key);
+                    //TODO check lambda function
+
                     if (bagazh != null){
-                        for (Predmet predmet : bagazh){
-                            System.out.println("Baggage:" + predmet.getClass() + ", name: " + predmet.name + ",  value: " + predmet.getValue() + ";");
-                        }
+                        bagazh.forEach((Predmet predmet) -> System.out.println("Baggage:" + predmet.getClass() +
+                                ", name: " + predmet.name + ",  value: " + predmet.getValue() + ";"));
+//                        for (Predmet predmet : bagazh){
+//                            System.out.println("Baggage:" + predmet.getClass() + ", name: " + predmet.name + ",  value: " + predmet.getValue() + ";");
+//                        }
                         System.out.println("Baggage hashcode: " + bagazh.hashCode());
                     }
                     else System.out.println("Baggage = null;");
@@ -168,7 +173,7 @@ public class Console {
                         Skazka.datePublic.toString() + "; Хэш-код: " + map.hashCode());
                 break;
             case 6:
-                String a6[] = str.split("insert", 2);
+                String[] a6 = str.split("insert", 2);
                 String a61 = a6[1];
                 try{
                     baggage.clear();
@@ -202,38 +207,41 @@ public class Console {
 
                 break;
             case 7:
+
                 String[] a7 = str.split("remove_lower");
                 String a71 = a7[1];
-            int count = 0;
-            try{
-                baggage.clear();
-                JsonElement jsonElement7 = new JsonParser().parse(a71);
-                JsonObject jsonObject = jsonElement7.getAsJsonObject();
-                if (a71.contains("butilka")) {
-                    addBaggage(jsonObject, "butilka");
-                }
-                if (a71.contains("shlyapa")) {
-                    addBaggage(jsonObject, "shlyapa");
-                }
-                if (a71.contains("sumka")) {
-                    addBaggage(jsonObject, "");
-                }
-                List <Humanoid> keysToDelete = new LinkedList<Humanoid>();
-                hashCode = baggage.hashCode();
-                System.out.println("Input baggage hashcode is: " + hashCode);
-                for (Humanoid key: map.keySet()) {
-                    if (hashCode > (map.get(key).hashCode())) keysToDelete.add(key);
-                }
-                for (Humanoid key: keysToDelete) {
-                    map.remove(key);
-                    count++;
-                }
-                System.out.println("Удалено " + count + " элементов");
+                int count = 0;
+                try{
+                    baggage.clear();
+                    JsonElement jsonElement7 = new JsonParser().parse(a71);
+                    JsonObject jsonObject = jsonElement7.getAsJsonObject();
+                    if (a71.contains("butilka")) {
+                        addBaggage(jsonObject, "butilka");
+                    }
+                    if (a71.contains("shlyapa")) {
+                        addBaggage(jsonObject, "shlyapa");
+                    }
+                    if (a71.contains("sumka")) {
+                        addBaggage(jsonObject, "");
+                    }
+                    List <Humanoid> keysToDelete = new LinkedList<>();
+                    hashCode = baggage.hashCode();
+                    System.out.println("Input baggage hashcode is: " + hashCode);
+                    map.keySet().removeIf(key -> key.hashCode() < hashCode);
+                    //TODO check correct work of up string (и придумать как считать count) if needed delete keysToDelete
+    //                for (Humanoid key: map.keySet()) {
+    //                    if (hashCode > (map.get(key).hashCode())) keysToDelete.add(key);
+    //                }
+    //                for (Humanoid key: keysToDelete) {
+    //                    map.remove(key);
+    //                    count++;
+    //                }
+                    System.out.println("Удалено " + count + " элементов");
 
-            }catch (Exception e) {
-                System.out.println("Попробуйте ещё раз");
-                e.printStackTrace();
-            }
+                }catch (Exception e) {
+                    System.out.println("Попробуйте ещё раз");
+                    e.printStackTrace();
+                }
                 break;
             case 8:
                 java.lang.System.exit(0);
@@ -247,7 +255,6 @@ public class Console {
             case (-1):
                 System.out.println("Вы ввели несколько команд вместе. Вводите по одной команде за раз" +
                         "\nИли заданные параметры содержат зарезервированные команды. Задайте другое имя");
-
                 break;
 
             default:
@@ -263,7 +270,7 @@ public class Console {
         String name = names[1];
         String valueSTR = jsonObject.get("value").toString();
         String[] value1 = valueSTR.split("\"", 3);
-        Double value = Double.valueOf(value1[1]);
+        double value = Double.parseDouble(value1[1]);
         switch (s) {
             case "butilka":
                 baggage.add(new Predmet.Butilka(name, value));

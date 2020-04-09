@@ -22,35 +22,33 @@ public class OutputFile {
 
     public static void writeCSV(String fileName, SortedMap<Humanoid, List<Predmet>> map){
         id = 0;
-        try {
-            OutputStream outputStream = new FileOutputStream(fileName);
-
-        for (Humanoid key : map.keySet()) {
-            builder.delete(0,builder.length());
-            builder.append(id).append(",human,name,").append(key.getName()).append("\n");
-            builder.append(id).append(",human,place,").append(key.getPlace()).append("\n");
-            outputStream.write(builder.toString().getBytes());
-            builder.delete(0,builder.length());
-            List<Predmet> bagazh = map.get(key);
-            if (bagazh != null) {
-                for (Predmet predmet : bagazh){
-                    if (predmet.getClass().toString().contains("Predmet$Butilka")) {
-                        appender("butilka", outputStream, predmet);
-                    }
-                    if (predmet.getClass().toString().contains("Predmet$Shlyapa")) {
-                        appender("shlyapa", outputStream, predmet);
-                    }
-                    if (predmet.getClass().toString().contains("Sumka")) {
-                        appender("sumka", outputStream, predmet);
-                        }
-                    }
-            }
-            else {
-                builder.append(id).append(",bagazh,size,null\n");
+        try (OutputStream outputStream = new FileOutputStream(fileName)) {
+            for (Humanoid key : map.keySet()) {
+                builder.delete(0,builder.length());
+                builder.append(id).append(",human,name,").append(key.getName()).append("\n");
+                builder.append(id).append(",human,place,").append(key.getPlace()).append("\n");
                 outputStream.write(builder.toString().getBytes());
                 builder.delete(0,builder.length());
-            }
-            id++;
+                List<Predmet> bagazh = map.get(key);
+                if (bagazh != null) {
+                    for (Predmet predmet : bagazh){
+                        if (predmet.getClass().toString().contains("Predmet$Butilka")) {
+                            appender("butilka", outputStream, predmet);
+                        }
+                        if (predmet.getClass().toString().contains("Predmet$Shlyapa")) {
+                            appender("shlyapa", outputStream, predmet);
+                        }
+                        if (predmet.getClass().toString().contains("Sumka")) {
+                            appender("sumka", outputStream, predmet);
+                        }
+                    }
+                }
+                else {
+                    builder.append(id).append(",bagazh,size,null\n");
+                    outputStream.write(builder.toString().getBytes());
+                    builder.delete(0,builder.length());
+                }
+                id++;
         }
         }catch (IOException e) {
             System.out.print("File for writing not found,\nTry again");
