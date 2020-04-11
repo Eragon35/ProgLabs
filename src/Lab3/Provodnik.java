@@ -7,7 +7,6 @@ public class Provodnik extends Humanoid {
         this.helpful = helpful;
         System.out.println(name + " появился в "+ place + "e\n");
     }
-//    @Override
     public void Skill (Humanoid man, Palace place){
         int count = 1;
         double wait = Math.random();
@@ -18,7 +17,6 @@ public class Provodnik extends Humanoid {
         }
         System.out.println(getName() + " соизволил подойти\n");
         System.out.println(man.getName() + ": А во сколько поезд прибывает в " + place + "?");
-        //System.out.println("А " + name + " ему в ответ: Поезд прибывает в " + place + " в " + place.getTime()+"\n");
         if (place.getTime() < 7) {
             System.out.print("Дорогой хуманоид, т.к. поезд приезжает в " + place + " в ");
             System.out.printf("%.2f",place.getTime()) ;

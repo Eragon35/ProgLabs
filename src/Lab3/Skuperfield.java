@@ -56,10 +56,8 @@ public class Skuperfield extends Humanoid {
             System.out.println("Нечего пить минералочку, когда печень пропил");
         }else System.out.println("Вот какое замечательное место и вода\n");
     }
-  //  public void setBagazh (String ... bagazh){    }
-//    @Override
+
     public static void Skill(Predmet.Shlyapa hat){
-//        public static void Lab3.Skill(Lab3.Bagazh hat, double dirt){
         hat.checkDirty();
         System.out.printf(name + " смотрит на шляпу и такой: 'УУУУУУ с*ка, шляпа грязная на %.2f %%, давай ка размажем грязь'", hat.dirty*100);
         while (hat.dirty < 1){
@@ -69,7 +67,6 @@ public class Skuperfield extends Humanoid {
 
         }
         System.out.println("Размазали грязь - теперь шляпа равномерно грязная = чистая, а Смысл переполняет меня\n");
-        //return 0;
 
     }
     public void Eat(int i) { //экзепшен на 0

@@ -32,14 +32,13 @@ public class Console {
         if (str.contains("exit")) comand = comand * 10 + 8; // выход +++
         if (str.contains("help")) comand = comand * 10 + 9; // вывод мануала +++
         if (comand > 10) comand = -1;
-        //str.replaceAll(" ","");
-
 
         String helptxt = "remove_all {element}: удалить из коллекции все элементы, эквивалентные заданному\nremove {String key}: " +
                 "удалить элемент из коллекции по его ключу\nshow: вывести в стандартный поток вывода все элементы коллекции в строковом представлении" +
                 "\nadd_if_max {element}: добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции" +
                 "\ninfo: вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\ninsert " +
                 "{String key} {element}: добавить новый элемент с заданным ключом\nremove_lower {element}: удалить из коллекции все элементы, меньшие, чем заданный\n";
+
         switch (comand) {
             case 1:
                 String[] a1 = str.split("remove_all", 2);
@@ -72,6 +71,7 @@ public class Console {
                     System.out.println("Попробуйте ещё раз");
                 }
                 break;
+
             case 2:
                 String[] a2 = str.split("remove", 2);
                 try {
@@ -99,6 +99,7 @@ public class Console {
                     System.out.println("Ошибка при обработке Вашего запроса, подобного места не существует");
                 }
                 break;
+
             case 3:
                 if (map.size() == 0) System.out.println("Элементов в коллекции нет");
                 for (Humanoid key : map.keySet()) {
@@ -118,6 +119,7 @@ public class Console {
                     System.out.println("———————————————————————————————————————");
                 }
                 break;
+
             case 4:
                 int maxHashCode;
                 int localHashCode;
@@ -168,10 +170,12 @@ public class Console {
                     System.out.println("Попробуйте ещё раз");
                 }
                 break;
+
             case 5:
                 System.out.println("Тип: " + map.getClass() + "; Кол-во элементов: " + map.size() + "; Время инициализации:" +
-                        Skazka.datePublic.toString() + "; Хэш-код: " + map.hashCode());
+                        ConsoleApp.datePublic.toString() + "; Хэш-код: " + map.hashCode());
                 break;
+
             case 6:
                 String[] a6 = str.split("insert", 2);
                 String a61 = a6[1];
@@ -206,8 +210,8 @@ public class Console {
                     }
 
                 break;
-            case 7:
 
+            case 7:
                 String[] a7 = str.split("remove_lower");
                 String a71 = a7[1];
                 int count = 0;
@@ -243,15 +247,19 @@ public class Console {
                     e.printStackTrace();
                 }
                 break;
+
             case 8:
                 java.lang.System.exit(0);
                 break;
+
             case 9:
                 System.out.println(helptxt);
                 break;
+
             case 0:
                 System.out.println("Вы не ввели ни одной команды или ввели неправильно, введите 'help' чтобы узнать команды");
                 break;
+
             case (-1):
                 System.out.println("Вы ввели несколько команд вместе. Вводите по одной команде за раз" +
                         "\nИли заданные параметры содержат зарезервированные команды. Задайте другое имя");

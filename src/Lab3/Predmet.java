@@ -22,7 +22,6 @@ public abstract class Predmet extends Bog implements Put, FindDirt {
     public double getValue(){return value;}
 
     public static class Shlyapa extends Predmet{
-        //    public boolean put = true;
         double dirty;
         double size;
         public Shlyapa(String name, double size){
@@ -38,12 +37,10 @@ public abstract class Predmet extends Bog implements Put, FindDirt {
         public double getValue(){
             return Double.valueOf(size);
         }
-        //  @Override
         public boolean IfDirty(){
             if (dirty == 0) return false;
             else return true;
         }
-        //   @Override
         public double getDirty(){
             if (dirty > 1) {
                 dirty = 0;
@@ -66,14 +63,11 @@ public abstract class Predmet extends Bog implements Put, FindDirt {
     }
 
     public static class Butilka extends Predmet {
-        //    public boolean put =
         double dirty;
         private double mineralka;
         public Butilka(String name){
             super(name);
             mineralka = -0.05;
-//        mineralka = Math.random();
-
         }
 
         public Butilka (String name, boolean put, double mineralka){
@@ -85,29 +79,13 @@ public abstract class Predmet extends Bog implements Put, FindDirt {
             this.mineralka = mineralka;
         }
         // на неё нужно садиться
-        @Override
-        public double getValue(){
-            return mineralka;
-        }
-        @Override
-        public boolean getPuttable(){
-            return put;
-        }
-        @Override
-        public void setPuttable(boolean mean){
-            this.put = mean;
-        }
-        public double getMineralka (){return mineralka;}
 
-        @Override
-        public double getDirty() {
-            return dirty;
-        }
-
-        @Override
-        public boolean IfDirty() {
-            return false;
-        }
+        public double getValue(){ return mineralka; }
+        public boolean getPuttable(){ return put; }
+        public void setPuttable(boolean mean){ this.put = mean; }
+        public double getMineralka (){ return mineralka; }
+        public double getDirty() { return dirty; }
+        public boolean IfDirty() { return false; }
     }
 
 }

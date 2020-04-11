@@ -28,15 +28,13 @@ public class Sumka extends Predmet {
         if (dirty == 0) return false;
         else return true;
     }
-  //  @Override
+
     public double getDirty(){
         return dirty;
     }
-    @Override
     public boolean getPuttable(){
         return put;
     }
-    @Override
     public void setPuttable(boolean mean){
         this.put = mean;
     }
