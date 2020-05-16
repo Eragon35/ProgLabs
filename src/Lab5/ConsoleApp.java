@@ -48,7 +48,6 @@ ConsoleApp {
             if (str.contains("null")) System.out.println("Параметр не может быль null");
             else Console.reader(map, str);
 //            OutputFile.writeCSV(file, map);
-
             s = str;
         }
     }

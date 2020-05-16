@@ -33,9 +33,9 @@ public class Skazka {
         roma.Peremeshenie(roma, Palace.Train);
 
         Predmet.Shlyapa chernaya = new Predmet.Shlyapa("Черная", 15);
-        if (chernaya.IfDirty()) {
-            roma.Skill(chernaya);
-        }
+//        if (chernaya.IfDirty()) {
+//            roma.Skill(chernaya);
+//        }
         serge.Skill(roma, Palace.Brohenville);
         Disclaimer disclaimer = new Disclaimer();
         disclaimer.Skill();

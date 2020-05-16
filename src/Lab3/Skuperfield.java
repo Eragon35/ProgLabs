@@ -45,7 +45,7 @@ public class Skuperfield extends Humanoid {
 
         int i = 0;
         while ((pichevarenie < 1) && (i < 3)) {
-            pichevarenie += voda.getMineralka();
+            pichevarenie += voda.getValue();
             if (pichevarenie > 1){pichevarenie = 1;}
             if (pichevarenie < 0){pichevarenie = 0;}
             System.out.printf("Пьёт " + voda.getName() + ", пищеварение стало %.2f %%\n", pichevarenie * 100);
@@ -57,18 +57,18 @@ public class Skuperfield extends Humanoid {
         }else System.out.println("Вот какое замечательное место и вода\n");
     }
 
-    public static void Skill(Predmet.Shlyapa hat){
-        hat.checkDirty();
-        System.out.printf(name + " смотрит на шляпу и такой: 'УУУУУУ с*ка, шляпа грязная на %.2f %%, давай ка размажем грязь'", hat.dirty*100);
-        while (hat.dirty < 1){
-            hat.dirty *=2;
-            System.out.println("");
-            if (hat.dirty < 1) System.out.printf("Грязь размазана на %.2f %%, надо размазывать ещё :(", hat.dirty*100);
-
-        }
-        System.out.println("Размазали грязь - теперь шляпа равномерно грязная = чистая, а Смысл переполняет меня\n");
-
-    }
+//    public static void Skill(Predmet.Shlyapa hat){
+//        hat.checkDirty();
+//        System.out.printf(name + " смотрит на шляпу и такой: 'УУУУУУ с*ка, шляпа грязная на %.2f %%, давай ка размажем грязь'", hat.dirty*100);
+//        while (hat.dirty < 1){
+//            hat.dirty *=2;
+//            System.out.println("");
+//            if (hat.dirty < 1) System.out.printf("Грязь размазана на %.2f %%, надо размазывать ещё :(", hat.dirty*100);
+//
+//        }
+//        System.out.println("Размазали грязь - теперь шляпа равномерно грязная = чистая, а Смысл переполняет меня\n");
+//
+//    }
     public void Eat(int i) { //экзепшен на 0
         String msg = "";
         if (i < 1) throw new MyNullFoodException(i);
