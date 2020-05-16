@@ -1,6 +1,8 @@
 package Lab3;
 
-public class Humanoid extends Bog implements Skill, Comparable<Humanoid> {
+import java.io.Serializable;
+
+public class Humanoid extends Bog implements Skill, Comparable<Humanoid>, Serializable {
 
     private Palace place;
 

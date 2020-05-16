@@ -3,6 +3,7 @@ package Lab5;
 import Lab3.Humanoid;
 import Lab3.Predmet;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -23,11 +24,16 @@ ConsoleApp {
         SortedMap<Humanoid, List<Predmet>> map_test = new TreeMap<>();
 
         // консольный ввод
-        OutputFile.writeCSV("test.csv", map);
-        InputFile.parser("test.csv", map_test);
-        OutputFile.writeCSV("test_1.csv", map_test);
+//        OutputFile.writeCSV("test.csv", map);
+//        InputFile.parser("test.csv", map_test);
+//        OutputFile.writeCSV("test_1.csv", map_test);
         if (args.length > 0) {
-            InputFile.parser(args[0], map);
+            System.out.println(args[0]);
+            File file = new File(args[0]);
+            if (file.exists() && !file.isDirectory()) {
+                InputFile.parser(args[0], map);
+            }
+            else System.out.println("File not found.");
         }
         else {
             System.out.println("FileNotFoundException: файл для обращения не задан");

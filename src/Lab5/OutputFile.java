@@ -3,7 +3,6 @@ package Lab5;
 import Lab3.Humanoid;
 import Lab3.Predmet;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -11,6 +10,8 @@ import java.util.SortedMap;
  * Output to .csv file based on java.io.OutputStreamWriter
  * has only one method 'writeCSV' which write map to .csv file which contains four fields: id, type, key, value
  */
+
+//TODO think about modify csv file to id, human/butilka/shlypa/sumka, name, place/value
 
 public class OutputFile {
     /**

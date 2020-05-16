@@ -1,8 +1,9 @@
 package Lab3;
 
 import Lab4.MyDirtyException;
+import java.io.Serializable;
 
-public abstract class Predmet extends Bog implements Put, FindDirt {
+public abstract class Predmet extends Bog implements Put, FindDirt, Serializable {
     double value;
     protected boolean put;
     public Predmet(String name, boolean put){

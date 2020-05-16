@@ -18,6 +18,8 @@ public class InputFile {
  * @param map – SortedMap in which data would be written
  */
     public static void parser(String fileName, SortedMap map) throws IOException, NullPointerException {
+
+        //TODO rework this shit
         final LineNumberReader lnr = new LineNumberReader(new FileReader(fileName));
         int linesCount = 0;
         while(null != lnr.readLine()) {
@@ -26,6 +28,7 @@ public class InputFile {
         linesCount = linesCount/2;
         String[] names = new String[linesCount];
         Palace[] places = new Palace[linesCount]; // да,да, да — ебучий костыль, но надо было определить как-то массивы имён и мест
+
 
         String[] name_b = new String[linesCount];
         String[] name_sh = new String[linesCount];
