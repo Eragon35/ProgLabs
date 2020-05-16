@@ -19,7 +19,7 @@ public class InputFile {
  */
     public static void parser(String fileName, SortedMap map) throws IOException, NullPointerException {
 
-        //TODO rework this shit
+        //TODO rework this shit for ArrayLists
         final LineNumberReader lnr = new LineNumberReader(new FileReader(fileName));
         int linesCount = 0;
         while(null != lnr.readLine()) {

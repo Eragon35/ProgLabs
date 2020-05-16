@@ -18,7 +18,7 @@ public class Console {
      * @param str is String which contains a command
      */
 
-    // TODO: 14.10.2019  сделать отлово arrayOutOfBounceException'ов
+    // TODO add checks for elements that already in map and think about how to link removes and add_if_max/insert
 
     public static void reader(SortedMap<Humanoid, List<Predmet>> map, String str) { // ограничение на одну сумку/шляпу/бутылку
         int comand = 0;
@@ -26,9 +26,9 @@ public class Console {
         if (str.contains("remove") && !str.contains("remove_all") && !str.contains("remove_lower"))
             comand = comand * 10 + 2; // удалить элемент из коллекции по его ключу +
         if (str.contains("show")) comand = comand * 10 + 3; // вывести в стандартный поток вывода все элементы коллекции в строковом представлении +
-        if (str.contains("add_if_max")) comand = comand * 10 + 4; // добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции -
+        if (str.contains("add_if_max")) comand = comand * 10 + 4; // добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции +
         if (str.contains("info")) comand = comand * 10 + 5; // вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.) +
-        if (str.contains("insert")) comand = comand * 10 + 6; // добавить новый элемент с заданным ключом -
+        if (str.contains("insert")) comand = comand * 10 + 6; // добавить новый элемент с заданным ключом +
         if (str.contains("remove_lower")) comand = comand * 10 + 7; // удалить из коллекции все элементы, меньшие, чем заданный +
         if (str.contains("exit")) comand = comand * 10 + 8; // выход +
         if (str.contains("help")) comand = comand * 10 + 9; // вывод мануала +
@@ -58,13 +58,12 @@ public class Console {
                         addBaggage(jsonObject, "sumka");
                     }
                     if(!a11.contains("sumka") && !a11.contains("shlyapa") && !a11.contains("butilka") && a11.contains("null")) baggage = null;
-                    List <Humanoid> keysToDelete = new LinkedList<>();
                     hashCode = baggage.hashCode();
                     size = map.size();
                     map.keySet().removeIf(key -> hashCode.equals(map.get(key).hashCode()));
                     System.out.println("Было удалено " + (size - map.size()) + ". hashCode = " + hashCode);
                 }catch (Exception e){
-                    System.out.println("Ваша не обработана, попробуйте ещё раз");
+                    System.out.println("Ваша кома некорректна, попробуйте ещё раз");
                     e.printStackTrace();
                 }
                 break;
@@ -82,7 +81,7 @@ public class Console {
                     size = map.size();
                     map.keySet().removeIf(key -> key.getName().equals(name)&&key.getPlace().equals(palace));
                     if (size != map.size()) System.out.println("Персонаж удалён");
-                    else System.out.println("Людей по введёму кл.чу не обнаружено. Никто не удалён");
+                    else System.out.println("Людей по введёму параметру не обнаружено. Никто не удалён");
                 } catch (JsonSyntaxException e){
                     System.out.println("Ошибка при обработке Вашего запроса, попробуйте ещё раз");
                 }catch (IllegalArgumentException e){
@@ -112,21 +111,22 @@ public class Console {
                 try{
                     baggage.clear();
                     JsonObject jsonObject = new JsonParser().parse(a41).getAsJsonObject();
-                    JsonObject jsonObjectHumanoid = (JsonObject) jsonObject.get("human");
+                    JsonObject jsonObjectHumanoid = jsonObject.get("human").getAsJsonObject();
                     String nameSTR4 = jsonObjectHumanoid.get("name").toString();
                     String[] name1 = nameSTR4.split("\"", 3);
                     String nameHumanoid = name1[1];
                     String palaceSTR = jsonObjectHumanoid.get("palace").toString();
                     String[] palace1 = palaceSTR.split("\"", 3);
                     Palace palace = Palace.valueOf(palace1[1]);
+                    JsonObject jsonObjectBagazh = jsonObject.get("bagazh").getAsJsonObject();
                     if (a41.contains("butilka")){
-                        addBaggage(jsonObject, "butilka");
+                        addBaggage(jsonObjectBagazh, "butilka");
                     }
                     if (a41.contains("shlyapa")){
-                        addBaggage(jsonObject, "shlyapa");
+                        addBaggage(jsonObjectBagazh, "shlyapa");
                     }
                     if (a41.contains("sumka")){
-                        addBaggage(jsonObject, "sumka");
+                        addBaggage(jsonObjectBagazh, "sumka");
                     }
                     if (map.size() > 0) {
                         maxHashCode = map.get(map.firstKey()).hashCode();
@@ -162,21 +162,22 @@ public class Console {
                 try{
                     baggage.clear();
                     JsonObject jsonObject = new JsonParser().parse(a6[1]).getAsJsonObject();
-                    JsonObject jsonObjectHumanoid = (JsonObject) jsonObject.get("human");
+                    JsonObject jsonObjectHumanoid = jsonObject.get("human").getAsJsonObject();
                     String nameSTR6 = jsonObjectHumanoid.get("name").toString();
                     String[] name1 =nameSTR6.split("\"", 3);
                     String nameHumanoid = name1[1];
                     String palaceSTR = jsonObjectHumanoid.get("palace").toString();
                     String[] palace1 = palaceSTR.split("\"", 3);
                     Palace palace = Palace.valueOf(palace1[1]);
+                    JsonObject jsonObjectBagazh = jsonObject.get("bagazh").getAsJsonObject();
                     if (a61.contains("butilka")){
-                        addBaggage(jsonObject, "butilka");
+                        addBaggage(jsonObjectBagazh, "butilka");
                     }
                     if (a61.contains("shlyapa")){
-                        addBaggage(jsonObject, "shlyapa");
+                        addBaggage(jsonObjectBagazh, "shlyapa");
                     }
                     if (a61.contains("sumka")){
-                        addBaggage(jsonObject, "sumka");
+                        addBaggage(jsonObjectBagazh, "sumka");
                     }
                     map.put(new Humanoid(nameHumanoid, palace), baggage);
                     System.out.println("Новый элемент был добавлен в коллецию: имя " + nameHumanoid + ", место " + palace);
@@ -203,22 +204,10 @@ public class Console {
                     if (a71.contains("sumka")) {
                         addBaggage(jsonObject, "");
                     }
-                    //Not working addBaggage program throwing NullPointerException
                     hashCode = baggage.hashCode();
                     System.out.println("Input baggage hashcode is: " + hashCode);
                     int size0 = map.size();
                     map.keySet().removeIf(key -> key.hashCode() < hashCode);
-                    //TODO check correct work of up string
-//                    List <Humanoid> keysToDelete = new LinkedList<>();
-//                    int count = 0;
-    //                for (Humanoid key: map.keySet()) {
-    //                    if (hashCode > (map.get(key).hashCode())) keysToDelete.add(key);
-    //                }
-    //                for (Humanoid key: keysToDelete) {
-    //                    map.remove(key);
-    //                    count++;
-    //                }
-//                    System.out.println("Удалено " + count + " элементов");
                     System.out.println("Удалено " + (size0 - map.size()) + " элементов");
 
                 }catch (Exception e) {
@@ -251,7 +240,7 @@ public class Console {
     }
 
     private static void addBaggage(JsonObject jsonObject, String s) {
-        JsonObject jsonObjectBaggage = (JsonObject) jsonObject.get(s);
+        JsonObject jsonObjectBaggage = jsonObject.get(s).getAsJsonObject();
         String nameSTR = jsonObjectBaggage.get("name").toString();
         String[] names =nameSTR.split("\"", 3);
         String name = names[1];
