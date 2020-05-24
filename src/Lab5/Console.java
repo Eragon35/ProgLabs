@@ -11,7 +11,6 @@ import com.google.gson.*;
 
 public class Console {
     private static List<Predmet> baggage = new LinkedList<>();
-    private static Integer size = 0;
 
     /**
      * @param map is SortedMap which contains all data
@@ -40,6 +39,7 @@ public class Console {
                 "\ninfo: вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\ninsert " +
                 "{String key} {element}: добавить новый элемент с заданным ключом\nremove_lower {element}: удалить из коллекции все элементы, меньшие, чем заданный";
 
+        Integer size = 0;
         switch (comand) {
             case 1:
                 String[] a1 = str.split("remove_all", 2); //to be honest still not work
@@ -80,7 +80,7 @@ public class Console {
                     Palace palace = Palace.valueOf(palace1[1]);
                     size = map.size();
                     map.keySet().removeIf(key -> key.getName().equals(name)&&key.getPlace().equals(palace));
-                    if (size != map.size()) System.out.println("Персонаж удалён");
+                    if (!size.equals(map.size())) System.out.println("Персонаж удалён");
                     else System.out.println("Людей по введёму параметру не обнаружено. Никто не удалён");
                 } catch (JsonSyntaxException e){
                     System.out.println("Ошибка при обработке Вашего запроса, попробуйте ещё раз");
@@ -90,13 +90,12 @@ public class Console {
                 break;
 
             case 3:
-                if (map.size() == 0) System.out.println("Элементов в коллекции нет");
+                if (map.size()== 0) System.out.println("Элементов в коллекции нет");
                 for (Humanoid key : map.keySet()) {
                     System.out.println("Human: name = " + key.getName() + ", place = " + key.getPlace() +";");
                     List<Predmet> bagazh = map.get(key);
                     if (bagazh != null){
                         sout(bagazh);
-                        System.out.println("Baggage hashcode: " + bagazh.hashCode());
                     }
                     else System.out.println("Baggage = null;");
                     System.out.println("———————————————————————————————————————");
@@ -139,6 +138,8 @@ public class Console {
                             System.out.println("Новый элемент был добавлен в коллецию: имя " + nameHumanoid + ", место " + palace);
                             sout(baggage);
                         }
+                        else System.out.println("Новый элемент не был добавлен в коллекцию\nМаксимальный hashCode багажа в коллекции "
+                                + maxHashCode + ", hashCode введённой вами багажа равен " + baggage.hashCode());
                     }
                     else {
                         map.put(new Humanoid(nameHumanoid, palace), baggage);
@@ -181,12 +182,10 @@ public class Console {
                     }
                     map.put(new Humanoid(nameHumanoid, palace), baggage);
                     System.out.println("Новый элемент был добавлен в коллецию: имя " + nameHumanoid + ", место " + palace);
-                    sout(baggage);
                     }catch (Exception e){
                         System.out.println("Попробуйте ещё раз");
                         e.printStackTrace();
                     }
-
                 break;
 
             case 7:
@@ -206,9 +205,9 @@ public class Console {
                     }
                     hashCode = baggage.hashCode();
                     System.out.println("Input baggage hashcode is: " + hashCode);
-                    int size0 = map.size();
+                    size = map.size();
                     map.keySet().removeIf(key -> key.hashCode() < hashCode);
-                    System.out.println("Удалено " + (size0 - map.size()) + " элементов");
+                    System.out.println("Удалено " + (size - map.size()) + " элементов");
 
                 }catch (Exception e) {
                     System.out.println("Попробуйте ещё раз");
@@ -261,8 +260,10 @@ public class Console {
     }
 
     private static void sout (List<Predmet> baggage){
+        System.out.println("Baggage size is " + baggage.size());
         baggage.forEach((Predmet predmet) -> System.out.println("Baggage:" + predmet.getClass() +
                 ", name: " + predmet.name + ",  value: " + predmet.getValue()));
+        System.out.println("Baggage hashcode: " + baggage.hashCode());
     }
 
 }

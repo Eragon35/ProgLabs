@@ -10,23 +10,20 @@ import java.util.*;
 public class
 ConsoleApp {
     public static Date datePublic = new Date();
+    /**
+     * Начало 5-ой лабы вариант: 11180
+     * @author head of P3111, Antipin Arsentii
+     */
     public static void main(String[] args) throws IOException, NullPointerException {
-        /**
-         * Начало 5-ой лабы вариант: 11180
-         * @author head of P3111, Antipin Arsentii
-         */
+
 
         System.out.println("\nBeging of Lab5, variant 11180");
         String s = " ";
         SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
-        Date date = new Date();
-        datePublic = date;
+        datePublic = new Date();
         SortedMap<Humanoid, List<Predmet>> map_test = new TreeMap<>();
 
         // консольный ввод
-//        OutputFile.writeCSV("test.csv", map);
-//        InputFile.parser("test.csv", map_test);
-//        OutputFile.writeCSV("test_1.csv", map_test);
         if (args.length > 0) {
             System.out.println(args[0]);
             File file = new File(args[0]);
@@ -47,7 +44,8 @@ ConsoleApp {
             //System.out.println(str);
             if (str.contains("null")) System.out.println("Параметр не может быль null");
             else Console.reader(map, str);
-//            OutputFile.writeCSV(file, map);
+            //comment next line to turn off changing the file
+//            OutputFile.writeCSV(args[0], map);
             s = str;
         }
     }

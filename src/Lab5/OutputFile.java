@@ -14,12 +14,9 @@ import java.util.SortedMap;
 //TODO think about modify csv file to id, human/butilka/shlypa/sumka, name, place/value
 
 public class OutputFile {
-    /**
-     * @param fileName – to whom data would be written
-     * @param map – SortedMap from which data would be read
-     */
+
     private static int id = 0;
-    private static StringBuilder builder = new StringBuilder(String.valueOf(id));
+    private static final StringBuilder builder = new StringBuilder(String.valueOf(id));
 
     public static void writeCSV(String fileName, SortedMap<Humanoid, List<Predmet>> map){
         id = 0;
