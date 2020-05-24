@@ -4,7 +4,6 @@ import Lab3.Humanoid;
 import Lab3.Predmet;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 public class
@@ -14,7 +13,7 @@ ConsoleApp {
      * Начало 5-ой лабы вариант: 11180
      * @author head of P3111, Antipin Arsentii
      */
-    public static void main(String[] args) throws IOException, NullPointerException {
+    public static void main(String[] args) throws NullPointerException {
 
 
         System.out.println("\nBeging of Lab5, variant 11180");

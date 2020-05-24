@@ -39,7 +39,7 @@ public class Console {
                 "\ninfo: вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\ninsert " +
                 "{String key} {element}: добавить новый элемент с заданным ключом\nremove_lower {element}: удалить из коллекции все элементы, меньшие, чем заданный";
 
-        Integer size = 0;
+        Integer size;
         switch (comand) {
             case 1:
                 String[] a1 = str.split("remove_all", 2); //to be honest still not work

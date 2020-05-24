@@ -17,10 +17,10 @@ public class InputFile {
 /** @param fileName – from whom would be data read
  * @param map – SortedMap in which data would be written
  */
-    public static void parser(String fileName, SortedMap<Humanoid, List<Predmet>> map) throws IOException, NullPointerException {
+    public static void parser(String fileName, SortedMap<Humanoid, List<Predmet>> map) throws NullPointerException {
         String name = null;
         Palace place;
-        HashMap<Integer, List<Predmet>> baggage = new HashMap();
+        Map <Integer, List<Predmet>> baggage = new HashMap<>();
         ArrayList<Humanoid> people = new ArrayList<>();
 
         try (Scanner scanner = new Scanner(new File(fileName))) {
@@ -85,7 +85,7 @@ public class InputFile {
             }
 
     }
-        private static void createAndAdd (int index, Predmet predmet, HashMap <Integer, List<Predmet>> baggage){
+        private static void createAndAdd (int index, Predmet predmet, Map <Integer, List<Predmet>> baggage){
         if (!baggage.containsKey(index)) baggage.put(index, new ArrayList<>());
         baggage.get(index).add(predmet);
     }
