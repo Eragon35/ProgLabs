@@ -58,6 +58,7 @@ public class Console {
                         addBaggage(jsonObject, "sumka");
                     }
                     if(!a11.contains("sumka") && !a11.contains("shlyapa") && !a11.contains("butilka") && a11.contains("null")) baggage = null;
+                    assert baggage != null;
                     hashCode = baggage.hashCode();
                     size = map.size();
                     map.keySet().removeIf(key -> hashCode.equals(map.get(key).hashCode()));

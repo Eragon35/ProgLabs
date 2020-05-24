@@ -21,7 +21,6 @@ ConsoleApp {
         String s = " ";
         SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
         datePublic = new Date();
-        SortedMap<Humanoid, List<Predmet>> map_test = new TreeMap<>();
 
         // консольный ввод
         if (args.length > 0) {
@@ -40,12 +39,10 @@ ConsoleApp {
             System.out.print("Введите команду:");
             Scanner scanner = new Scanner(System.in);
             String str = scanner.nextLine();
-            //str = str.replaceAll("\\s", "");
-            //System.out.println(str);
             if (str.contains("null")) System.out.println("Параметр не может быль null");
             else Console.reader(map, str);
             //comment next line to turn off changing the file
-//            OutputFile.writeCSV(args[0], map);
+            OutputFile.writeCSV(args[0], map);
             s = str;
         }
     }

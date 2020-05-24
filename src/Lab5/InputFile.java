@@ -17,7 +17,7 @@ public class InputFile {
 /** @param fileName – from whom would be data read
  * @param map – SortedMap in which data would be written
  */
-    public static void parser(String fileName, SortedMap map) throws IOException, NullPointerException {
+    public static void parser(String fileName, SortedMap<Humanoid, List<Predmet>> map) throws IOException, NullPointerException {
         String name = null;
         Palace place;
         HashMap<Integer, List<Predmet>> baggage = new HashMap();

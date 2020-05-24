@@ -40,12 +40,6 @@ public class Humanoid extends Bog implements Skill, Comparable<Humanoid>, Serial
         return p;
     }
 
-    public void setHumanoid (String n, Palace p){
-        setName(n);
-        setPlace(p);
-    }
-
-
     @Override
     public int compareTo(Humanoid h) {
         return name.compareTo(h.getName());
