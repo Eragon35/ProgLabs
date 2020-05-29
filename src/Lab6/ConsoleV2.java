@@ -16,7 +16,7 @@ import java.util.SortedMap;
 public class ConsoleV2 {
     private static List<Predmet> baggage = new LinkedList<>();
     public static void reader(Command cmd, String str) { // ограничение на одну сумку/шляпу/бутылку
-        ClientCommand input = null;
+        ClientCommand input = ClientCommand.other;
         if (str.contains("remove_all")) input = ClientCommand.remove_all; // удалить из коллекции все элементы, эквивалентные заданному
         if (str.contains("remove_lower")) input = ClientCommand.remove_lower; // удалить из коллекции все элементы, меньшие, чем заданный
         if (str.contains("remove") && !str.contains("remove_all") && !str.contains("remove_lower"))
@@ -27,7 +27,6 @@ public class ConsoleV2 {
         if (str.contains("insert")) input = ClientCommand.insert; // добавить новый элемент с заданным ключом
         if (str.contains("exit")) input = ClientCommand.exit; // выход
         if (str.contains("help")) input = ClientCommand.help; // вывод мануала
-        if (input.equals(null)) input = ClientCommand.other;
 
         String helptxt = "remove_all {element}: удалить из коллекции все элементы, эквивалентные заданному\nremove {String key}: " +
                 "удалить элемент из коллекции по его ключу\nshow: вывести в стандартный поток вывода все элементы коллекции в строковом представлении" +
@@ -283,12 +282,5 @@ public class ConsoleV2 {
                 baggage.add(new Sumka(name, value));
                 break;
         }
-    }
-
-    private static void sout (List<Predmet> baggage){
-        System.out.println("Baggage size is " + baggage.size());
-        baggage.forEach((Predmet predmet) -> System.out.println("Baggage:" + predmet.getClass() +
-                ", name: " + predmet.name + ",  value: " + predmet.getValue()));
-        System.out.println("Baggage hashcode: " + baggage.hashCode());
     }
 }

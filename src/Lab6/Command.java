@@ -6,10 +6,16 @@ import Lab3.Predmet;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * this class is using as packet which client will send to server
+ */
+
 public class Command {
-    private ClientCommand command = null;
-    private Humanoid human = null;
+    private ClientCommand command;
+    private Humanoid human;
     private List<Predmet> baggage = new LinkedList<>();
+
+    public Command() {    }
 
     public Command(ClientCommand command, Humanoid human, List<Predmet> baggage) {
         this.command = command;
@@ -32,4 +38,8 @@ public class Command {
     public ClientCommand getCommand() {
         return command;
     }
+
+    public Humanoid getHuman() { return human; }
+
+    public List<Predmet> getBaggage() { return baggage; }
 }

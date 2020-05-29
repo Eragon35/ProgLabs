@@ -16,7 +16,7 @@ public class Client {
     public static void main(String[] args) {
         System.out.println("\nBeging of Lab6, variant 11250");
         String s = " ";
-        Command cmd = null;
+        Command cmd = new Command();
         SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
 
 
@@ -28,7 +28,7 @@ public class Client {
             if (str.contains("null")) System.out.println("Параметр не может быль null");
             else ConsoleV2.reader(cmd, str);
             s = str;
-            if (cmd.getCommand().equals(ClientCommand.other)) System.out.println("На сервер ничего не отправлено");
+            if (cmd.getCommand().equals(ClientCommand.other)) System.out.println("Ваша команда была выполнена локально. Запрос на сервер не отправлен");
             else {
                 //sending Command to server
             }
