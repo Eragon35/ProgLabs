@@ -3,6 +3,7 @@ package Lab6;
 import Lab3.Humanoid;
 import Lab3.Predmet;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * this class is using as packet which client will send to server
  */
 
-public class Command {
+public class Command implements Serializable {
     private ClientCommand command;
     private Humanoid human;
     private List<Predmet> baggage = new LinkedList<>();

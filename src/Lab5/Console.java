@@ -42,7 +42,7 @@ public class Console {
         Integer size;
         switch (comand) {
             case 1:
-                String[] a1 = str.split("remove_all", 2); //to be honest still not work
+                String[] a1 = str.split("remove_all", 2);
                 String a11 = a1[1];
                 Integer hashCode;
                 try{
@@ -207,7 +207,7 @@ public class Console {
                     hashCode = baggage.hashCode();
                     System.out.println("Input baggage hashcode is: " + hashCode);
                     size = map.size();
-                    map.keySet().removeIf(key -> key.hashCode() < hashCode);
+                    map.keySet().removeIf(key -> map.get(key).hashCode() < hashCode);
                     System.out.println("Удалено " + (size - map.size()) + " элементов");
 
                 }catch (Exception e) {

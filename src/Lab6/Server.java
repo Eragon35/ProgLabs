@@ -27,11 +27,10 @@ public class Server {
         datePublic = new Date();
         String filename = "test_1.csv";
         SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
-        Command cmd;
+        Command cmd = new Command();
 
 
         //writing collection from file
-        System.out.println(filename);
         File file = new File(filename);
         if (file.exists() && !file.isDirectory()) {
             InputFile.parser(filename, map);
@@ -41,9 +40,25 @@ public class Server {
 
         //waiting Command from client
 
-        //do it on server
+        try ( DatagramSocket socket = new DatagramSocket (Integer.parseInt(args[0]))) {
+            byte [] buf = new byte [1024];
+            DatagramPacket packet = new DatagramPacket (buf, buf.length);
+            ByteArrayInputStream bais = new ByteArrayInputStream(packet.getData(), packet.getOffset(), packet.getLength());
+            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(packet.getData(), packet.getOffset(), packet.getLength()));
+            while (true){
+                socket.receive(packet);
+                cmd = (Command) ois.readObject();
+                System.out.println(cmd.getHuman().getName() + " " + cmd.getHuman().getPlace() + " " + cmd.getCommand().toString());
+            }
+        } catch (IOException | ClassNotFoundException e){
+            System.out.println("Error");
+            e.printStackTrace();
+        }
 
-        //send request to client
+        //do it on server
+        ServerHandler.reader(cmd, map);
+
+        //send request to clientg
 
     }
 //    public static void main(String[] args) throws IOException {
