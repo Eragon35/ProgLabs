@@ -1,5 +1,7 @@
 package Lab6;
 
 public enum ServerResponse {
-    error
+    error,
+    success,
+    get_map
 }
