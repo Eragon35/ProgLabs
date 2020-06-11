@@ -15,7 +15,7 @@ import java.util.SortedMap;
 
 public class ConsoleV2 {
     private static List<Predmet> baggage = new LinkedList<>();
-    public static void reader(Command cmd, String str) { // ограничение на одну сумку/шляпу/бутылку
+    public static void reader(Command cmd, String str, SortedMap<Humanoid, List<Predmet>> map) { // ограничение на одну сумку/шляпу/бутылку
         ClientCommand input = ClientCommand.other;
         if (str.contains("remove_all")) input = ClientCommand.remove_all; // удалить из коллекции все элементы, эквивалентные заданному
         if (str.contains("remove_lower")) input = ClientCommand.remove_lower; // удалить из коллекции все элементы, меньшие, чем заданный
@@ -94,19 +94,19 @@ public class ConsoleV2 {
                 break;
 
             case show:
-
-                cmd.setCommand(input);
-
-//                if (map.size()== 0) System.out.println("Элементов в коллекции нет");
-//                for (Humanoid key : map.keySet()) {
-//                    System.out.println("Human: name = " + key.getName() + ", place = " + key.getPlace() +";");
-//                    List<Predmet> bagazh = map.get(key);
-//                    if (bagazh != null){
-//                        sout(bagazh);
-//                    }
-//                    else System.out.println("Baggage = null;");
-//                    System.out.println("———————————————————————————————————————");
-//                }
+                if (map.size()== 0) System.out.println("Элементов в коллекции нет");
+                for (Humanoid key : map.keySet()) {
+                    System.out.println("Human: name = " + key.getName() + ", place = " + key.getPlace() +";");
+                    List<Predmet> bagazh = map.get(key);
+                    if (bagazh != null){
+                        System.out.println("Baggage size is " + baggage.size());
+                        baggage.forEach((Predmet predmet) -> System.out.println("Baggage:" + predmet.getClass() +
+                                ", name: " + predmet.getName() + ",  value: " + predmet.getValue()));
+                        System.out.println("Baggage hashcode: " + baggage.hashCode());
+                    }
+                    else System.out.println("Baggage = null;");
+                    System.out.println("———————————————————————————————————————");
+                }
                 break;
 
             case add_if_max:
@@ -165,11 +165,7 @@ public class ConsoleV2 {
                 break;
 
             case info:
-
-                cmd.setCommand(input);
-
-//                System.out.println("Тип: " + map.getClass() + "; Кол-во элементов: " + map.size() + "; Время инициализации:" +
-//                        ConsoleApp.datePublic.toString() + "; Хэш-код: " + map.hashCode());
+                System.out.println("Тип: " + map.getClass() + "; Кол-во элементов: " + map.size() + "; Хэш-код: " + map.hashCode());
                 break;
 
             case insert:
@@ -251,11 +247,6 @@ public class ConsoleV2 {
             case other:
                 System.out.println("Вы не ввели ни одной команды или ввели неправильно, введите 'help' чтобы узнать команды");
                 break;
-
-//            case (-1):
-//                System.out.println("Вы ввели несколько команд вместе. Вводите по одной команде за раз" +
-//                        "\nИли заданные параметры содержат зарезервированные команды. Задайте другое имя");
-//                break;
 
             default:
                 System.out.println("АААА, сложна, введите команду ещё раз");

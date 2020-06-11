@@ -263,7 +263,7 @@ public class Console {
     private static void sout (List<Predmet> baggage){
         System.out.println("Baggage size is " + baggage.size());
         baggage.forEach((Predmet predmet) -> System.out.println("Baggage:" + predmet.getClass() +
-                ", name: " + predmet.name + ",  value: " + predmet.getValue()));
+                ", name: " + predmet.getName() + ",  value: " + predmet.getValue()));
         System.out.println("Baggage hashcode: " + baggage.hashCode());
     }
 

@@ -3,15 +3,16 @@ package Lab3;
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class Predmet extends Bog implements Serializable
+public abstract class Predmet implements Serializable
 {
-    double value;
+    private double value;
+    private final String name;
     public Predmet(String name, double value){
-        super(name);
+        this.name = name;
         this.value = value;
     }
     public Predmet (String name){
-        super(name);
+        this.name = name;
     }
 
     @Override
@@ -27,6 +28,7 @@ public abstract class Predmet extends Bog implements Serializable
     }
 
     public double getValue(){return value;}
+    public String getName(){return name;}
 
     public static class Shlyapa extends Predmet{
         public Shlyapa(String name, double value) {

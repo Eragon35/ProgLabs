@@ -39,7 +39,6 @@ public class Server {
 
 
         //waiting Command from client
-
         try ( DatagramSocket socket = new DatagramSocket(port))
         {
             byte[] recvBuf = new byte[1024];
@@ -54,14 +53,15 @@ public class Server {
         {
             e.printStackTrace();
         }
-        Humanoid hm = cmd.getHuman();
-        baggage = cmd.getBaggage();
+//        Humanoid hm = cmd.getHuman();
+//        baggage = cmd.getBaggage();
+//        System.out.println(cmd.getCommand().toString() + " " + hm.getName() + " " + hm.getPlace().toString()  + " " + baggage.size());
 
-        System.out.println(cmd.getCommand().toString() + " " + hm.getName() + " " + hm.getPlace().toString()  + " " + baggage.size());
-        //do it on server
-//        ServerHandler.reader(cmd, map);
 
-        //send request to clientg
+        //do request on server
+        ServerHandler.reader(cmd, map);
+
+        //send response to client
 
     }
 }

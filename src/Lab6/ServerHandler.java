@@ -39,16 +39,6 @@ public class ServerHandler {
             case remove_lower:
                 map.keySet().removeIf(key -> map.get(key).hashCode() < cmd.getBaggage().hashCode());
                 break;
-            case show:
-                break;
-            case info:
-                break;
-            case help:
-                break;
-            case other:
-                break;
-            case exit:
-                break;
             default:
                 break;
         }
