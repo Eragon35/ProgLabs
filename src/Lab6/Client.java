@@ -31,17 +31,16 @@ public class Client {
             if (cmd.getCommand().equals(ClientCommand.other)) System.out.println("Ваша команда была выполнена локально. Запрос на сервер не отправлен");
             else {
                 try {
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
-                    ObjectOutputStream oos = new ObjectOutputStream(baos);
-                    oos.writeObject(cmd);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    ObjectOutput oo = new ObjectOutputStream(baos);
+                    oo.writeObject(cmd);
+                    oo.close();
                     final byte[] data = baos.toByteArray();
 
                     final DatagramPacket packet = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), Integer.parseInt(args[0]));
                     DatagramSocket socket = new DatagramSocket();
                     socket.send(packet);
                     System.out.println("Запрос отправлен");
-
-
                 }catch (Exception e){
 
                 }
@@ -62,27 +61,5 @@ public class Client {
 
             //waiting response and do sout it to cli
         }
-
-
-
-    }
-    public static void main2(String[] args) throws IOException, InterruptedException {
-
-        try (DatagramSocket socket = new DatagramSocket(Integer.parseInt(args[0]))) {
-
-            DatagramPacket packet = encodePacket("Hello world!");
-//            packet.setSocketAddress(new InetSocketAddress(11111));
-            socket.send(packet);
-//            while (!socket.isConnected()){
-//                System.out.println("waiting");
-//                Thread.sleep(1000);
-//            }
-//            System.out.println("Connected");
-        }
-
-    }
-    private static DatagramPacket encodePacket(String text) throws UnknownHostException {
-        byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
-        return new DatagramPacket(bytes, bytes.length, InetAddress.getLocalHost(), 11111);
     }
 }

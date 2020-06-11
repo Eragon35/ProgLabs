@@ -43,45 +43,31 @@ public class Server {
         try ( DatagramSocket socket = new DatagramSocket (Integer.parseInt(args[0]))) {
             byte [] buf = new byte [1024];
             DatagramPacket packet = new DatagramPacket (buf, buf.length);
-            ByteArrayInputStream bais = new ByteArrayInputStream(packet.getData(), packet.getOffset(), packet.getLength());
-            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(packet.getData(), packet.getOffset(), packet.getLength()));
-            while (true){
-                socket.receive(packet);
-                cmd = (Command) ois.readObject();
-                System.out.println(cmd.getHuman().getName() + " " + cmd.getHuman().getPlace() + " " + cmd.getCommand().toString());
-            }
+            socket.receive(packet);
+
+            ByteArrayInputStream bais = new ByteArrayInputStream(buf);
+            ObjectInputStream ois = new ObjectInputStream(bais);
+
+            cmd = (Command) ois.readObject();
+            ois.close();
+            System.out.println(cmd.getHuman().getName() + " " + cmd.getHuman().getPlace() + " " + cmd.getCommand().toString());
+
+
+
+//            while (true){
+//                socket.receive(packet);
+//                cmd = (Command) ois.readObject();
+//                System.out.println(cmd.getHuman().getName() + " " + cmd.getHuman().getPlace() + " " + cmd.getCommand().toString());
+//            }
         } catch (IOException | ClassNotFoundException e){
             System.out.println("Error");
             e.printStackTrace();
         }
 
         //do it on server
-        ServerHandler.reader(cmd, map);
+//        ServerHandler.reader(cmd, map);
 
         //send request to clientg
 
     }
-//    public static void main(String[] args) throws IOException {
-//        try ( DatagramSocket socket = new DatagramSocket (11111)) {
-//            byte [] buf = new byte [1024];
-//            DatagramPacket packet = new DatagramPacket (buf, buf.length);
-//            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(packet.getData(), packet.getOffset(), packet.getLength()));
-//            while (true){
-//                socket.receive(packet);
-//                System.out.println(decodePacket(packet));
-//                System.out.println(new String(packet.getData()));
-//            }
-//        } catch (SocketException e){
-//            System.out.println("Error");
-//        }
-//
-//    }
-//    private static String decodePacket(DatagramPacket packet){
-//        return new String(
-//                packet.getData(),
-//                packet.getOffset(),
-//                packet.getOffset() + packet.getLength(),
-//                StandardCharsets.UTF_8);
-//    }
-
 }

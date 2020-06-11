@@ -19,8 +19,6 @@ public class ServerHandler {
             case remove:
                 map.keySet().removeIf(key -> key.equals(cmd.getHuman()));
                 break;
-            case show:
-                break;
             case add_if_max:
                 List<Predmet> baggage = new LinkedList<>();
                 baggage = cmd.getBaggage();
@@ -35,13 +33,15 @@ public class ServerHandler {
                     map.put(cmd.getHuman(), baggage);
                 }
                 break;
-            case info:
-                break;
             case insert:
                 map.put(cmd.getHuman(), cmd.getBaggage());
                 break;
             case remove_lower:
                 map.keySet().removeIf(key -> map.get(key).hashCode() < cmd.getBaggage().hashCode());
+                break;
+            case show:
+                break;
+            case info:
                 break;
             case help:
                 break;
@@ -51,8 +51,6 @@ public class ServerHandler {
                 break;
             default:
                 break;
-
         }
-
     }
 }
