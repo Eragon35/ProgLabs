@@ -1,8 +1,9 @@
 package Lab3;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class Predmet extends Bog //implements Put, FindDirt, Serializable
+public abstract class Predmet extends Bog implements Serializable
 {
     double value;
     public Predmet(String name, double value){

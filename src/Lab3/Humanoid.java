@@ -2,22 +2,15 @@ package Lab3;
 
 import java.io.Serializable;
 
-public class Humanoid extends Bog implements Skill, Comparable<Humanoid>, Serializable {
+public class Humanoid implements Skill, Comparable<Humanoid>, Serializable {
 
     private Palace place;
+    private String name;
 
-    public Humanoid (String name){
-        super(name);
-        this.place = Palace.randomPlace();
-        //exception na otsutsvie mesta
-
-    }
-    public Humanoid(){
-
-    }
+    public Humanoid(){}
 
     public Humanoid (String name, Palace place){
-        super(name);
+        this.name = name;
         this.place = place;
 
 }
@@ -25,6 +18,7 @@ public class Humanoid extends Bog implements Skill, Comparable<Humanoid>, Serial
         System.out.println("pustoy blank pri otsutsvii otveta");
     }
     public Palace getPlace () {return place;}
+    public String getName() {return name;}
     public void setPlace(Palace p){
         place = p;
     }

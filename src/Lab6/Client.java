@@ -18,6 +18,11 @@ public class Client {
         String s = " ";
         Command cmd = new Command();
         SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
+        int port = 11111;
+        if (args.length == 0){
+            System.out.println("You haven't define port, set default 11111");
+        }
+        else port = Integer.parseInt(args[0]);
 
 
         //reading command from cli and preparing it to send to server
@@ -28,33 +33,29 @@ public class Client {
             if (str.contains("null")) System.out.println("Параметр не может быль null");
             else ConsoleV2.reader(cmd, str);
             s = str;
+
+            System.out.println(cmd.getCommand().toString() + " " + cmd.getHuman().getName() + " " + cmd.getHuman().getPlace().toString() );
+
             if (cmd.getCommand().equals(ClientCommand.other)) System.out.println("Ваша команда была выполнена локально. Запрос на сервер не отправлен");
             else {
-                try {
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    ObjectOutput oo = new ObjectOutputStream(baos);
-                    oo.writeObject(cmd);
-                    oo.close();
-                    final byte[] data = baos.toByteArray();
-
-                    final DatagramPacket packet = new DatagramPacket(data, data.length, InetAddress.getLocalHost(), Integer.parseInt(args[0]));
-                    DatagramSocket socket = new DatagramSocket();
+                try (DatagramSocket socket = new DatagramSocket())
+                {      InetAddress address = InetAddress.getLocalHost();
+                    ByteArrayOutputStream byteStream = new ByteArrayOutputStream(1024);
+                    ObjectOutputStream os = new ObjectOutputStream(new BufferedOutputStream(byteStream));
+                    os.flush();
+                    os.writeObject(cmd);
+                    os.flush();
+                    //retrieves byte array
+                    byte[] sendBuf = byteStream.toByteArray();
+                    DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, address, port);
+                    int byteCount = packet.getLength();
                     socket.send(packet);
-                    System.out.println("Запрос отправлен");
-                }catch (Exception e){
-
+                    os.close();
                 }
-//                try(DatagramSocket recieveSocket = new DatagramSocket(Integer.parseInt(args[0]))){
-//                    byte[] recieveBuf = new byte[1024];
-//                    DatagramPacket packet = new DatagramPacket(recieveBuf, recieveBuf.length);
-//                    recieveSocket.receive(packet);
-//                    int byteCount = packet.getLength();
-//                    ByteArrayInputStream bais = new ByteArrayInputStream(recieveBuf);
-//                    ObjectInputStream ois = new ObjectInputStream(bais);
-//                    Response rsp = (Response) ois.readObject();
-//                }catch (IOException| ClassNotFoundException e){
-//
-//                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
 
                 //sending Command to server
             }

@@ -5,18 +5,12 @@ import Lab3.Humanoid;
 import Lab3.Predmet;
 import Lab5.InputFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Server {
     public static Date datePublic = new Date();
@@ -27,7 +21,13 @@ public class Server {
         datePublic = new Date();
         String filename = "test_1.csv";
         SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
+        List<Predmet> baggage = new LinkedList<>();
         Command cmd = new Command();
+        int port = 11111;
+        if (args.length == 0){
+            System.out.println("You haven't define port, set default 11111");
+        }
+        else port = Integer.parseInt(args[0]);
 
 
         //writing collection from file
@@ -40,30 +40,24 @@ public class Server {
 
         //waiting Command from client
 
-        try ( DatagramSocket socket = new DatagramSocket (Integer.parseInt(args[0]))) {
-            byte [] buf = new byte [1024];
-            DatagramPacket packet = new DatagramPacket (buf, buf.length);
+        try ( DatagramSocket socket = new DatagramSocket(port))
+        {
+            byte[] recvBuf = new byte[1024];
+            DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
             socket.receive(packet);
-
-            ByteArrayInputStream bais = new ByteArrayInputStream(buf);
-            ObjectInputStream ois = new ObjectInputStream(bais);
-
-            cmd = (Command) ois.readObject();
-            ois.close();
-            System.out.println(cmd.getHuman().getName() + " " + cmd.getHuman().getPlace() + " " + cmd.getCommand().toString());
-
-
-
-//            while (true){
-//                socket.receive(packet);
-//                cmd = (Command) ois.readObject();
-//                System.out.println(cmd.getHuman().getName() + " " + cmd.getHuman().getPlace() + " " + cmd.getCommand().toString());
-//            }
-        } catch (IOException | ClassNotFoundException e){
-            System.out.println("Error");
+            ByteArrayInputStream byteStream = new ByteArrayInputStream(recvBuf);
+            ObjectInputStream inputStream = new ObjectInputStream(new BufferedInputStream(byteStream));
+            cmd = (Command) inputStream.readObject();
+            inputStream.close();
+        }
+        catch (ClassNotFoundException | IOException e)
+        {
             e.printStackTrace();
         }
+        Humanoid hm = cmd.getHuman();
+        baggage = cmd.getBaggage();
 
+        System.out.println(cmd.getCommand().toString() + " " + hm.getName() + " " + hm.getPlace().toString()  + " " + baggage.size());
         //do it on server
 //        ServerHandler.reader(cmd, map);
 
