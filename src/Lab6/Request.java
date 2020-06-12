@@ -12,20 +12,20 @@ import java.util.List;
  */
 
 public class Request implements Serializable {
-    private ClientCommand request;
+    private ClientCommand command;
     private Humanoid human;
     private List<Predmet> baggage = new LinkedList<>();
 
     public Request() {    }
 
     public Request(ClientCommand request, Humanoid human, List<Predmet> baggage) {
-        this.request = request;
+        this.command = request;
         this.human = human;
         this.baggage = baggage;
     }
 
     public void setCommand(ClientCommand command) {
-        this.request = command;
+        this.command = command;
     }
 
     public void setHuman(Humanoid human) {
@@ -37,7 +37,7 @@ public class Request implements Serializable {
     }
 
     public ClientCommand getCommand() {
-        return request;
+        return command;
     }
 
     public Humanoid getHuman() { return human; }

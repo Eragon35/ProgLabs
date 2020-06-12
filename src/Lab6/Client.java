@@ -47,7 +47,7 @@ public class Client {
                     os.writeObject(cmd);
                     os.flush();
                     //retrieves byte array
-                    byte[] sendBuf = byteStream.toByteArray();
+                    byte[] sendBuf = serialize(cmd);
                     DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, address, port);
                     int byteCount = packet.getLength();
                     socket.send(packet);
@@ -63,5 +63,13 @@ public class Client {
 
             //waiting response and do sout it to cli
         }
+    }
+    public static byte[] serialize(Object obj) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
+        ObjectOutputStream os = new ObjectOutputStream(new BufferedOutputStream(out));
+        os.flush();
+        os.writeObject(obj);
+        os.flush();
+        return out.toByteArray();
     }
 }

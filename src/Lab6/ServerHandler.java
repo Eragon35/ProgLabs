@@ -8,36 +8,41 @@ import java.util.List;
 import java.util.SortedMap;
 
 public class ServerHandler {
-    public static void reader(Request cmd, SortedMap<Humanoid, List<Predmet>> map){
-        ClientCommand command = cmd.getCommand();
+    public static void reader(Request request, SortedMap<Humanoid, List<Predmet>> map, Response response){
+        ClientCommand command = request.getCommand();
         Integer hashCode;
         switch (command){
             case remove_all:
-                hashCode = cmd.getBaggage().hashCode();
+                hashCode = request.getBaggage().hashCode();
                 map.keySet().removeIf(key -> hashCode.equals(map.get(key).hashCode()));
+                response.setCommand(ServerCommand.success);
                 break;
             case remove:
-                map.keySet().removeIf(key -> key.equals(cmd.getHuman()));
+                map.keySet().removeIf(key -> key.equals(request.getHuman()));
+                response.setCommand(ServerCommand.success);
                 break;
             case add_if_max:
                 List<Predmet> baggage = new LinkedList<>();
-                baggage = cmd.getBaggage();
+                baggage = request.getBaggage();
                 if (map.size() > 0) {
                     int maxHashCode = map.get(map.firstKey()).hashCode();
                     for (Humanoid key : map.keySet()) {
                         if (map.get(key).hashCode() > maxHashCode) maxHashCode = map.get(key).hashCode();
                     }
-                    if (baggage.hashCode() > maxHashCode) map.put(cmd.getHuman(), baggage);
+                    if (baggage.hashCode() > maxHashCode) map.put(request.getHuman(), baggage);
                 }
                 else {
-                    map.put(cmd.getHuman(), baggage);
+                    map.put(request.getHuman(), baggage);
                 }
+                response.setCommand(ServerCommand.success);
                 break;
             case insert:
-                map.put(cmd.getHuman(), cmd.getBaggage());
+                map.put(request.getHuman(), request.getBaggage());
+                response.setCommand(ServerCommand.success);
                 break;
             case remove_lower:
-                map.keySet().removeIf(key -> map.get(key).hashCode() < cmd.getBaggage().hashCode());
+                map.keySet().removeIf(key -> map.get(key).hashCode() < request.getBaggage().hashCode());
+                response.setCommand(ServerCommand.success);
                 break;
             default:
                 break;

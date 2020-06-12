@@ -20,7 +20,8 @@ public class Server {
         String filename = "test_1.csv";
         SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
         List<Predmet> baggage = new LinkedList<>();
-        Request cmd = new Request();
+        Request rqst = new Request();
+        Response rsp = new Response();
         int port = 11111;
         if (args.length == 0){
             System.out.println("You haven't define port, set default 11111");
@@ -47,23 +48,24 @@ public class Server {
             socket.receive(packet);
             ByteArrayInputStream byteStream = new ByteArrayInputStream(recvBuf);
             ObjectInputStream inputStream = new ObjectInputStream(new BufferedInputStream(byteStream));
-            cmd = (Request) inputStream.readObject();
+            rqst = (Request) inputStream.readObject();
             inputStream.close();
         }
         catch (ClassNotFoundException | IOException e)
         {
             e.printStackTrace();
         }
-//        Humanoid hm = cmd.getHuman();
-//        baggage = cmd.getBaggage();
-//        System.out.println(cmd.getCommand().toString() + " " + hm.getName() + " " + hm.getPlace().toString()  + " " + baggage.size());
+//        Humanoid hm = rqst.getHuman();
+//        baggage = rqst.getBaggage();
+//        System.out.println(rqst.getCommand().toString() + " " + hm.getName() + " " + hm.getPlace().toString()  + " " + baggage.size());
 
 
         //do request on server
         try {
-            ServerHandler.reader(cmd, map);
+            ServerHandler.reader(rqst, map, rsp);
         }catch (Exception e){
-
+            rsp.setCommand(ServerCommand.error);
+            e.printStackTrace();
         }
 
         //send response to client

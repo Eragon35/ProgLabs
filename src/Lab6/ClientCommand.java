@@ -10,5 +10,6 @@ public enum ClientCommand {
     remove_lower,
     exit,
     help, //think about not sending help and exit
-    other
+    other,
+    get_map
 }
