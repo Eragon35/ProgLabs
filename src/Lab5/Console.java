@@ -19,7 +19,7 @@ public class Console {
 
     // TODO add checks for elements that already in map and think about how to link removes and add_if_max/insert
 
-    public static void reader(SortedMap<Humanoid, List<Predmet>> map, String str) { // ограничение на одну сумку/шляпу/бутылку
+    public static void reader(SortedMap<Humanoid, List<Predmet>> map, String str) {
         int comand = 0;
         if (str.contains("remove_all")) comand = 1; // удалить из коллекции все элементы, эквивалентные заданному +
         if (str.contains("remove") && !str.contains("remove_all") && !str.contains("remove_lower"))

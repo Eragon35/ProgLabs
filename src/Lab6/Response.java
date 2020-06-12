@@ -11,11 +11,6 @@ public class Response {
     private ServerCommand command;
     private SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
 
-    public Response(ServerCommand command, SortedMap<Humanoid, List<Predmet>> map) {
-        this.command = command;
-        this.map = map;
-    }
-
     public Response() {}
 
     public ServerCommand getCommand() { return command; }

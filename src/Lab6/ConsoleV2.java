@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.SortedMap;
 
 public class ConsoleV2 {
-    private static List<Predmet> baggage = new LinkedList<>();
-    public static void reader(Request cmd, String str, SortedMap<Humanoid, List<Predmet>> map) { // ограничение на одну сумку/шляпу/бутылку
+    private static final List<Predmet> baggage = new LinkedList<>();
+    public static void reader(Request cmd, String str, SortedMap<Humanoid, List<Predmet>> map) {
         ClientCommand input = ClientCommand.other;
         if (str.contains("remove_all")) input = ClientCommand.remove_all; // удалить из коллекции все элементы, эквивалентные заданному
         if (str.contains("remove_lower")) input = ClientCommand.remove_lower; // удалить из коллекции все элементы, меньшие, чем заданный
@@ -33,12 +33,10 @@ public class ConsoleV2 {
                 "\ninfo: вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\ninsert " +
                 "{String key} {element}: добавить новый элемент с заданным ключом\nremove_lower {element}: удалить из коллекции все элементы, меньшие, чем заданный";
 
-        Integer size;
         switch (input) {
             case remove_all:
                 String[] a1 = str.split("remove_all", 2); //to be honest still not work
                 String a11 = a1[1];
-                Integer hashCode;
                 try{
                     baggage.clear();
                     JsonObject jsonObject = new JsonParser().parse(a11).getAsJsonObject();
@@ -54,13 +52,6 @@ public class ConsoleV2 {
 
                     cmd.setCommand(input);
                     cmd.setBaggage(baggage);
-
-//                    if(!a11.contains("sumka") && !a11.contains("shlyapa") && !a11.contains("butilka") && a11.contains("null")) baggage = null;
-//                    assert baggage != null;
-//                    hashCode = baggage.hashCode();
-//                    size = map.size();
-//                    map.keySet().removeIf(key -> hashCode.equals(map.get(key).hashCode()));
-//                    System.out.println("Было удалено " + (size - map.size()) + ". hashCode = " + hashCode);
                 }catch (Exception e){
                     System.out.println("Ваша кома некорректна, попробуйте ещё раз");
                     e.printStackTrace();
@@ -109,8 +100,6 @@ public class ConsoleV2 {
                 break;
 
             case add_if_max:
-                int maxHashCode;
-                int localHashCode;
                 String[] a4 = str.split("add_if_max", 2);
                 String a41 = a4[1];
                 try{
@@ -137,26 +126,6 @@ public class ConsoleV2 {
                     cmd.setCommand(input);
                     cmd.setHuman(new Humanoid(nameHumanoid, palace));
                     cmd.setBaggage(baggage);
-
-//                    if (map.size() > 0) {
-//                        maxHashCode = map.get(map.firstKey()).hashCode();
-//                        for (Humanoid key : map.keySet()) {
-//                            localHashCode = map.get(key).hashCode();
-//                            if (localHashCode > maxHashCode) maxHashCode = localHashCode;
-//                        }
-//                        if (baggage.hashCode() > maxHashCode) {
-//                            map.put(new Humanoid(nameHumanoid, palace), baggage);
-//                            System.out.println("Новый элемент был добавлен в коллецию: имя " + nameHumanoid + ", место " + palace);
-//                            sout(baggage);
-//                        }
-//                        else System.out.println("Новый элемент не был добавлен в коллекцию\nМаксимальный hashCode багажа в коллекции "
-//                                + maxHashCode + ", hashCode введённой вами багажа равен " + baggage.hashCode());
-//                    }
-//                    else {
-//                        map.put(new Humanoid(nameHumanoid, palace), baggage);
-//                        System.out.println("Новый элемент был добавлен в коллецию: имя " + nameHumanoid + ", место " + palace);
-//                        sout(baggage);
-//                    }
                 }catch (Exception e){
                     System.out.println("Попробуйте ещё раз");
                     e.printStackTrace();
@@ -221,12 +190,6 @@ public class ConsoleV2 {
 
                     cmd.setCommand(input);
                     cmd.setBaggage(baggage);
-
-//                    hashCode = baggage.hashCode();
-//                    System.out.println("Input baggage hashcode is: " + hashCode);
-//                    size = map.size();
-//                    map.keySet().removeIf(key -> key.hashCode() < hashCode);
-//                    System.out.println("Удалено " + (size - map.size()) + " элементов");
 
                 }catch (Exception e) {
                     System.out.println("Попробуйте ещё раз");

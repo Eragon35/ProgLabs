@@ -3,9 +3,7 @@ package Lab6;
 import Lab3.Humanoid;
 import Lab3.Predmet;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.SortedMap;
+import java.util.*;
 
 public class ServerHandler {
     public static void reader(Request request, SortedMap<Humanoid, List<Predmet>> map, Response response){
@@ -22,7 +20,7 @@ public class ServerHandler {
                 response.setCommand(ServerCommand.success);
                 break;
             case add_if_max:
-                List<Predmet> baggage = new LinkedList<>();
+                List<Predmet> baggage;
                 baggage = request.getBaggage();
                 if (map.size() > 0) {
                     int maxHashCode = map.get(map.firstKey()).hashCode();
@@ -44,7 +42,10 @@ public class ServerHandler {
                 map.keySet().removeIf(key -> map.get(key).hashCode() < request.getBaggage().hashCode());
                 response.setCommand(ServerCommand.success);
                 break;
+            case get_map:
+                response.setCommand(ServerCommand.success);
             default:
+                response.setCommand(ServerCommand.error);
                 break;
         }
     }
