@@ -5,7 +5,6 @@ import Lab3.Predmet;
 
 import java.io.*;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Client {
@@ -16,7 +15,7 @@ public class Client {
     public static void main(String[] args) {
         System.out.println("\nBeging of Lab6, variant 11250");
         String s = " ";
-        Command cmd = new Command();
+        Request cmd = new Request();
         SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
         int port = 11111;
         if (args.length == 0){

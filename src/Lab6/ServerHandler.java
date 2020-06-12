@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.SortedMap;
 
 public class ServerHandler {
-    public static void reader(Command cmd, SortedMap<Humanoid, List<Predmet>> map){
+    public static void reader(Request cmd, SortedMap<Humanoid, List<Predmet>> map){
         ClientCommand command = cmd.getCommand();
         Integer hashCode;
         switch (command){

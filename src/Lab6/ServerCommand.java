@@ -1,6 +1,6 @@
 package Lab6;
 
-public enum ServerResponse {
+public enum ServerCommand {
     error,
     success,
     get_map

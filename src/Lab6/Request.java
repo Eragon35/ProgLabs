@@ -11,21 +11,21 @@ import java.util.List;
  * this class is using as packet which client will send to server
  */
 
-public class Command implements Serializable {
-    private ClientCommand command;
+public class Request implements Serializable {
+    private ClientCommand request;
     private Humanoid human;
     private List<Predmet> baggage = new LinkedList<>();
 
-    public Command() {    }
+    public Request() {    }
 
-    public Command(ClientCommand command, Humanoid human, List<Predmet> baggage) {
-        this.command = command;
+    public Request(ClientCommand request, Humanoid human, List<Predmet> baggage) {
+        this.request = request;
         this.human = human;
         this.baggage = baggage;
     }
 
     public void setCommand(ClientCommand command) {
-        this.command = command;
+        this.request = command;
     }
 
     public void setHuman(Humanoid human) {
@@ -37,7 +37,7 @@ public class Command implements Serializable {
     }
 
     public ClientCommand getCommand() {
-        return command;
+        return request;
     }
 
     public Humanoid getHuman() { return human; }

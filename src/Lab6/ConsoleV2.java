@@ -4,7 +4,6 @@ import Lab3.Humanoid;
 import Lab3.Palace;
 import Lab3.Predmet;
 import Lab3.Sumka;
-import Lab5.ConsoleApp;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
@@ -15,7 +14,7 @@ import java.util.SortedMap;
 
 public class ConsoleV2 {
     private static List<Predmet> baggage = new LinkedList<>();
-    public static void reader(Command cmd, String str, SortedMap<Humanoid, List<Predmet>> map) { // ограничение на одну сумку/шляпу/бутылку
+    public static void reader(Request cmd, String str, SortedMap<Humanoid, List<Predmet>> map) { // ограничение на одну сумку/шляпу/бутылку
         ClientCommand input = ClientCommand.other;
         if (str.contains("remove_all")) input = ClientCommand.remove_all; // удалить из коллекции все элементы, эквивалентные заданному
         if (str.contains("remove_lower")) input = ClientCommand.remove_lower; // удалить из коллекции все элементы, меньшие, чем заданный

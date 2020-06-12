@@ -8,8 +8,6 @@ import Lab5.InputFile;
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.SocketException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Server {
@@ -22,7 +20,7 @@ public class Server {
         String filename = "test_1.csv";
         SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
         List<Predmet> baggage = new LinkedList<>();
-        Command cmd = new Command();
+        Request cmd = new Request();
         int port = 11111;
         if (args.length == 0){
             System.out.println("You haven't define port, set default 11111");
@@ -35,7 +33,10 @@ public class Server {
         if (file.exists() && !file.isDirectory()) {
             InputFile.parser(filename, map);
         }
-        else System.out.println("File not found.");
+        else {
+            System.out.println("File not found.");
+            java.lang.System.exit(0);
+        }
 
 
         //waiting Command from client
@@ -46,7 +47,7 @@ public class Server {
             socket.receive(packet);
             ByteArrayInputStream byteStream = new ByteArrayInputStream(recvBuf);
             ObjectInputStream inputStream = new ObjectInputStream(new BufferedInputStream(byteStream));
-            cmd = (Command) inputStream.readObject();
+            cmd = (Request) inputStream.readObject();
             inputStream.close();
         }
         catch (ClassNotFoundException | IOException e)
@@ -59,7 +60,11 @@ public class Server {
 
 
         //do request on server
-        ServerHandler.reader(cmd, map);
+        try {
+            ServerHandler.reader(cmd, map);
+        }catch (Exception e){
+
+        }
 
         //send response to client
 

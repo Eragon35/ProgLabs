@@ -8,10 +8,10 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class Response {
-    private ServerResponse response;
+    private ServerCommand response;
     private SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
 
-    public Response(ServerResponse response, SortedMap<Humanoid, List<Predmet>> map) {
+    public Response(ServerCommand response, SortedMap<Humanoid, List<Predmet>> map) {
         this.response = response;
         this.map = map;
     }
