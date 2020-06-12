@@ -41,17 +41,10 @@ public class Client {
             else {
                 try (DatagramSocket socket = new DatagramSocket())
                 {      InetAddress address = InetAddress.getLocalHost();
-                    ByteArrayOutputStream byteStream = new ByteArrayOutputStream(1024);
-                    ObjectOutputStream os = new ObjectOutputStream(new BufferedOutputStream(byteStream));
-                    os.flush();
-                    os.writeObject(cmd);
-                    os.flush();
-                    //retrieves byte array
                     byte[] sendBuf = serialize(cmd);
                     DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, address, port);
                     int byteCount = packet.getLength();
                     socket.send(packet);
-                    os.close();
                 }
                 catch (IOException e)
                 {

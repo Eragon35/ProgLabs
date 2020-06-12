@@ -46,18 +46,15 @@ public class Server {
             byte[] recvBuf = new byte[1024];
             DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
             socket.receive(packet);
-            ByteArrayInputStream byteStream = new ByteArrayInputStream(recvBuf);
-            ObjectInputStream inputStream = new ObjectInputStream(new BufferedInputStream(byteStream));
-            rqst = (Request) inputStream.readObject();
-            inputStream.close();
+            rqst = (Request) deserialize(recvBuf);
         }
         catch (ClassNotFoundException | IOException e)
         {
             e.printStackTrace();
         }
-//        Humanoid hm = rqst.getHuman();
-//        baggage = rqst.getBaggage();
-//        System.out.println(rqst.getCommand().toString() + " " + hm.getName() + " " + hm.getPlace().toString()  + " " + baggage.size());
+        Humanoid hm = rqst.getHuman();
+        baggage = rqst.getBaggage();
+        System.out.println(rqst.getCommand().toString() + " " + hm.getName() + " " + hm.getPlace().toString()  + " " + baggage.size());
 
 
         //do request on server
@@ -70,5 +67,10 @@ public class Server {
 
         //send response to client
 
+    }
+    public static Object deserialize(byte[] data) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream in = new ByteArrayInputStream(data);
+        ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(in));
+        return is.readObject();
     }
 }
