@@ -12,9 +12,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedMap;
 
-public class ConsoleV2 {
+public class ConsoleInput {
     private static final List<Predmet> baggage = new LinkedList<>();
-    public static void reader(Request cmd, String str, SortedMap<Humanoid, List<Predmet>> map) {
+    public static void reader(Request cmd, String str) {
         ClientCommand input = ClientCommand.other;
         if (str.contains("remove_all")) input = ClientCommand.remove_all; // удалить из коллекции все элементы, эквивалентные заданному
         if (str.contains("remove_lower")) input = ClientCommand.remove_lower; // удалить из коллекции все элементы, меньшие, чем заданный
@@ -26,12 +26,6 @@ public class ConsoleV2 {
         if (str.contains("insert")) input = ClientCommand.insert; // добавить новый элемент с заданным ключом
         if (str.contains("exit")) input = ClientCommand.exit; // выход
         if (str.contains("help")) input = ClientCommand.help; // вывод мануала
-
-        String helptxt = "remove_all {element}: удалить из коллекции все элементы, эквивалентные заданному\nremove {String key}: " +
-                "удалить элемент из коллекции по его ключу\nshow: вывести в стандартный поток вывода все элементы коллекции в строковом представлении" +
-                "\nadd_if_max {element}: добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции" +
-                "\ninfo: вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\ninsert " +
-                "{String key} {element}: добавить новый элемент с заданным ключом\nremove_lower {element}: удалить из коллекции все элементы, меньшие, чем заданный";
 
         switch (input) {
             case remove_all:
@@ -84,20 +78,7 @@ public class ConsoleV2 {
                 break;
 
             case show:
-                if (map.size()== 0) System.out.println("Элементов в коллекции нет");
-                for (Humanoid key : map.keySet()) {
-                    System.out.println("Human: name = " + key.getName() + ", place = " + key.getPlace() +";");
-                    List<Predmet> bagazh = map.get(key);
-                    if (bagazh != null){
-                        System.out.println("Baggage size is " + baggage.size());
-                        baggage.forEach((Predmet predmet) -> System.out.println("Baggage:" + predmet.getClass() +
-                                ", name: " + predmet.getName() + ",  value: " + predmet.getValue()));
-                        System.out.println("Baggage hashcode: " + baggage.hashCode());
-                    }
-                    else System.out.println("Baggage = null;");
-                    System.out.println("———————————————————————————————————————");
-                }
-                break;
+
 
             case add_if_max:
                 String[] a4 = str.split("add_if_max", 2);
@@ -133,8 +114,7 @@ public class ConsoleV2 {
                 break;
 
             case info:
-                System.out.println("Тип: " + map.getClass() + "; Кол-во элементов: " + map.size() + "; Хэш-код: " + map.hashCode());
-                break;
+
 
             case insert:
                 String[] a6 = str.split("insert", 2);
@@ -202,9 +182,7 @@ public class ConsoleV2 {
                 break;
 
             case help:
-                System.out.println(helptxt);
-                cmd.setCommand(ClientCommand.other);
-                break;
+
 
             case other:
                 System.out.println("Вы не ввели ни одной команды или ввели неправильно, введите 'help' чтобы узнать команды");

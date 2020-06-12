@@ -13,7 +13,7 @@ public enum Palace {
     Dagestan(14.88);
 
     //exception na "-1" i minuti > 59
-    private double time;
+    private final double time;
 
     Palace(double time) {
         this.time = time;

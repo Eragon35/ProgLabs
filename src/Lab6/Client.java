@@ -2,6 +2,7 @@ package Lab6;
 
 import Lab3.Humanoid;
 import Lab3.Predmet;
+import Lab5.Console;
 
 import java.io.*;
 import java.net.*;
@@ -37,11 +38,13 @@ public class Client {
             Scanner scanner = new Scanner(System.in);
             String str = scanner.nextLine();
             if (str.contains("null")) System.out.println("Параметр не может быль null");
-            else ConsoleV2.reader(request, str, map);
+            else ConsoleInput.reader(request, str);
             s = str;
 
 //            System.out.println(cmd.getCommand().toString() + " " + cmd.getHuman().getName() + " " + cmd.getHuman().getPlace().toString() );
 
+
+//            TODO: rework if statement
             if (request.getCommand().equals(ClientCommand.other)) System.out.println("Ваша команда была выполнена локально. Запрос на сервер не отправлен");
             else {
                 send(request);
@@ -49,6 +52,9 @@ public class Client {
             }
 
             //waiting response and do sout it to cli
+            response = read();
+            if (response.getCommand().equals(ServerCommand.success)) ConsoleOutput.write(response.getMap(), request.getCommand());
+            else System.out.println("Shit happenps, server send error");
         }
     }
     private static byte[] serialize(Object obj) throws IOException {
