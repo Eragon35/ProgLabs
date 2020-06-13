@@ -13,6 +13,7 @@ public class Client {
     variant 11250
      */
     static int port = 11111;
+    static int size = 0;
 
     public static void main(String[] args) {
         System.out.println("\nBeging of Lab6, variant 11250");
@@ -30,6 +31,7 @@ public class Client {
         send(request);
         response = read();
         map = response.getMap();
+        size = map.size();
 
 
         //reading command from cli and preparing it to send to server
@@ -52,6 +54,7 @@ public class Client {
             }
 
             //waiting response and do sout it to cli
+//            TODO read map to local map
             response = read();
             if (response.getCommand().equals(ServerCommand.success)) ConsoleOutput.write(response.getMap(), request.getCommand());
             else System.out.println("Shit happenps, server send error");

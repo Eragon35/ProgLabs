@@ -42,17 +42,21 @@ public class ConsoleInput {
 
             case remove:
                 try {
-                    JsonObject jsonObject = new JsonParser().parse(str.split("remove", 2)[1]).getAsJsonObject();
-                    String name = jsonObject.get("name")
+                    JsonObject jsonObject = new JsonParser()
+                            .parse(str.split("remove", 2)[1])
+                            .getAsJsonObject();
+                    String name = jsonObject
+                            .get("name")
                             .toString()
                             .split("\"", 3)
                             [1];
-                    Palace palace = Palace.valueOf(jsonObject
-                            .get("palace")
-                            .toString()
-                            .split("\"", 3)
-                            [1]);
-
+                    Palace palace = Palace
+                            .valueOf(jsonObject
+                                .get("palace")
+                                .toString()
+                                .split("\"", 3)
+                                [1]
+                            );
                     cmd.setCommand(input);
                     cmd.setHuman(new Humanoid(name, palace));
 
@@ -94,13 +98,21 @@ public class ConsoleInput {
     }
 
     private static void addBaggage(JsonObject jsonObject, String s) {
-        JsonObject jsonObjectBaggage = jsonObject.get(s).getAsJsonObject();
-        String nameSTR = jsonObjectBaggage.get("name").toString();
-        String[] names =nameSTR.split("\"", 3);
-        String name = names[1];
-        String valueSTR = jsonObjectBaggage.get("value").toString();
-        String[] value1 = valueSTR.split("\"", 3);
-        double value = Double.parseDouble(value1[1]);
+        JsonObject jsonObjectBaggage = jsonObject
+                .get(s)
+                .getAsJsonObject();
+        String name = jsonObjectBaggage
+                .get("name")
+                .toString()
+                .split("\"", 3)
+                [1];
+        double value = Double
+                .parseDouble(jsonObjectBaggage
+                    .get("value")
+                    .toString()
+                    .split("\"", 3)
+                    [1]
+                );
         switch (s) {
             case "butilka":
                 baggage.add(new Predmet.Butilka(name, value));
@@ -116,18 +128,27 @@ public class ConsoleInput {
     private static void extractHB(String json, Request cmd){
         try{
             baggage.clear();
-            JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
-            JsonObject jsonObjectHumanoid = jsonObject.get("human").getAsJsonObject();
-            String name = jsonObjectHumanoid.get("name")
+            JsonObject jsonObject = new JsonParser()
+                    .parse(json)
+                    .getAsJsonObject();
+            JsonObject jsonObjectHumanoid = jsonObject
+                    .get("human")
+                    .getAsJsonObject();
+            String name = jsonObjectHumanoid
+                    .get("name")
                     .toString()
                     .split("\"", 3)
                     [1];
-            Palace place = Palace.valueOf(jsonObjectHumanoid
-                    .get("palace")
-                    .toString()
-                    .split("\"", 3)
-                    [1]);
-            JsonObject jsonObjectBagazh = jsonObject.get("bagazh").getAsJsonObject();
+            Palace place = Palace
+                    .valueOf(jsonObjectHumanoid
+                        .get("palace")
+                        .toString()
+                        .split("\"", 3)
+                        [1]
+                    );
+            JsonObject jsonObjectBagazh = jsonObject
+                    .get("bagazh")
+                    .getAsJsonObject();
             if (json.contains("butilka")){
                 addBaggage(jsonObjectBagazh, "butilka");
             }
@@ -149,7 +170,9 @@ public class ConsoleInput {
     private static void extractBaggage(String json, Request cmd){
         try{
             baggage.clear();
-            JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
+            JsonObject jsonObject = new JsonParser()
+                    .parse(json)
+                    .getAsJsonObject();
             if (json.contains("butilka")) {
                 addBaggage(jsonObject, "butilka");
             }

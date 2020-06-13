@@ -8,7 +8,7 @@ import java.util.SortedMap;
 
 public class ConsoleOutput {
     public static void write(SortedMap<Humanoid, List<Predmet>> map, ClientCommand command){
-        String helptxt = "remove_all {element}: удалить из коллекции все элементы, эквивалентные заданному\nremove {String key}: " +
+        String help = "remove_all {element}: удалить из коллекции все элементы, эквивалентные заданному\nremove {String key}: " +
                 "удалить элемент из коллекции по его ключу\nshow: вывести в стандартный поток вывода все элементы коллекции в строковом представлении" +
                 "\nadd_if_max {element}: добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции" +
                 "\ninfo: вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\ninsert " +
@@ -33,9 +33,28 @@ public class ConsoleOutput {
                 System.out.println("Тип: " + map.getClass() + "; Кол-во элементов: " + map.size() + "; Хэш-код: " + map.hashCode());
                 break;
             case help:
-                System.out.println(helptxt);
+                System.out.println(help);
                 break;
-
+            case remove_all:
+            case remove_lower:
+                System.out.println("Удалено " + (Client.size - map.size()) + " элементов");
+                break;
+            case insert:
+                if(map.size() > Client.size) System.out.println("Новый элемент был добавлен в коллецию");
+                else System.out.println("Ошибка приложения. Звоните в службу поддержки +7(812)237-10-82");
+                break;
+            case add_if_max:
+                if(map.size() > Client.size) System.out.println("Новый элемент был добавлен в коллецию");
+                else if(map.size() == Client.size) System.out.println("Новый элемент не был добавлен в коллецию");
+                else System.out.println("Ошибка приложения. Звоните в службу поддержки +7(812)237-10-82");
+            case remove:
+                if(map.size() < Client.size) System.out.println("Элемени из коллекции удален");
+                else if(map.size() == Client.size) System.out.println("Людей по введёму параметру не обнаружено. Никто не удалён");
+                else System.out.println("Ошибка приложения. Звоните в службу поддержки +7(812)237-10-82");
+                break;
+            default:
+                System.out.println("Ошибка приложения. Звоните в службу поддержки +7(812)237-10-82");
+                break;
 
         }
     }
