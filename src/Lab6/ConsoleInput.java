@@ -10,9 +10,11 @@ import com.google.gson.JsonSyntaxException;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.SortedMap;
 
 public class ConsoleInput {
+
+//    TODO: do smth with show, info and help
+
     private static final List<Predmet> baggage = new LinkedList<>();
     public static void reader(Request cmd, String str) {
         ClientCommand input = ClientCommand.other;
@@ -29,47 +31,31 @@ public class ConsoleInput {
 
         switch (input) {
             case remove_all:
-                String[] a1 = str.split("remove_all", 2); //to be honest still not work
-                String a11 = a1[1];
-                try{
-                    baggage.clear();
-                    JsonObject jsonObject = new JsonParser().parse(a11).getAsJsonObject();
-                    if (a11.contains("butilka")){
-                        addBaggage(jsonObject, "butilka");
-                    }
-                    if (a11.contains("shlyapa")){
-                        addBaggage(jsonObject, "shlyapa");
-                    }
-                    if (a11.contains("sumka")){
-                        addBaggage(jsonObject, "sumka");
-                    }
+                extractBaggage(str.split("remove_all")[1], cmd);
+                cmd.setCommand(input);
+                break;
 
-                    cmd.setCommand(input);
-                    cmd.setBaggage(baggage);
-                }catch (Exception e){
-                    System.out.println("Ваша кома некорректна, попробуйте ещё раз");
-                    e.printStackTrace();
-                }
+            case remove_lower:
+                extractBaggage(str.split("remove_lower")[1], cmd);
+                cmd.setCommand(input);
                 break;
 
             case remove:
-                String[] a2 = str.split("remove", 2);
                 try {
-                    JsonObject jsonObject = new JsonParser().parse(a2[1]).getAsJsonObject();
-                    String nameSTR = jsonObject.get("name").toString();
-                    String[] name1 =nameSTR.split("\"", 3);
-                    String name = name1[1];
-                    String palaceSTR = jsonObject.get("palace").toString();
-                    String[] palace1 = palaceSTR.split("\"", 3);
-                    Palace palace = Palace.valueOf(palace1[1]);
+                    JsonObject jsonObject = new JsonParser().parse(str.split("remove", 2)[1]).getAsJsonObject();
+                    String name = jsonObject.get("name")
+                            .toString()
+                            .split("\"", 3)
+                            [1];
+                    Palace palace = Palace.valueOf(jsonObject
+                            .get("palace")
+                            .toString()
+                            .split("\"", 3)
+                            [1]);
 
                     cmd.setCommand(input);
                     cmd.setHuman(new Humanoid(name, palace));
 
-//                    size = map.size();
-//                    map.keySet().removeIf(key -> key.getName().equals(name)&&key.getPlace().equals(palace));
-//                    if (!size.equals(map.size())) System.out.println("Персонаж удалён");
-//                    else System.out.println("Людей по введёму параметру не обнаружено. Никто не удалён");
                 } catch (JsonSyntaxException e){
                     System.out.println("Ошибка при обработке Вашего запроса, попробуйте ещё раз");
                 }catch (IllegalArgumentException e){
@@ -77,112 +63,25 @@ public class ConsoleInput {
                 }
                 break;
 
-            case show:
-
-
             case add_if_max:
-                String[] a4 = str.split("add_if_max", 2);
-                String a41 = a4[1];
-                try{
-                    baggage.clear();
-                    JsonObject jsonObject = new JsonParser().parse(a41).getAsJsonObject();
-                    JsonObject jsonObjectHumanoid = jsonObject.get("human").getAsJsonObject();
-                    String nameSTR4 = jsonObjectHumanoid.get("name").toString();
-                    String[] name1 = nameSTR4.split("\"", 3);
-                    String nameHumanoid = name1[1];
-                    String palaceSTR = jsonObjectHumanoid.get("palace").toString();
-                    String[] palace1 = palaceSTR.split("\"", 3);
-                    Palace palace = Palace.valueOf(palace1[1]);
-                    JsonObject jsonObjectBagazh = jsonObject.get("bagazh").getAsJsonObject();
-                    if (a41.contains("butilka")){
-                        addBaggage(jsonObjectBagazh, "butilka");
-                    }
-                    if (a41.contains("shlyapa")){
-                        addBaggage(jsonObjectBagazh, "shlyapa");
-                    }
-                    if (a41.contains("sumka")){
-                        addBaggage(jsonObjectBagazh, "sumka");
-                    }
-
-                    cmd.setCommand(input);
-                    cmd.setHuman(new Humanoid(nameHumanoid, palace));
-                    cmd.setBaggage(baggage);
-                }catch (Exception e){
-                    System.out.println("Попробуйте ещё раз");
-                    e.printStackTrace();
-                }
+                extractHB(str.split("add_if_max", 2)[1], cmd);
+                cmd.setCommand(input);
                 break;
-
-            case info:
-
 
             case insert:
-                String[] a6 = str.split("insert", 2);
-                String a61 = a6[1];
-                try{
-                    baggage.clear();
-                    JsonObject jsonObject = new JsonParser().parse(a6[1]).getAsJsonObject();
-                    JsonObject jsonObjectHumanoid = jsonObject.get("human").getAsJsonObject();
-                    String nameSTR6 = jsonObjectHumanoid.get("name").toString();
-                    String[] name1 =nameSTR6.split("\"", 3);
-                    String nameHumanoid = name1[1];
-                    String palaceSTR = jsonObjectHumanoid.get("palace").toString();
-                    String[] palace1 = palaceSTR.split("\"", 3);
-                    Palace palace = Palace.valueOf(palace1[1]);
-                    JsonObject jsonObjectBagazh = jsonObject.get("bagazh").getAsJsonObject();
-                    if (a61.contains("butilka")){
-                        addBaggage(jsonObjectBagazh, "butilka");
-                    }
-                    if (a61.contains("shlyapa")){
-                        addBaggage(jsonObjectBagazh, "shlyapa");
-                    }
-                    if (a61.contains("sumka")){
-                        addBaggage(jsonObjectBagazh, "sumka");
-                    }
-
-                    cmd.setCommand(input);
-                    cmd.setHuman(new Humanoid(nameHumanoid, palace));
-                    cmd.setBaggage(baggage);
-
-//                    map.put(new Humanoid(nameHumanoid, palace), baggage);
-//                    System.out.println("Новый элемент был добавлен в коллецию: имя " + nameHumanoid + ", место " + palace);
-                }catch (Exception e){
-                    System.out.println("Попробуйте ещё раз");
-                    e.printStackTrace();
-                }
+                extractHB(str.split("insert", 2)[1], cmd);
+                cmd.setCommand(input);
                 break;
 
-            case remove_lower:
-                String[] a7 = str.split("remove_lower");
-                String a71 = a7[1];
-                try{
-                    baggage.clear();
-                    JsonObject jsonObject = new JsonParser().parse(a71).getAsJsonObject();
-                    if (a71.contains("butilka")) {
-                        addBaggage(jsonObject, "butilka");
-                    }
-                    if (a71.contains("shlyapa")) {
-                        addBaggage(jsonObject, "shlyapa");
-                    }
-                    if (a71.contains("sumka")) {
-                        addBaggage(jsonObject, "");
-                    }
-
-                    cmd.setCommand(input);
-                    cmd.setBaggage(baggage);
-
-                }catch (Exception e) {
-                    System.out.println("Попробуйте ещё раз");
-                    e.printStackTrace();
-                }
+            case help:
+            case show:
+            case info:
+                cmd.setCommand(input);
                 break;
 
             case exit:
                 System.exit(0);
                 break;
-
-            case help:
-
 
             case other:
                 System.out.println("Вы не ввели ни одной команды или ввели неправильно, введите 'help' чтобы узнать команды");
@@ -212,6 +111,59 @@ public class ConsoleInput {
             case "sumka" :
                 baggage.add(new Sumka(name, value));
                 break;
+        }
+    }
+    private static void extractHB(String json, Request cmd){
+        try{
+            baggage.clear();
+            JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
+            JsonObject jsonObjectHumanoid = jsonObject.get("human").getAsJsonObject();
+            String name = jsonObjectHumanoid.get("name")
+                    .toString()
+                    .split("\"", 3)
+                    [1];
+            Palace place = Palace.valueOf(jsonObjectHumanoid
+                    .get("palace")
+                    .toString()
+                    .split("\"", 3)
+                    [1]);
+            JsonObject jsonObjectBagazh = jsonObject.get("bagazh").getAsJsonObject();
+            if (json.contains("butilka")){
+                addBaggage(jsonObjectBagazh, "butilka");
+            }
+            if (json.contains("shlyapa")){
+                addBaggage(jsonObjectBagazh, "shlyapa");
+            }
+            if (json.contains("sumka")){
+                addBaggage(jsonObjectBagazh, "sumka");
+            }
+
+            cmd.setHuman(new Humanoid(name, place));
+            cmd.setBaggage(baggage);
+        }catch (Exception e){
+            System.out.println("Попробуйте ещё раз");
+            e.printStackTrace();
+        }
+
+    }
+    private static void extractBaggage(String json, Request cmd){
+        try{
+            baggage.clear();
+            JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
+            if (json.contains("butilka")) {
+                addBaggage(jsonObject, "butilka");
+            }
+            if (json.contains("shlyapa")) {
+                addBaggage(jsonObject, "shlyapa");
+            }
+            if (json.contains("sumka")) {
+                addBaggage(jsonObject, "");
+            }
+            cmd.setBaggage(baggage);
+
+        }catch (Exception e) {
+            System.out.println("Попробуйте ещё раз");
+            e.printStackTrace();
         }
     }
 }

@@ -45,7 +45,7 @@ public class Client {
 
 
 //            TODO: rework if statement
-            if (request.getCommand().equals(ClientCommand.other)) System.out.println("Ваша команда была выполнена локально. Запрос на сервер не отправлен");
+            if (request.getCommand().isLocal()) System.out.println("Ваша команда была выполнена локально. Запрос на сервер не отправлен");
             else {
                 send(request);
                 //sending Command to server
