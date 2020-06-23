@@ -47,6 +47,8 @@ out.println(str);
 
         //waiting Command from client
         rqst = receive();
+        assert rqst != null;
+        System.out.println("Income: " + rqst.getCommand());
 
 //        List<Predmet> baggage = new LinkedList<>();
 //        Humanoid hm = rqst.getHuman();
@@ -56,7 +58,6 @@ out.println(str);
 
         //do request on server
         try {
-            assert rqst != null;
             ServerHandler.reader(rqst, map, rsp);
         }catch (Exception e){
             rsp.setCommand(ServerCommand.error);
@@ -101,6 +102,7 @@ out.println(str);
             byte[] sendBuf = bos.toByteArray();
 
             channel.send(ByteBuffer.wrap(sendBuf), new InetSocketAddress(InetAddress.getLocalHost(), 11111));
+            System.out.println("Response send");
         }
         catch (IOException e){
             e.printStackTrace();

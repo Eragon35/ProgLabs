@@ -18,6 +18,11 @@ public class Request implements Serializable {
 
     public Request() {    }
 
+    public Request(ClientCommand command, Humanoid human, List<Predmet> baggage) {
+        this.command = command;
+        this.human = human;
+        this.baggage = baggage;
+    }
 
     public void setCommand(ClientCommand command) {
         this.command = command;

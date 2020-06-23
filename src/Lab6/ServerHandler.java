@@ -13,10 +13,12 @@ public class ServerHandler {
             case remove_all:
                 hashCode = request.getBaggage().hashCode();
                 map.keySet().removeIf(key -> hashCode.equals(map.get(key).hashCode()));
+                response.setMap(map);
                 response.setCommand(ServerCommand.success);
                 break;
             case remove:
                 map.keySet().removeIf(key -> key.equals(request.getHuman()));
+                response.setMap(map);
                 response.setCommand(ServerCommand.success);
                 break;
             case add_if_max:
@@ -32,17 +34,21 @@ public class ServerHandler {
                 else {
                     map.put(request.getHuman(), baggage);
                 }
+                response.setMap(map);
                 response.setCommand(ServerCommand.success);
                 break;
             case insert:
                 map.put(request.getHuman(), request.getBaggage());
+                response.setMap(map);
                 response.setCommand(ServerCommand.success);
                 break;
             case remove_lower:
                 map.keySet().removeIf(key -> map.get(key).hashCode() < request.getBaggage().hashCode());
+                response.setMap(map);
                 response.setCommand(ServerCommand.success);
                 break;
             case get_map:
+                response.setMap(map);
                 response.setCommand(ServerCommand.success);
             default:
                 response.setCommand(ServerCommand.error);

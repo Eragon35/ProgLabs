@@ -34,6 +34,7 @@ public class Client {
         assert response != null;
         map = response.getMap();
         size = map.size();
+        System.out.println(size);
 
 
         //reading command from cli and preparing it to send to server
@@ -49,7 +50,10 @@ public class Client {
 
 
 //            TODO: rework if statement
-            if (request.getCommand().isLocal()) System.out.println("Ваша команда была выполнена локально. Запрос на сервер не отправлен");
+            if (request.getCommand().isLocal()) {
+                System.out.println("Ваша команда была выполнена локально");
+                ConsoleOutput.write(map, request.getCommand());
+            }
             else {
                 send(request);
                 //sending Command to server
@@ -59,7 +63,10 @@ public class Client {
 //            TODO read map to local map
             response = read();
             assert response != null;
-            if (response.getCommand().equals(ServerCommand.success)) ConsoleOutput.write(response.getMap(), request.getCommand());
+            if (response.getCommand().equals(ServerCommand.success)) {
+                map = response.getMap();
+                ConsoleOutput.write(response.getMap(), request.getCommand());
+            }
             else System.out.println("Shit happenps, server send error");
         }
     }

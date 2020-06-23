@@ -30,7 +30,7 @@ public class Skazka {
             e.printStackTrace();
         }
 
-        roma.Peremeshenie(roma, Palace.Train);
+//        roma.Peremeshenie(roma, Palace.Train);
 
         Predmet.Shlyapa chernaya = new Predmet.Shlyapa("Черная", 15);
 //        if (chernaya.IfDirty()) {
