@@ -57,17 +57,16 @@ public class Client {
             else {
                 send(request);
                 //sending Command to server
+                //waiting response and do sout it to cli
+    //            TODO read map to local map
+                response = read();
+                assert response != null;
+                if (response.getCommand().equals(ServerCommand.success)) {
+                    map = response.getMap();
+                    ConsoleOutput.write(response.getMap(), request.getCommand());
+                }
+                else System.out.println("Shit happenps, server send error");
             }
-
-            //waiting response and do sout it to cli
-//            TODO read map to local map
-            response = read();
-            assert response != null;
-            if (response.getCommand().equals(ServerCommand.success)) {
-                map = response.getMap();
-                ConsoleOutput.write(response.getMap(), request.getCommand());
-            }
-            else System.out.println("Shit happenps, server send error");
         }
     }
     private static byte[] serialize(Object obj) throws IOException {
@@ -93,7 +92,6 @@ public class Client {
         }
     }
     private static Response read(){
-
         try(DatagramChannel channel = DatagramChannel.open()){
             byte[] recvBuf = new byte[1024];
             channel.socket().bind(new InetSocketAddress(11111));

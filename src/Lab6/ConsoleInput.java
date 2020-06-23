@@ -89,6 +89,7 @@ public class ConsoleInput {
 
             case other:
                 System.out.println("Вы не ввели ни одной команды или ввели неправильно, введите 'help' чтобы узнать команды");
+                cmd.setCommand(ClientCommand.other);
                 break;
 
             default:
