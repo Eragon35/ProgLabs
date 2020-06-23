@@ -2,10 +2,11 @@ package Lab6;
 
 import Lab3.Humanoid;
 import Lab3.Predmet;
-import Lab5.Console;
 
 import java.io.*;
 import java.net.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.DatagramChannel;
 import java.util.*;
 
 public class Client {
@@ -16,7 +17,7 @@ public class Client {
     static int size = 0;
 
     public static void main(String[] args) {
-        System.out.println("\nBeging of Lab6, variant 11250");
+        System.out.println("\nBeginning of Lab6, variant 11250");
         String s = "";
         Request request = new Request();
         Response response;
@@ -30,6 +31,7 @@ public class Client {
         request.setCommand(ClientCommand.get_map);
         send(request);
         response = read();
+        assert response != null;
         map = response.getMap();
         size = map.size();
 
@@ -56,6 +58,7 @@ public class Client {
             //waiting response and do sout it to cli
 //            TODO read map to local map
             response = read();
+            assert response != null;
             if (response.getCommand().equals(ServerCommand.success)) ConsoleOutput.write(response.getMap(), request.getCommand());
             else System.out.println("Shit happenps, server send error");
         }
@@ -66,6 +69,8 @@ public class Client {
         os.flush();
         os.writeObject(obj);
         os.flush();
+        os.close();
+        out.close();
         return out.toByteArray();
     }
     private static void send (Request request){
@@ -80,8 +85,22 @@ public class Client {
             e.printStackTrace();
         }
     }
-//    TODO: realize read
     private static Response read(){
-        return null;
+
+        try(DatagramChannel channel = DatagramChannel.open()){
+            byte[] recvBuf = new byte[1024];
+            channel.socket().bind(new InetSocketAddress(11111));
+            ByteBuffer buffer = ByteBuffer.wrap(recvBuf);
+            buffer.clear();
+            channel.receive(buffer);
+            System.out.println("Data was income");
+            ByteArrayInputStream in = new ByteArrayInputStream(recvBuf);
+            ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(in));
+            return (Response) is.readObject();
+        }
+        catch (IOException | ClassNotFoundException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }

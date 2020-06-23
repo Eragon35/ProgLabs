@@ -7,12 +7,21 @@ import Lab5.InputFile;
 
 import java.io.*;
 import java.net.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.DatagramChannel;
 import java.util.*;
 
 public class Server {
     static int port = 11111;
 
     //TODO add checking from cli for saving and turn off server and loop
+/* BufferdReader stdin = new BufferedReader(new
+InputStreamReader(System.in));
+String str;
+while((str = stdin.readLine()).length() != 0)
+{
+out.println(str);
+}*/
     public static void main(String[] args) {
         System.out.println("\nBeging of Lab6, variant 11250");
         String filename = "test_1.csv";
@@ -39,14 +48,15 @@ public class Server {
         //waiting Command from client
         rqst = receive();
 
-        List<Predmet> baggage = new LinkedList<>();
-        Humanoid hm = rqst.getHuman();
-        baggage = rqst.getBaggage();
-        System.out.println(rqst.getCommand().toString() /*+ " " + hm.getName() + " " + hm.getPlace().toString()  + " " + baggage.size()*/);
+//        List<Predmet> baggage = new LinkedList<>();
+//        Humanoid hm = rqst.getHuman();
+//        baggage = rqst.getBaggage();
+//        System.out.println(rqst.getCommand().toString() /*+ " " + hm.getName() + " " + hm.getPlace().toString()  + " " + baggage.size()*/);
 
 
         //do request on server
         try {
+            assert rqst != null;
             ServerHandler.reader(rqst, map, rsp);
         }catch (Exception e){
             rsp.setCommand(ServerCommand.error);
@@ -77,7 +87,24 @@ public class Server {
         return null;
     }
 //    TODO:realize write
-    private static void write(Response rsp){
+    private static void write(Response rsp) {
+        try(DatagramChannel channel = DatagramChannel.open()) {
+            channel.configureBlocking(false);
+            channel.bind(null);
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
+            oos.writeObject(rsp);
+            oos.flush();
+            oos.close();
+            bos.close();
+            byte[] sendBuf = bos.toByteArray();
+
+            channel.send(ByteBuffer.wrap(sendBuf), new InetSocketAddress(InetAddress.getLocalHost(), 11111));
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
 
     }
 }

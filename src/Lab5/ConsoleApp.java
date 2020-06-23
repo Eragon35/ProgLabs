@@ -16,7 +16,7 @@ ConsoleApp {
     public static void main(String[] args) throws NullPointerException {
 
 
-        System.out.println("\nBeging of Lab5, variant 11180");
+        System.out.println("\nBeginning of Lab5, variant 11180");
         String s = " ";
         SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
         datePublic = new Date();
