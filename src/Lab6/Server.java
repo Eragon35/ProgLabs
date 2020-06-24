@@ -12,18 +12,12 @@ import java.nio.channels.DatagramChannel;
 import java.util.*;
 
 public class Server {
-    static int port = 11111;
 
     //TODO add checking from cli for saving and turn off server and loop
-/* BufferdReader stdin = new BufferedReader(new
-InputStreamReader(System.in));
-String str;
-while((str = stdin.readLine()).length() != 0)
-{
-out.println(str);
-}*/
+
     public static void main(String[] args) {
         System.out.println("\nBeging of Lab6, variant 11250");
+        int port = 11111;
         String filename = "test_1.csv";
         SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
         Request rqst;
@@ -39,6 +33,7 @@ out.println(str);
         File file = new File(filename);
         if (file.exists() && !file.isDirectory()) {
             InputFile.parser(filename, map);
+            System.out.println("Read collection");
         }
         else {
             System.out.println("File not found.");
@@ -46,39 +41,34 @@ out.println(str);
         }
 
         //waiting Command from client
-        rqst = receive();
-        assert rqst != null;
-        System.out.println("Income: " + rqst.getCommand());
-
-//        List<Predmet> baggage = new LinkedList<>();
-//        Humanoid hm = rqst.getHuman();
-//        baggage = rqst.getBaggage();
-//        System.out.println(rqst.getCommand().toString() /*+ " " + hm.getName() + " " + hm.getPlace().toString()  + " " + baggage.size()*/);
+        while (true) {
+            rqst = receive(port);
+            assert rqst != null;
+            System.out.println("Request: " + rqst.getCommand());
 
 
-        //do request on server
-        try {
-            ServerHandler.reader(rqst, map, rsp);
-        }catch (Exception e){
-            rsp.setCommand(ServerCommand.error);
-            e.printStackTrace();
+            //do request on server
+            try {
+                ServerHandler.reader(rqst, map, rsp);
+            } catch (Exception e) {
+                rsp.setCommand(ServerCommand.error);
+                e.printStackTrace();
+            }
+
+            //send response to client
+            write(rsp, port);
         }
+    }
 
-        //send response to client
-        write(rsp);
-    }
-    private static Request deserialize(byte[] data) throws IOException, ClassNotFoundException {
-        ByteArrayInputStream in = new ByteArrayInputStream(data);
-        ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(in));
-        return (Request) is.readObject();
-    }
-    private static Request receive (){
+    private static Request receive (int port){
         try ( DatagramSocket socket = new DatagramSocket(port))
         {
             byte[] recvBuf = new byte[1024];
             DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
             socket.receive(packet);
-            return deserialize(recvBuf);
+            ByteArrayInputStream in = new ByteArrayInputStream(recvBuf);
+            ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(in));
+            return (Request) is.readObject();
         }
         catch (ClassNotFoundException | IOException e)
         {
@@ -87,8 +77,8 @@ out.println(str);
         //TODO: think about more beautiful return
         return null;
     }
-//    TODO:realize write
-    private static void write(Response rsp) {
+
+    private static void write(Response rsp, int port) {
         try(DatagramChannel channel = DatagramChannel.open()) {
             channel.configureBlocking(false);
             channel.bind(null);
@@ -100,9 +90,9 @@ out.println(str);
             oos.close();
             bos.close();
             byte[] sendBuf = bos.toByteArray();
-
-            channel.send(ByteBuffer.wrap(sendBuf), new InetSocketAddress(InetAddress.getLocalHost(), 11111));
-            System.out.println("Response send");
+//            TODO: rework to use port from args[]
+            channel.send(ByteBuffer.wrap(sendBuf), new InetSocketAddress(InetAddress.getLocalHost(), port));
+            System.out.println("Response send " + rsp.getMap().size());
         }
         catch (IOException e){
             e.printStackTrace();

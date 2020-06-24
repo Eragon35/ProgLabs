@@ -41,16 +41,14 @@ public class ConsoleOutput {
                 break;
             case insert:
                 if(map.size() > Client.size) System.out.println("Новый элемент был добавлен в коллецию");
-                else System.out.println("Ошибка приложения. Звоните в службу поддержки +7(812)237-10-82");
+//                else System.out.println("Ошибка приложения в " + command +". Звоните в службу поддержки +7(812)237-10-82");
                 break;
             case add_if_max:
                 if(map.size() > Client.size) System.out.println("Новый элемент был добавлен в коллецию");
                 else if(map.size() == Client.size) System.out.println("Новый элемент не был добавлен в коллецию");
-                else System.out.println("Ошибка приложения. Звоните в службу поддержки +7(812)237-10-82");
             case remove:
                 if(map.size() < Client.size) System.out.println("Элемени из коллекции удален");
                 else if(map.size() == Client.size) System.out.println("Людей по введёму параметру не обнаружено. Никто не удалён");
-                else System.out.println("Ошибка приложения. Звоните в службу поддержки +7(812)237-10-82");
                 break;
             default:
                 System.out.println("Ошибка приложения. Звоните в службу поддержки +7(812)237-10-82");

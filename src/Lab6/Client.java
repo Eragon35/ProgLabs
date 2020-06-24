@@ -13,11 +13,12 @@ public class Client {
     /*
     variant 11250
      */
-    static int port = 11111;
+
     static int size = 0;
 
     public static void main(String[] args) {
         System.out.println("\nBeginning of Lab6, variant 11250");
+        int port = 11111;
         String s = "";
         Request request = new Request();
         Response response;
@@ -29,11 +30,12 @@ public class Client {
 
 //        first connection with server for map initialization
         request.setCommand(ClientCommand.get_map);
-        send(request);
-        response = read();
+        send(request, port);
+        response = read(port);
         assert response != null;
         map = response.getMap();
         size = map.size();
+
         System.out.println(size);
 
 
@@ -46,20 +48,17 @@ public class Client {
             else ConsoleInput.reader(request, str);
             s = str;
 
-//            System.out.println(cmd.getCommand().toString() + " " + cmd.getHuman().getName() + " " + cmd.getHuman().getPlace().toString() );
-
-
-//            TODO: rework if statement
+//            if command is local do it local
             if (request.getCommand().isLocal()) {
                 System.out.println("Ваша команда была выполнена локально");
                 ConsoleOutput.write(map, request.getCommand());
             }
+//            else send request to server
             else {
-                send(request);
+                send(request, port);
                 //sending Command to server
                 //waiting response and do sout it to cli
-    //            TODO read map to local map
-                response = read();
+                response = read(port);
                 assert response != null;
                 if (response.getCommand().equals(ServerCommand.success)) {
                     map = response.getMap();
@@ -79,7 +78,7 @@ public class Client {
         out.close();
         return out.toByteArray();
     }
-    private static void send (Request request){
+    private static void send (Request request, int port){
         try (DatagramSocket socket = new DatagramSocket())
         {      InetAddress address = InetAddress.getLocalHost();
             byte[] sendBuf = serialize(request);
@@ -91,10 +90,11 @@ public class Client {
             e.printStackTrace();
         }
     }
-    private static Response read(){
+    private static Response read(int port){
         try(DatagramChannel channel = DatagramChannel.open()){
             byte[] recvBuf = new byte[1024];
-            channel.socket().bind(new InetSocketAddress(11111));
+//            TODO: rework to use port from args[]
+            channel.socket().bind(new InetSocketAddress(port));
             ByteBuffer buffer = ByteBuffer.wrap(recvBuf);
             buffer.clear();
             channel.receive(buffer);
