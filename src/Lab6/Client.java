@@ -18,7 +18,7 @@ public class Client {
 
     public static void main(String[] args) {
         System.out.println("\nBeginning of Lab6, variant 11250");
-        int port = 11111;
+        int port = 2020;
         String s = "";
         Request request = new Request();
         Response response;
@@ -31,6 +31,9 @@ public class Client {
 //        first connection with server for map initialization
         request.setCommand(ClientCommand.get_map);
         send(request, port);
+
+        System.out.println("send intial request");
+
         response = read(port);
         assert response != null;
         map = response.getMap();
@@ -82,7 +85,7 @@ public class Client {
         try (DatagramSocket socket = new DatagramSocket())
         {      InetAddress address = InetAddress.getLocalHost();
             byte[] sendBuf = serialize(request);
-            DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, address, port);
+            DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, address, 1111);
             socket.send(packet);
         }
         catch (IOException e)
@@ -94,7 +97,7 @@ public class Client {
         try(DatagramChannel channel = DatagramChannel.open()){
             byte[] recvBuf = new byte[1024];
 //            TODO: rework to use port from args[]
-            channel.socket().bind(new InetSocketAddress(port));
+            channel.socket().bind(new InetSocketAddress(port+1));
             ByteBuffer buffer = ByteBuffer.wrap(recvBuf);
             buffer.clear();
             channel.receive(buffer);

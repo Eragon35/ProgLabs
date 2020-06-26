@@ -4,6 +4,7 @@ package Lab6;
 import Lab3.Humanoid;
 import Lab3.Predmet;
 import Lab5.InputFile;
+import Lab5.OutputFile;
 
 import java.io.*;
 import java.net.*;
@@ -12,12 +13,14 @@ import java.nio.channels.DatagramChannel;
 import java.util.*;
 
 public class Server {
+    static int port = 2020;
 
     //TODO add checking from cli for saving and turn off server and loop
 
     public static void main(String[] args) {
         System.out.println("\nBeging of Lab6, variant 11250");
-        int port = 11111;
+        boolean working = true;
+
         String filename = "test_1.csv";
         SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
         Request rqst;
@@ -40,9 +43,11 @@ public class Server {
             java.lang.System.exit(0);
         }
 
-        //waiting Command from client
-        while (true) {
-            rqst = receive(port);
+        //waiting Commands from client
+//        while (working) {
+        System.out.println("1");
+            rqst = receive();
+        System.out.println("2");
             assert rqst != null;
             System.out.println("Request: " + rqst.getCommand());
 
@@ -56,13 +61,16 @@ public class Server {
             }
 
             //send response to client
-            write(rsp, port);
-        }
+            write(rsp);
+//        }
+        //writing collection to file
+//        OutputFile.writeCSV(filename, map);
     }
 
-    private static Request receive (int port){
+    private static Request receive (){
         try ( DatagramSocket socket = new DatagramSocket(port))
         {
+            System.out.println("get request");
             byte[] recvBuf = new byte[1024];
             DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
             socket.receive(packet);
@@ -74,11 +82,10 @@ public class Server {
         {
             e.printStackTrace();
         }
-        //TODO: think about more beautiful return
         return null;
     }
 
-    private static void write(Response rsp, int port) {
+    private static void write(Response rsp) {
         try(DatagramChannel channel = DatagramChannel.open()) {
             channel.configureBlocking(false);
             channel.bind(null);
@@ -91,7 +98,7 @@ public class Server {
             bos.close();
             byte[] sendBuf = bos.toByteArray();
 //            TODO: rework to use port from args[]
-            channel.send(ByteBuffer.wrap(sendBuf), new InetSocketAddress(InetAddress.getLocalHost(), port));
+            channel.send(ByteBuffer.wrap(sendBuf), new InetSocketAddress(InetAddress.getLocalHost(), 1111));
             System.out.println("Response send " + rsp.getMap().size());
         }
         catch (IOException e){
