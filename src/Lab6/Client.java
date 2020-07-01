@@ -16,17 +16,6 @@ public class Client {
     static int port = 11111;
     static int size = 0;
     static Response response;
-    static DatagramSocket socket;
-    static DatagramChannel channel;
-
-    static {
-        try {
-            socket = new DatagramSocket();
-            channel = DatagramChannel.open();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void main(String[] args) {
         System.out.println("\nBeginning of Lab6, variant 11250");
@@ -79,7 +68,7 @@ public class Client {
         }
     }
         private static void write(Request request){
-        try {
+        try (DatagramSocket socket = new DatagramSocket()){
             InetAddress address = InetAddress.getLocalHost();
             ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
             ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(bos));
@@ -98,7 +87,7 @@ public class Client {
     }
 
     private static Response read(){
-        try {
+        try (DatagramChannel channel = DatagramChannel.open()){
             byte[] recvBuf = new byte[1024];
             channel.socket().bind(new InetSocketAddress(11111));
             ByteBuffer buffer = ByteBuffer.wrap(recvBuf);
@@ -110,6 +99,7 @@ public class Client {
             Response response = (Response) ois.readObject();
             bis.close();
             ois.close();
+            channel.close();
             return response;
         }
         catch (IOException | ClassNotFoundException e){

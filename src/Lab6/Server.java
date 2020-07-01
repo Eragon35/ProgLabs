@@ -16,7 +16,7 @@ public class Server {
 
     //TODO add checking from cli for saving and turn off server and loop
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         System.out.println("\nBeging of Lab6, variant 11250");
         String filename = "test_1.csv";
         SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
@@ -48,6 +48,7 @@ public class Server {
             ServerHandler.reader(rqst, map, rsp);
 
             //send response to client
+            Thread.sleep(500);
             send(rsp);
         }
     }
