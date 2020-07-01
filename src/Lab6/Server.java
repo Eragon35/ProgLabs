@@ -20,7 +20,7 @@ public class Server {
         System.out.println("\nBeging of Lab6, variant 11250");
         String filename = "test_1.csv";
         SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
-        Request rqst = null;
+        Request rqst;
         Response rsp = new Response();
 
         if (args.length == 0){
