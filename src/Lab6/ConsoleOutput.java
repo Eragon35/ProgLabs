@@ -46,6 +46,7 @@ public class ConsoleOutput {
             case add_if_max:
                 if(map.size() > Client.size) System.out.println("Новый элемент был добавлен в коллецию");
                 else if(map.size() == Client.size) System.out.println("Новый элемент не был добавлен в коллецию");
+                break;
             case remove:
                 if(map.size() < Client.size) System.out.println("Элемени из коллекции удален");
                 else if(map.size() == Client.size) System.out.println("Людей по введёму параметру не обнаружено. Никто не удалён");

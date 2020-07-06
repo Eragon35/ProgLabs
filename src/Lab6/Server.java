@@ -17,7 +17,8 @@ public class Server {
 
     //TODO add checking from cli for saving and turn off server and loop
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws InterruptedException {
         System.out.println("\nBeging of Lab6, variant 11250");
         boolean working = true;
 
@@ -42,68 +43,58 @@ public class Server {
             System.out.println("File not found.");
             java.lang.System.exit(0);
         }
-
-        //waiting Commands from client
-//        while (working) {
-        System.out.println("1");
+        while (true) {
+            //waiting Command from client
             rqst = receive();
-        System.out.println("2");
             assert rqst != null;
-            System.out.println("Request: " + rqst.getCommand());
+            System.out.println("Income: " + rqst.getCommand());
 
-
-            //do request on server
-            try {
-                ServerHandler.reader(rqst, map, rsp);
-            } catch (Exception e) {
-                rsp.setCommand(ServerCommand.error);
-                e.printStackTrace();
-            }
+            ServerHandler.reader(rqst, map, rsp);
 
             //send response to client
-            write(rsp);
-//        }
-        //writing collection to file
-//        OutputFile.writeCSV(filename, map);
+            Thread.sleep(500);
+            send(rsp);
+        }
     }
 
-    private static Request receive (){
-        try ( DatagramSocket socket = new DatagramSocket(port))
-        {
-            System.out.println("get request");
+    private static Request receive(){
+        try (DatagramSocket socket = new DatagramSocket(1111)) {
             byte[] recvBuf = new byte[1024];
             DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
             socket.receive(packet);
-            ByteArrayInputStream in = new ByteArrayInputStream(recvBuf);
-            ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(in));
-            return (Request) is.readObject();
-        }
-        catch (ClassNotFoundException | IOException e)
-        {
+            ByteArrayInputStream bis = new ByteArrayInputStream(recvBuf);
+            ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(bis));
+            Request request =(Request) ois.readObject();
+            bis.close();
+            ois.close();
+            socket.close();
+            return request;
+        }catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-    private static void write(Response rsp) {
-        try(DatagramChannel channel = DatagramChannel.open()) {
+    private static void send(Response response){
+        try {
+            DatagramChannel channel = DatagramChannel.open();
             channel.configureBlocking(false);
             channel.bind(null);
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(bos);
-            oos.writeObject(rsp);
+            oos.writeObject(response);
             oos.flush();
             oos.close();
             bos.close();
             byte[] sendBuf = bos.toByteArray();
-//            TODO: rework to use port from args[]
-            channel.send(ByteBuffer.wrap(sendBuf), new InetSocketAddress(InetAddress.getLocalHost(), 1111));
-            System.out.println("Response send " + rsp.getMap().size());
-        }
-        catch (IOException e){
+            channel.send(ByteBuffer.wrap(sendBuf), new InetSocketAddress(InetAddress.getLocalHost(), 11111));
+            channel.close();
+            System.out.println("response send");
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
+
+
 }
