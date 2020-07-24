@@ -13,8 +13,6 @@ import java.util.List;
 
 public class ConsoleInput {
 
-//    TODO: do smth with show, info and help
-
     private static final List<Predmet> baggage = new LinkedList<>();
     public static void reader(Request cmd, String str) {
         ClientCommand input = ClientCommand.other;
@@ -80,12 +78,8 @@ public class ConsoleInput {
             case help:
             case show:
             case info:
-                cmd.setCommand(input);
-                break;
-
             case exit:
                 cmd.setCommand(input);
-//                System.exit(0);
                 break;
 
             case other:

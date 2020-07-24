@@ -13,25 +13,14 @@ import java.nio.channels.DatagramChannel;
 import java.util.*;
 
 public class Server {
-    static int port = 2020;
-
-    //TODO add checking from cli for saving and turn off server and loop
-
 
     public static void main(String[] args) throws InterruptedException {
-        System.out.println("\nBeging of Lab6, variant 11250");
-        boolean working = true;
+        System.out.println("\nBeginning of Lab6, variant 11250");
 
         String filename = "test_1.csv";
         SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
         Request rqst;
         Response rsp = new Response();
-
-        if (args.length == 0){
-            System.out.println("You haven't define port, set default 11111");
-        }
-        else port = Integer.parseInt(args[0]);
-
 
         //writing collection from file
         File file = new File(filename);
@@ -41,7 +30,7 @@ public class Server {
         }
         else {
             System.out.println("File not found.");
-            java.lang.System.exit(0);
+            System.exit(0);
         }
         while (true) {
             //waiting Command from client

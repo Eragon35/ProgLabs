@@ -14,11 +14,6 @@ public class Response implements Serializable {
 
     public Response() {}
 
-    public Response(ServerCommand command, SortedMap<Humanoid, List<Predmet>> map) {
-        this.command = command;
-        this.map = map;
-    }
-
     public ServerCommand getCommand() { return command; }
 
     public void setCommand(ServerCommand command) { this.command = command; }

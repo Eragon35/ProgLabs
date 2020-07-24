@@ -1,6 +1,7 @@
 package Lab3;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Humanoid implements Skill, Comparable<Humanoid>, Serializable {
 
@@ -47,7 +48,7 @@ public class Humanoid implements Skill, Comparable<Humanoid>, Serializable {
         Humanoid humanoid = (Humanoid) o;
 
         if (place != humanoid.place) return false;
-        return name != null ? name.equals(humanoid.name) : humanoid.name == null;
+        return Objects.equals(name, humanoid.name);
     }
 
     @Override
