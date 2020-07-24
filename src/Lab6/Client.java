@@ -60,6 +60,7 @@ public class Client {
 
                 //sending Command to server
                 write(request);
+                if(request.getCommand().equals(ClientCommand.exit)) System.exit(0);
 
                 //waiting response and do sout it to cli
                 response = read();

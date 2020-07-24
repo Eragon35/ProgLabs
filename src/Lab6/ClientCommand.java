@@ -8,7 +8,7 @@ public enum ClientCommand {
     info (true),
     insert (false),
     remove_lower (false),
-    exit (true),
+    exit (false),
     help (true),
     other (true),
     get_map (false);

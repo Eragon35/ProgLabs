@@ -48,12 +48,16 @@ public class Server {
             rqst = receive();
             assert rqst != null;
             System.out.println("Income: " + rqst.getCommand());
-
-            ServerHandler.reader(rqst, map, rsp);
-
-            //send response to client
-            Thread.sleep(500);
-            send(rsp);
+            if (rqst.getCommand().equals(ClientCommand.exit)){
+                //save file
+                OutputFile.writeCSV(filename, map);
+            }
+            else {
+                ServerHandler.reader(rqst, map, rsp);
+                //send response to client
+                Thread.sleep(100);
+                send(rsp);
+            }
         }
     }
 

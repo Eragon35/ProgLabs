@@ -84,7 +84,8 @@ public class ConsoleInput {
                 break;
 
             case exit:
-                System.exit(0);
+                cmd.setCommand(input);
+//                System.exit(0);
                 break;
 
             case other:
