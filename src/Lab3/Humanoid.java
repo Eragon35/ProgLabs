@@ -7,8 +7,17 @@ public class Humanoid implements Skill, Comparable<Humanoid>, Serializable {
 
     private Palace place;
     private String name;
+    private int user_id;
 
     public Humanoid(){}
+
+
+
+    public Humanoid(Palace place, String name, int user_id) {
+        this.place = place;
+        this.name = name;
+        this.user_id = user_id;
+    }
 
     public Humanoid (String name, Palace place){
         this.name = name;
@@ -18,8 +27,9 @@ public class Humanoid implements Skill, Comparable<Humanoid>, Serializable {
     public void Skill(){
         System.out.println("pustoy blank pri otsutsvii otveta");
     }
-    public Palace getPlace () {return place;}
-    public String getName() {return name;}
+    public Palace getPlace () { return place; }
+    public String getName() { return name; }
+    public int getUser_id() { return user_id; }
     public void setPlace(Palace p){
         place = p;
     }
