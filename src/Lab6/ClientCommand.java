@@ -13,7 +13,7 @@ public enum ClientCommand {
     other (true),
     get_map (false),
 
-    login(false),
+    sign_in(false),
     add_user(false);
     private final boolean local;
 

@@ -1,9 +1,8 @@
 package Lab7;
 
-import Lab6.ClientCommand;
-import Lab6.Request;
-import Lab6.Response;
-import Lab6.ServerCommand;
+import Lab3.Humanoid;
+import Lab3.Predmet;
+import Lab6.*;
 
 import java.io.*;
 import java.net.DatagramPacket;
@@ -14,22 +13,27 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.SortedMap;
 
 public class ClientV2 {
     /*
     variant xxxxxx
      */
+    static int size = 0;
     private static Scanner scanner = new Scanner(System.in);
     static Response response;
 
     public static void main(String[] args) {
+        String s = "";
         Request request = new Request();
+        SortedMap<Humanoid, List<Predmet>> map;
 
 
         boolean logIn = false;
         while (!logIn){
-//            TODO: вынести авторизацию в отдельный метод
+//            TODO: вынести авторизацию в отдельный метод или нет
             System.out.print("Username:");
             String username = scanner.nextLine();
             if(username.contains("create")){
@@ -38,45 +42,55 @@ public class ClientV2 {
             else {
                 System.out.print("Password:");
                 String password = scanner.nextLine();
-                User user = new User(username, encrypt(password));
-
-                int id = Authorization.signIn(user);
-                //send request and read response
-
-                if (id != -1) {
-                    user.setId(id);
+                User user = new User(username, Cryptography.encrypt(password));
+                request.setCommand(ClientCommand.sign_in);
+                request.setUser(user);
+                write(request);
+                response = read();
+                user.setId(response.getUserId());
+                if ((user.getId()!= -1) && (response.getCommand().equals(ServerCommand.success))){
                     logIn = true;
                 } else System.out.println("Authorization failed!\nTry one more time");
             }
         }
 
+        map = response.getMap();
+        size = map.size();
 
-    }
-    private static String encrypt(String psw) {
-        try {
+//        reading command from cli and preparing it to send to server
+        while (!s.equals("exit")) {
+            System.out.print("Введите команду:");
+            Scanner scanner = new Scanner(System.in);
+            String str = scanner.nextLine();
+            if (str.contains("null")) System.out.println("Параметр не может быль null");
+            else ConsoleInput.reader(request, str);
+            s = str;
 
-            MessageDigest md = MessageDigest.getInstance("MD5"); //change param to switch to another crypto algorithm
-
-            byte[] data = psw.getBytes();
-            md.update(data);
-            byte[] bytes = md.digest();
-            StringBuilder hexString = new StringBuilder();
-            for (byte aByte : bytes) {
-                String hex = Integer.toHexString(0xFF & aByte);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
+//            if command type isn't local send request to server else do it local else
+            if (request.getCommand().equals(ClientCommand.other)) continue;
+            if (request.getCommand().isLocal()) {
+                System.out.print("Ваша команда была выполнена локально: ");
+                ConsoleOutput.write(map, request.getCommand());
             }
-            System.out.println(hexString.toString());
-            return hexString.toString();
-        }
-        catch (NoSuchAlgorithmException e){
-            e.printStackTrace();
+            else {
+                write(request);
+//                send exit command to server to save collection to file
+                if(request.getCommand().equals(ClientCommand.exit)) System.exit(0);
+//                waiting response and do sout it to cli
+                response = read();
+                assert response != null;
+                if (response.getCommand().equals(ServerCommand.success)) {
+                    map = response.getMap();
+                    ConsoleOutput.write(response.getMap(), request.getCommand());
+
+                    size = map.size();
+                } else System.out.println("Shit happens, server send error");
+            }
         }
 
-        return null;
+
     }
+
     private static void create(Request request) {
         System.out.print("Print username:");
         String username = scanner.nextLine();
@@ -85,7 +99,7 @@ public class ClientV2 {
         System.out.print("Confirm password:");
         String password1 = scanner.nextLine();
         if (password.equals(password1)){
-            User user = new User(username, encrypt(password));
+            User user = new User(username, Cryptography.encrypt(password));
             request.setCommand(ClientCommand.add_user);
             request.setUser(user);
             write(request);
