@@ -57,14 +57,16 @@ public class Humanoid implements Skill, Comparable<Humanoid>, Serializable {
 
         Humanoid humanoid = (Humanoid) o;
 
+        if (user_id != humanoid.user_id) return false;
         if (place != humanoid.place) return false;
-        return Objects.equals(name, humanoid.name);
+        return name != null ? name.equals(humanoid.name) : humanoid.name == null;
     }
 
     @Override
     public int hashCode() {
         int result = place != null ? place.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + user_id;
         return result;
     }
 }

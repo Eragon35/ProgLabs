@@ -11,7 +11,9 @@ public enum ClientCommand {
     exit (false),
     help (true),
     other (true),
-    get_map (false);
+    get_map (false),
+
+    auth(false);
     private final boolean local;
 
     ClientCommand(boolean local) { this.local = local; }
