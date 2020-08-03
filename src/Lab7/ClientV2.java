@@ -11,12 +11,11 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.SortedMap;
 
+@SuppressWarnings("DuplicatedCode")
 public class ClientV2 {
     /*
     variant xxxxxx
@@ -33,11 +32,11 @@ public class ClientV2 {
 
         boolean logIn = false;
         while (!logIn){
-//            TODO: вынести авторизацию в отдельный метод или нет
+//            TODO: вынести авторизацию в отдельный метод или нет?
             System.out.print("Username:");
             String username = scanner.nextLine();
             if(username.contains("create")){
-                create(request);
+                create();
             }
             else {
                 System.out.print("Password:");
@@ -47,9 +46,12 @@ public class ClientV2 {
                 request.setUser(user);
                 write(request);
                 response = read();
+                assert response != null;
+//                TODO: think about necessity of UserId
                 user.setId(response.getUserId());
                 if ((user.getId()!= -1) && (response.getCommand().equals(ServerCommand.success))){
                     logIn = true;
+                    System.out.println("Welcome to lab 7 by Antipin Arsentii,\nvariant xxxxxx");
                 } else System.out.println("Authorization failed!\nTry one more time");
             }
         }
@@ -60,38 +62,30 @@ public class ClientV2 {
 //        reading command from cli and preparing it to send to server
         while (!s.equals("exit")) {
             System.out.print("Введите команду:");
-            Scanner scanner = new Scanner(System.in);
             String str = scanner.nextLine();
             if (str.contains("null")) System.out.println("Параметр не может быль null");
             else ConsoleInput.reader(request, str);
             s = str;
 
-//            if command type isn't local send request to server else do it local else
             if (request.getCommand().equals(ClientCommand.other)) continue;
-            if (request.getCommand().isLocal()) {
-                System.out.print("Ваша команда была выполнена локально: ");
-                ConsoleOutput.write(map, request.getCommand());
-            }
-            else {
-                write(request);
+            write(request);
 //                send exit command to server to save collection to file
-                if(request.getCommand().equals(ClientCommand.exit)) System.exit(0);
+            if(request.getCommand().equals(ClientCommand.exit)) System.exit(0);
 //                waiting response and do sout it to cli
-                response = read();
-                assert response != null;
-                if (response.getCommand().equals(ServerCommand.success)) {
-                    map = response.getMap();
-                    ConsoleOutput.write(response.getMap(), request.getCommand());
+            response = read();
+            assert response != null;
+            if (response.getCommand().equals(ServerCommand.success)) {
+                map = response.getMap();
+                ConsoleOutput.write(response.getMap(), request.getCommand());
 
-                    size = map.size();
-                } else System.out.println("Shit happens, server send error");
-            }
+                size = map.size();
+            } else System.out.println("Shit happens, server send error");
         }
 
 
     }
 
-    private static void create(Request request) {
+    private static void create() {
         System.out.print("Print username:");
         String username = scanner.nextLine();
         System.out.print("Print password:");
@@ -100,10 +94,12 @@ public class ClientV2 {
         String password1 = scanner.nextLine();
         if (password.equals(password1)){
             User user = new User(username, Cryptography.encrypt(password));
+            Request request = new Request();
             request.setCommand(ClientCommand.add_user);
             request.setUser(user);
             write(request);
             response = read();
+            assert response != null;
             if(response.getCommand().equals(ServerCommand.success)){
                 System.out.println("Success! Your account has been created.");
             }
