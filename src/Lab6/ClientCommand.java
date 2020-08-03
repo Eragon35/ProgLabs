@@ -13,7 +13,8 @@ public enum ClientCommand {
     other (true),
     get_map (false),
 
-    auth(false);
+    login(false),
+    add_user(false);
     private final boolean local;
 
     ClientCommand(boolean local) { this.local = local; }
