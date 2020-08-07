@@ -76,7 +76,6 @@ public class Client {
             bos.close();
             byte[] sendBuf = bos.toByteArray();
             channel.send(ByteBuffer.wrap(sendBuf), new InetSocketAddress(InetAddress.getLocalHost(), 1111));
-            channel.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
