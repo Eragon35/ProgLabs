@@ -15,6 +15,10 @@ public class Authorization {
     private static Map<User, Integer> authenticator = new HashMap<>();
     public static int signIn(User user){
         return authenticator.getOrDefault(user, -1);
+//        with db use
+//        select id, password from user
+//        where name = 'name';
+
     }
     public static int addUser (User user){
         return authenticator.put(user, authenticator.size()+1) == null ? authenticator.get(user) : -1;

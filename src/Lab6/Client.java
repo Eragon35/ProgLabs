@@ -43,11 +43,11 @@ public class Client {
 
 //            if command type isn't local send request to server else do it local else
             if (request.getCommand().equals(ClientCommand.other)) continue;
-            if (request.getCommand().isLocal()) {
-                System.out.print("Ваша команда была выполнена локально: ");
-                ConsoleOutput.write(map, request.getCommand());
-            }
-            else {
+//            if (request.getCommand().isLocal()) {
+//                System.out.print("Ваша команда была выполнена локально: ");
+//                ConsoleOutput.write(map, request.getCommand());
+//            }
+//            else {
                 write(request);
 //                send exit command to server to save collection to file
                 if(request.getCommand().equals(ClientCommand.exit)) System.exit(0);
@@ -60,22 +60,38 @@ public class Client {
 
                     size = map.size();
                 } else System.out.println("Shit happens, server send error");
-            }
+//            }
         }
     }
     private static void write(Request request){
-        try (DatagramSocket socket = new DatagramSocket()){
-            InetAddress address = InetAddress.getLocalHost();
-            ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
-            ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(bos));
-            oos.flush();
+//        try (DatagramSocket socket = new DatagramSocket()){
+//            InetAddress address = InetAddress.getLocalHost();
+//            ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
+//            ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(bos));
+//            oos.flush();
+//            oos.writeObject(request);
+//            oos.flush();
+//            byte[] sendBuf = bos.toByteArray();
+//            DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, address, 1111);
+//            socket.send(packet);
+//            oos.close();
+//            bos.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        try {
+            DatagramChannel channel = DatagramChannel.open();
+            channel.configureBlocking(false);
+            channel.bind(null);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
             oos.writeObject(request);
             oos.flush();
-            byte[] sendBuf = bos.toByteArray();
-            DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, address, 1111);
-            socket.send(packet);
             oos.close();
             bos.close();
+            byte[] sendBuf = bos.toByteArray();
+            channel.send(ByteBuffer.wrap(sendBuf), new InetSocketAddress(InetAddress.getLocalHost(), 1111));
+            channel.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

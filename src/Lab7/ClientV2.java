@@ -18,7 +18,7 @@ import java.util.SortedMap;
 @SuppressWarnings("DuplicatedCode")
 public class ClientV2 {
     /*
-    variant xxxxxx
+    variant xxx
      */
     static int size = 0;
     private static Scanner scanner = new Scanner(System.in);
