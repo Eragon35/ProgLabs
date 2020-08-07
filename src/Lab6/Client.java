@@ -64,18 +64,19 @@ public class Client {
         }
     }
     private static void write(Request request){
-        try (DatagramSocket socket = new DatagramSocket()){
-            InetAddress address = InetAddress.getLocalHost();
+        try (DatagramChannel channel = DatagramChannel.open()){
+            channel.configureBlocking(false);
+            channel.bind(null);
             ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
             ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(bos));
             oos.flush();
             oos.writeObject(request);
             oos.flush();
-            byte[] sendBuf = bos.toByteArray();
-            DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, address, 1111);
-            socket.send(packet);
             oos.close();
             bos.close();
+            byte[] sendBuf = bos.toByteArray();
+            channel.send(ByteBuffer.wrap(sendBuf), new InetSocketAddress(InetAddress.getLocalHost(), 1111));
+            channel.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
