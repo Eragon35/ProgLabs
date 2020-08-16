@@ -4,6 +4,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Cryptography {
+    /*
+    class for encrypting password
+     */
     public static String encrypt(String psw) {
         try {
 

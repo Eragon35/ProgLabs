@@ -5,6 +5,9 @@ import Lab3.Predmet;
 import Lab7.User;
 
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,6 +20,7 @@ public class Request implements Serializable {
     private Humanoid human;
     private List<Predmet> baggage = new LinkedList<>();
     private User user;
+    private InetSocketAddress address;
 
     public Request() {    }
 
@@ -30,6 +34,8 @@ public class Request implements Serializable {
         this.baggage = baggage;
     }
     public void setUser(User user) { this.user = user; }
+    public void setAddress(InetSocketAddress address) { this.address = address; }
+    public void setAddress(int port) throws UnknownHostException { this.address = new InetSocketAddress(InetAddress.getLocalHost(), port); }
 
     public ClientCommand getCommand() {
         return command;
@@ -37,4 +43,5 @@ public class Request implements Serializable {
     public Humanoid getHuman() { return human; }
     public List<Predmet> getBaggage() { return baggage; }
     public User getUser() { return user; }
+    public InetSocketAddress getAddress() { return address; }
 }
