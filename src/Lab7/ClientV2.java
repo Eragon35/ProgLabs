@@ -21,6 +21,7 @@ public class ClientV2 {
     variant xxx
      */
     static int size = 0;
+    static int port;
     private static Scanner scanner = new Scanner(System.in);
     static Response response;
 
@@ -28,6 +29,18 @@ public class ClientV2 {
         String s = "";
         Request request = new Request();
         SortedMap<Humanoid, List<Predmet>> map;
+        if (args.length == 0){
+            port = 1024 + (int) (Math.random() * 48128);
+            if (port == 1111) port++;
+            System.out.println("You haven't define port, you port is " + port);
+        }
+        else {
+            port = Integer.parseInt(args[0]);
+            if((port > 65536) || (port < 1024)) {
+                System.out.println("You define bullshit port, try one more time");
+                System.exit(0);
+            }
+        }
 
 
         boolean logIn = false;
@@ -109,14 +122,14 @@ public class ClientV2 {
     }
     private static void write(Request request){
         try (DatagramSocket socket = new DatagramSocket()){
-            InetAddress address = InetAddress.getLocalHost();
+            request.setAddress(new InetSocketAddress(InetAddress.getLocalHost(), port));
             ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
             ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(bos));
             oos.flush();
             oos.writeObject(request);
             oos.flush();
             byte[] sendBuf = bos.toByteArray();
-            DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, address, 1111);
+            DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, InetAddress.getLocalHost(), 1111);
             socket.send(packet);
             oos.close();
             bos.close();
@@ -127,7 +140,7 @@ public class ClientV2 {
     private static Response read(){
         try (DatagramChannel channel = DatagramChannel.open()){
             byte[] recvBuf = new byte[1024];
-            channel.socket().bind(new InetSocketAddress(11111));
+            channel.socket().bind(new InetSocketAddress(port));
             ByteBuffer buffer = ByteBuffer.wrap(recvBuf);
             buffer.clear();
             channel.receive(buffer);

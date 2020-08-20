@@ -70,7 +70,7 @@ public class Server {
 
     private static void send(Response response){
         try (DatagramSocket socket = new DatagramSocket()) {
-            InetAddress address = InetAddress.getLocalHost();
+            InetSocketAddress address = new InetSocketAddress(InetAddress.getLocalHost(), 11111);
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream(1024);
             ObjectOutputStream os = new ObjectOutputStream(new BufferedOutputStream(byteStream));
             os.flush();
@@ -78,7 +78,7 @@ public class Server {
             os.flush();
             //retrieves byte array
             byte[] sendBuf = byteStream.toByteArray();
-            DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, address, 11111);
+            DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, address);
             socket.send(packet);
             os.close();
             byteStream.close();
