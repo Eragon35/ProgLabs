@@ -1,6 +1,8 @@
 package Lab7;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     String name;
     String password;
     int id;
@@ -12,5 +14,7 @@ public class User {
 
     public void setId(int id) { this.id = id; }
 
+    public String getName() { return name; }
+    public String getPassword() { return password; }
     public int getId() { return id; }
 }

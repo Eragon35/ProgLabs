@@ -23,7 +23,7 @@ public class Cryptography {
                 }
                 hexString.append(hex);
             }
-            System.out.println(hexString.toString());
+//            System.out.println(hexString.toString());
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

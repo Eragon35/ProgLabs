@@ -2,8 +2,11 @@ package Lab6;
 
 import Lab3.Humanoid;
 import Lab3.Predmet;
+import Lab7.Authorization;
 
 import java.util.*;
+
+import static Lab6.ClientCommand.add_user;
 
 public class ServerHandler {
     public static void reader(Request request, SortedMap<Humanoid, List<Predmet>> map, Response response){
@@ -50,6 +53,30 @@ public class ServerHandler {
             case get_map:
                 response.setMap(map);
                 response.setCommand(ServerCommand.success);
+                break;
+                //TODO: think about add userId to request not to response;
+            case sign_in:
+                int id = 0;
+                try {
+                    id = Authorization.signIn(request.getUser());
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                if (id == 0) response.setCommand(ServerCommand.auth_error_user_not_found);
+                else if (id == -1) response.setCommand(ServerCommand.auth_error_wrong_password);
+                else if (id == -2) response.setCommand(ServerCommand.error);
+                else {
+                    response.setUserId(id);
+                    response.setCommand(ServerCommand.success);
+                }
+                break;
+            case add_user:
+                try {
+                    Authorization.addUser(request.getUser(), response);
+
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             default:
                 response.setCommand(ServerCommand.error);
                 break;

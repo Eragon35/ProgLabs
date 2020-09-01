@@ -10,7 +10,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.concurrent.Callable;
 
-public class ReadRequest implements Callable {
+public class ReadRequest implements Callable<Request> {
 
     @Override
     public Request call() throws Exception {

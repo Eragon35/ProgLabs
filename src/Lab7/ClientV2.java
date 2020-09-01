@@ -21,7 +21,7 @@ public class ClientV2 {
     variant xxx
      */
     static int size = 0;
-    static int port;
+    static int port = 11111;
     private static Scanner scanner = new Scanner(System.in);
     static Response response;
 
@@ -29,45 +29,21 @@ public class ClientV2 {
         String s = "";
         Request request = new Request();
         SortedMap<Humanoid, List<Predmet>> map;
-        if (args.length == 0){
-            port = 1024 + (int) (Math.random() * 48128);
-            if (port == 1111) port++;
-            System.out.println("You haven't define port, you port is " + port);
-        }
-        else {
-            port = Integer.parseInt(args[0]);
-            if((port > 65536) || (port < 1024)) {
-                System.out.println("You define bullshit port, try one more time");
-                System.exit(0);
-            }
-        }
+//        if (args.length == 0){
+//            port = 1024 + (int) (Math.random() * 48128);
+//            if (port == 1111) port++;
+//            System.out.println("You haven't define port, you port is " + port);
+//        }
+//        else {
+//            port = Integer.parseInt(args[0]);
+//            if((port > 65536) || (port < 1024)) {
+//                System.out.println("You define bullshit port, try one more time");
+//                System.exit(0);
+//            }
+//        }
 
+        signIn(request);
 
-        boolean logIn = false;
-        while (!logIn){
-//            TODO: вынести авторизацию в отдельный метод или нет?
-            System.out.print("Username:");
-            String username = scanner.nextLine();
-            if(username.contains("create")){
-                create();
-            }
-            else {
-                System.out.print("Password:");
-                String password = scanner.nextLine();
-                User user = new User(username, Cryptography.encrypt(password));
-                request.setCommand(ClientCommand.sign_in);
-                request.setUser(user);
-                write(request);
-                response = read();
-                assert response != null;
-//                TODO: think about necessity of UserId
-                user.setId(response.getUserId());
-                if ((user.getId()!= -1) && (response.getCommand().equals(ServerCommand.success))){
-                    logIn = true;
-                    System.out.println("Welcome to lab 7 by Antipin Arsentii,\nvariant xxxxxx");
-                } else System.out.println("Authorization failed!\nTry one more time");
-            }
-        }
 
         map = response.getMap();
         size = map.size();
@@ -96,6 +72,42 @@ public class ClientV2 {
         }
 
 
+    }
+    private static void signIn(Request request){
+        boolean logIn = false;
+        while (!logIn){
+            System.out.print("Username:");
+            String username = scanner.nextLine();
+            if(username.contains("create")){
+                create();
+            }
+            else {
+                System.out.print("Password:");
+                String password = scanner.nextLine();
+                User user = new User(username, Cryptography.encrypt(password));
+                request.setCommand(ClientCommand.sign_in);
+                request.setUser(user);
+                write(request);
+                response = read();
+                assert response != null;
+//                TODO: think about necessity of UserId
+                user.setId(response.getUserId());
+                if (response.getCommand().equals(ServerCommand.success)){
+                    logIn = true;
+                    System.out.println("Welcome to lab 7 by Antipin Arsentii,\nvariant xxxxxx");
+                }
+                else if (response.getCommand().equals(ServerCommand.auth_error_user_not_found)){
+                    System.out.println("Authorization failed: user not found!\nTry one more time");
+                }
+                else if (response.getCommand().equals(ServerCommand.auth_error_wrong_password)){
+                    System.out.println("Authorization failed:wrong password!\nTry one more time");
+                }
+                else if(response.getCommand().equals(ServerCommand.error)){
+                    System.out.println("Try one more time error on server");
+                }
+                else System.out.println("All failed!\nTry one more time");
+            }
+        }
     }
 
     private static void create() {
