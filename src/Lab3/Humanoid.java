@@ -13,9 +13,9 @@ public class Humanoid implements Skill, Comparable<Humanoid>, Serializable {
 
 
 
-    public Humanoid(Palace place, String name, int user_id) {
-        this.place = place;
+    public Humanoid(String name, Palace place, int user_id) {
         this.name = name;
+        this.place = place;
         this.user_id = user_id;
     }
 

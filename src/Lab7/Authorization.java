@@ -4,20 +4,8 @@ import Lab6.Response;
 import Lab6.ServerCommand;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
-
-/*
-temporary class instead of bd
-server should ask
- */
 
 public class Authorization {
-
-//    think about add singleton https://habr.com/ru/post/129494/
-
-
-    private static Map<User, Integer> authenticator = new HashMap<>();
     /*
     signIn return 0 if user.name not found
     return -1 if wrong password
@@ -25,11 +13,11 @@ public class Authorization {
      */
     public static int signIn(User user) throws ClassNotFoundException {
         int id = 0;
-        String password = null;
+        String password = "";
         Class.forName("org.postgresql.Driver");
         try (Connection connection = DriverManager.getConnection(DBconfigs.url, DBconfigs.dbUser, DBconfigs.dbPassword)) {
             Statement statement = connection.createStatement();
-            String sql = "SELECT id, password FROM public.user WHERE name = \'" + user.getName() + "\'";
+            String sql = "SELECT id, password FROM s207704.user WHERE name = '" + user.getName() + "'";
             ResultSet resultSet = statement.executeQuery(sql);
             if (!resultSet.isBeforeFirst() ) {
                 System.out.println("user not found");
@@ -48,11 +36,6 @@ public class Authorization {
                     return  -1;
                 }
             }
-
-//        with db use
-//        select id, password from user
-//        where name = 'name';
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,7 +45,7 @@ public class Authorization {
         Class.forName("org.postgresql.Driver");
         try (Connection connection = DriverManager.getConnection(DBconfigs.url, DBconfigs.dbUser, DBconfigs.dbPassword)){
             Statement statement = connection.createStatement();
-            String checkName = "SELECT \"name\" FROM public.user";
+            String checkName = "SELECT \"name\" FROM s207704.user";
             ResultSet resultSet = statement.executeQuery(checkName);
             if (!resultSet.isBeforeFirst() ) {
                 System.out.println("Name already defined");

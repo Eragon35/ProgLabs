@@ -22,7 +22,7 @@ public class ClientV2 {
      */
     static int size = 0;
     static int port = 11111;
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
     static Response response;
 
     public static void main(String[] args) {
@@ -109,7 +109,6 @@ public class ClientV2 {
             }
         }
     }
-
     private static void create() {
         System.out.print("Print username:");
         String username = scanner.nextLine();
