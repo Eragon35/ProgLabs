@@ -11,11 +11,12 @@ public class Authorization {
     return -1 if wrong password
     if user.name found and password hashes are equal return user.Id
      */
-    public static int signIn(User user) throws ClassNotFoundException {
+    public static int signIn(User user) {
         int id = 0;
         String password = "";
-        Class.forName("org.postgresql.Driver");
-        try (Connection connection = DriverManager.getConnection(DBconfigs.url, DBconfigs.dbUser, DBconfigs.dbPassword)) {
+        try{
+            Class.forName("org.postgresql.Driver");
+            Connection connection = DriverManager.getConnection(DBconfigs.url, DBconfigs.dbUser, DBconfigs.dbPassword);
             Statement statement = connection.createStatement();
             String sql = "SELECT id, password FROM s207704.user WHERE name = '" + user.getName() + "'";
             ResultSet resultSet = statement.executeQuery(sql);
@@ -36,14 +37,15 @@ public class Authorization {
                     return  -1;
                 }
             }
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return -2;
     }
-        public static void addUser (User user, Response response) throws ClassNotFoundException {
-        Class.forName("org.postgresql.Driver");
-        try (Connection connection = DriverManager.getConnection(DBconfigs.url, DBconfigs.dbUser, DBconfigs.dbPassword)){
+        public static void addUser (User user, Response response)  {
+        try{
+            Class.forName("org.postgresql.Driver");
+            Connection connection = DriverManager.getConnection(DBconfigs.url, DBconfigs.dbUser, DBconfigs.dbPassword);
             Statement statement = connection.createStatement();
             String checkName = "SELECT \"name\" FROM s207704.user";
             ResultSet resultSet = statement.executeQuery(checkName);
@@ -53,7 +55,7 @@ public class Authorization {
             }
             else {
                 System.out.println("Trying to add user");
-                String sql = "INSERT INTO public.user (name, password) Values (?, ?)";
+                String sql = "INSERT INTO s207704.user (name, password) Values (?, ?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, user.name);
                 preparedStatement.setString(2, user.password);
@@ -61,7 +63,7 @@ public class Authorization {
                 System.out.printf("%d rows added", rows);
                 response.setCommand(ServerCommand.success);
             }
-    } catch (SQLException e) {
+    } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }

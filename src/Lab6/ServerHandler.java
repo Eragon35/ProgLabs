@@ -57,11 +57,7 @@ public class ServerHandler {
                 //TODO: think about add userId to request not to response;
             case sign_in:
                 int id = 0;
-                try {
-                    id = Authorization.signIn(request.getUser());
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+                id = Authorization.signIn(request.getUser());
                 if (id == 0) response.setCommand(ServerCommand.auth_error_user_not_found);
                 else if (id == -1) response.setCommand(ServerCommand.auth_error_wrong_password);
                 else if (id == -2) response.setCommand(ServerCommand.error);
@@ -71,12 +67,8 @@ public class ServerHandler {
                 }
                 break;
             case add_user:
-                try {
-                    Authorization.addUser(request.getUser(), response);
-
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+                Authorization.addUser(request.getUser(), response);
+                break;
             default:
                 response.setCommand(ServerCommand.error);
                 break;
