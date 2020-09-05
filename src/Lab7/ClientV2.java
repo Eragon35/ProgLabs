@@ -44,7 +44,6 @@ public class ClientV2 {
 
         signIn(request);
 
-
         map = response.getMap();
         size = map.size();
 

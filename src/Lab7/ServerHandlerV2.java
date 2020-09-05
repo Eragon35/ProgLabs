@@ -143,6 +143,7 @@ public class ServerHandlerV2 extends Thread {
                 for (Predmet predmet : baggage){
                     PreparedStatement preparedStatementBaggage;
                     String insert = null;
+//                    TODO: change getClass to instanceOf
                     if (predmet.getClass().toString().contains("Predmet$Butilka")) {
                         insert = "INSERT INTO s207704.bottle (human_id, name, value) Values (?, ?, ?)";
                     }
