@@ -35,6 +35,10 @@ public class ConsoleOutput {
             case help:
                 System.out.println(help);
                 break;
+            case remove:
+                if(map.size() < Client.size) System.out.println("Элемени из коллекции удален");
+                else if(map.size() == Client.size) System.out.println("Людей по введёму параметру не обнаружено. Никто не удалён");
+                break;
             case remove_all:
             case remove_lower:
                 System.out.println("Удалено " + (Client.size - map.size()) + " элементов");
@@ -46,10 +50,6 @@ public class ConsoleOutput {
             case add_if_max:
                 if(map.size() > Client.size) System.out.println("Новый элемент был добавлен в коллецию");
                 else if(map.size() == Client.size) System.out.println("Новый элемент не был добавлен в коллецию");
-                break;
-            case remove:
-                if(map.size() < Client.size) System.out.println("Элемени из коллекции удален");
-                else if(map.size() == Client.size) System.out.println("Людей по введёму параметру не обнаружено. Никто не удалён");
                 break;
             default:
                 System.out.println("Ошибка приложения. Звоните в службу поддержки +7(812)237-10-82");
