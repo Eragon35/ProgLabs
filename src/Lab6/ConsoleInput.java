@@ -19,8 +19,7 @@ public class ConsoleInput {
         String command = str.split(" ")[0];
         if (command.equals("remove_all")) input = ClientCommand.remove_all; // удалить из коллекции все элементы, эквивалентные заданному
         if (command.equals("remove_lower")) input = ClientCommand.remove_lower; // удалить из коллекции все элементы, меньшие, чем заданный
-        if (command.equals("remove") && !command.equals("remove_all") && !command.equals("remove_lower"))
-            input = ClientCommand.remove; // удалить элемент из коллекции по его ключу
+        if (command.equals("remove")) input = ClientCommand.remove; // удалить элемент из коллекции по его ключу
         if (command.equals("show")) input = ClientCommand.show; // вывести в стандартный поток вывода все элементы коллекции в строковом представлении
         if (command.equals("add_if_max")) input = ClientCommand.add_if_max; // добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции
         if (command.equals("info")) input = ClientCommand.info; // вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)
