@@ -1,20 +1,24 @@
-0,human,name,Gena
-0,human,place,ITMO
+0,human,name,Alex
+0,human,place,USA
 0,butilka,name,Из под крана
-0,butilka,value,0.32
-0,shlyapa,name,Черная
-0,shlyapa,value,15.0
-1,human,name,Pismak
+0,butilka,value,0.25
+1,human,name,Gena
 1,human,place,ITMO
 1,butilka,name,Из под крана
 1,butilka,value,0.32
 1,shlyapa,name,Черная
 1,shlyapa,value,15.0
-2,human,name,Левушка
-2,human,place,Vyazma
-2,sumka,name,чемодан
-2,sumka,value,15.0
-3,human,name,Обама
-3,human,place,USA
+2,human,name,Pismak
+2,human,place,ITMO
+2,butilka,name,Из под крана
+2,butilka,value,0.32
+2,shlyapa,name,Черная
+2,shlyapa,value,15.0
+3,human,name,Левушка
+3,human,place,Vyazma
 3,sumka,name,чемодан
 3,sumka,value,15.0
+4,human,name,Обама
+4,human,place,USA
+4,sumka,name,чемодан
+4,sumka,value,15.0

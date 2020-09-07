@@ -15,7 +15,7 @@ public class Client {
      */
 
     static int size = 0;
-    static Response response;
+    static Response response = null;
 
     public static void main(String[] args) {
         System.out.println("\nBeginning of Lab6, variant 11250");
@@ -28,7 +28,7 @@ public class Client {
         write(request);
         System.out.println("Send initiation request");
         response = read();
-        assert response != null;
+//        assert response != null;
         map = response.getMap();
         size = map.size();
 
@@ -85,20 +85,30 @@ public class Client {
         try (DatagramChannel channel = DatagramChannel.open()){
             byte[] recvBuf = new byte[1024];
             channel.socket().bind(new InetSocketAddress(11111));
+            channel.socket().setSoTimeout(5000);
+            channel.configureBlocking(false);
+            Thread.sleep(500);
             ByteBuffer buffer = ByteBuffer.wrap(recvBuf);
             buffer.clear();
             channel.receive(buffer);
             ByteArrayInputStream bis = new ByteArrayInputStream(recvBuf);
             ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(bis));
+
             Response response = (Response) ois.readObject();
             bis.close();
             ois.close();
             channel.close();
             return response;
         }
-        catch (IOException | ClassNotFoundException e){
+        catch (StreamCorruptedException ex){
+            System.out.println("Can't connect to server.\nShut down the program");
+            System.exit(0);
+            return null;
+        }
+        catch (IOException | ClassNotFoundException | InterruptedException e){
             e.printStackTrace();
             return null;
         }
+
     }
 }
