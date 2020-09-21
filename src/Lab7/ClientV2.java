@@ -5,10 +5,7 @@ import Lab3.Predmet;
 import Lab6.*;
 
 import java.io.*;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
+import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.List;
@@ -64,7 +61,7 @@ public class ClientV2 {
             assert response != null;
             if (response.getCommand().equals(ServerCommand.success)) {
                 map = response.getMap();
-                ConsoleOutput.write(response.getMap(), request.getCommand());
+                ConsoleOutput.write(map, request.getCommand());
 
                 size = map.size();
             } else System.out.println("Shit happens, server send error");
@@ -153,12 +150,14 @@ public class ClientV2 {
             channel.socket().bind(new InetSocketAddress(port));
             ByteBuffer buffer = ByteBuffer.wrap(recvBuf);
             buffer.clear();
-            channel.receive(buffer);
-            ByteArrayInputStream bis = new ByteArrayInputStream(recvBuf);
-            ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(bis));
-            Response response = (Response) ois.readObject();
-            bis.close();
-            ois.close();
+            SocketAddress check = channel.receive(buffer);
+            if (check != null) {
+                ByteArrayInputStream bis = new ByteArrayInputStream(recvBuf);
+                ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(bis));
+                Response response = (Response) ois.readObject();
+                bis.close();
+                ois.close();
+            }
             channel.close();
             return response;
         }
