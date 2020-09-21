@@ -11,6 +11,9 @@ import java.util.TreeMap;
 public class Response implements Serializable {
     private ServerCommand command;
     private SortedMap<Humanoid, List<Predmet>> map = new TreeMap<>();
+//    TODO: think about need of userId
+    private int userId;
+
 
     public Response() {}
 
@@ -21,4 +24,8 @@ public class Response implements Serializable {
     public SortedMap<Humanoid, List<Predmet>> getMap() {return map; }
 
     public void setMap(SortedMap<Humanoid, List<Predmet>> map) {this.map = map; }
+
+    public int getUserId() { return userId; }
+
+    public void setUserId(int userId) { this.userId = userId; }
 }

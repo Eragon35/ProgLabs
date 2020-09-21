@@ -17,7 +17,7 @@ public class ConsoleOutput {
             case show:
                 if (map.size()== 0) System.out.println("Элементов в коллекции нет");
                 for (Humanoid key : map.keySet()) {
-                    System.out.println("Human: name = " + key.getName() + ", place = " + key.getPlace() +";");
+                    System.out.println("Human: name = " + key.getName() + ", place = " + key.getPlace() + ", userId = " + key.getUser_id() +";");
                     List<Predmet> baggage = map.get(key);
                     if (baggage != null){
                         System.out.println("Baggage size is " + baggage.size());

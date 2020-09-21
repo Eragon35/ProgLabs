@@ -16,16 +16,16 @@ public class ConsoleInput {
     private static final List<Predmet> baggage = new LinkedList<>();
     public static void reader(Request cmd, String str) {
         ClientCommand input = ClientCommand.other;
-        if (str.contains("remove_all")) input = ClientCommand.remove_all; // удалить из коллекции все элементы, эквивалентные заданному
-        if (str.contains("remove_lower")) input = ClientCommand.remove_lower; // удалить из коллекции все элементы, меньшие, чем заданный
-        if (str.contains("remove") && !str.contains("remove_all") && !str.contains("remove_lower"))
-            input = ClientCommand.remove; // удалить элемент из коллекции по его ключу
-        if (str.contains("show")) input = ClientCommand.show; // вывести в стандартный поток вывода все элементы коллекции в строковом представлении
-        if (str.contains("add_if_max")) input = ClientCommand.add_if_max; // добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции
-        if (str.contains("info")) input = ClientCommand.info; // вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)
-        if (str.contains("insert")) input = ClientCommand.insert; // добавить новый элемент с заданным ключом
-        if (str.contains("exit")) input = ClientCommand.exit; // выход
-        if (str.contains("help")) input = ClientCommand.help; // вывод мануала
+        String command = str.trim().split(" ")[0];
+        if (command.equals("remove_all")) input = ClientCommand.remove_all; // удалить из коллекции все элементы, эквивалентные заданному
+        if (command.equals("remove_lower")) input = ClientCommand.remove_lower; // удалить из коллекции все элементы, меньшие, чем заданный
+        if (command.equals("remove")) input = ClientCommand.remove; // удалить элемент из коллекции по его ключу
+        if (command.equals("show")) input = ClientCommand.show; // вывести в стандартный поток вывода все элементы коллекции в строковом представлении
+        if (command.equals("add_if_max")) input = ClientCommand.add_if_max; // добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции
+        if (command.equals("info")) input = ClientCommand.info; // вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)
+        if (command.equals("insert")) input = ClientCommand.insert; // добавить новый элемент с заданным ключом
+        if (command.equals("exit")) input = ClientCommand.exit; // выход
+        if (command.equals("help")) input = ClientCommand.help; // вывод мануала
 
         switch (input) {
             case remove_all:
@@ -78,8 +78,10 @@ public class ConsoleInput {
             case help:
             case show:
             case info:
-            case exit:
                 cmd.setCommand(input);
+                break;
+            case exit:
+                System.exit(0);
                 break;
 
             case other:

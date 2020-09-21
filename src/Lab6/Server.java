@@ -68,7 +68,7 @@ public class Server {
 
     private static void send(Response response){
         try (DatagramSocket socket = new DatagramSocket()) {
-            InetAddress address = InetAddress.getLocalHost();
+            InetSocketAddress address = new InetSocketAddress(InetAddress.getLocalHost(), 11111);
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream(1024);
             ObjectOutputStream os = new ObjectOutputStream(new BufferedOutputStream(byteStream));
             os.flush();
@@ -76,13 +76,31 @@ public class Server {
             os.flush();
             //retrieves byte array
             byte[] sendBuf = byteStream.toByteArray();
-            DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, address, 11111);
+            DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, address);
             socket.send(packet);
             os.close();
             byteStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+//        try {
+//            DatagramChannel channel = DatagramChannel.open();
+//            channel.configureBlocking(false);
+//            channel.bind(null);
+//
+//            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//            ObjectOutputStream oos = new ObjectOutputStream(bos);
+//            oos.writeObject(response);
+//            oos.flush();
+//            oos.close();
+//            bos.close();
+//            byte[] sendBuf = bos.toByteArray();
+//            channel.send(ByteBuffer.wrap(sendBuf), new InetSocketAddress(InetAddress.getLocalHost(), 11111));
+//            channel.close();
+//            System.out.println("response send");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
 

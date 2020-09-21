@@ -1,20 +1,18 @@
 package Lab6;
 
 public enum ClientCommand {
-    remove_all (false),
-    remove (false),
-    show (true),
-    add_if_max (false),
-    info (true),
-    insert (false),
-    remove_lower (false),
-    exit (false),
-    help (true),
-    other (true),
-    get_map (false);
-    private final boolean local;
+     remove_all,
+     remove,
+     show,
+     add_if_max,
+     info,
+     insert,
+     remove_lower,
+     exit,
+     help,
+     other,
+     get_map,
 
-    ClientCommand(boolean local) { this.local = local; }
-
-    public boolean isLocal() { return local;  }
+     sign_in,
+     add_user;
 }
