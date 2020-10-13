@@ -4,10 +4,10 @@ import Lab3.Humanoid;
 import Lab3.Predmet;
 
 import java.util.List;
-import java.util.SortedMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ConsoleOutput {
-    public static void write(SortedMap<Humanoid, List<Predmet>> map, ClientCommand command){
+    public static void write(ConcurrentHashMap<Humanoid, List<Predmet>> map, ClientCommand command){
         String help = "remove_all {element}: удалить из коллекции все элементы, эквивалентные заданному\nremove {String key}: " +
                 "удалить элемент из коллекции по его ключу\nshow: вывести в стандартный поток вывода все элементы коллекции в строковом представлении" +
                 "\nadd_if_max {element}: добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции" +

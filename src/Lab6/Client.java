@@ -17,52 +17,52 @@ public class Client {
     static int size = 0;
     static Response response = null;
 
-    public static void main(String[] args) {
-        System.out.println("\nBeginning of Lab6, variant 11250");
-        String s = "";
-        Request request = new Request();
-        SortedMap<Humanoid, List<Predmet>> map;
-
-//        first connection with server for map initialization
-        request.setCommand(ClientCommand.get_map);
-        write(request);
-        System.out.println("Send initiation request");
-        response = read();
-//        assert response != null;
-        map = response.getMap();
-        size = map.size();
-
-//        reading command from cli and preparing it to send to server
-        while (!s.equals("exit")) {
-            System.out.print("Введите команду:");
-            Scanner scanner = new Scanner(System.in);
-            String str = scanner.nextLine();
-            if (str.contains("null")) System.out.println("Параметр не может быль null");
-            else ConsoleInput.reader(request, str);
-            s = str;
-
-//            if command type isn't local send request to server else do it local else
-            if (request.getCommand().equals(ClientCommand.other)) continue;
-//            if (request.getCommand().isLocal()) {
-//                System.out.print("Ваша команда была выполнена локально: ");
-//                ConsoleOutput.write(map, request.getCommand());
-//            }
-//            else {
-                write(request);
-//                send exit command to server to save collection to file
-                if(request.getCommand().equals(ClientCommand.exit)) System.exit(0);
-//                waiting response and do sout it to cli
-                response = read();
-                assert response != null;
-                if (response.getCommand().equals(ServerCommand.success)) {
-                    map = response.getMap();
-                    ConsoleOutput.write(response.getMap(), request.getCommand());
-
-                    size = map.size();
-                } else System.out.println("Shit happens, server send error");
-//            }
-        }
-    }
+//    public static void main(String[] args) {
+//        System.out.println("\nBeginning of Lab6, variant 11250");
+//        String s = "";
+//        Request request = new Request();
+//        SortedMap<Humanoid, List<Predmet>> map;
+//
+////        first connection with server for map initialization
+//        request.setCommand(ClientCommand.get_map);
+//        write(request);
+//        System.out.println("Send initiation request");
+//        response = read();
+////        assert response != null;
+//        map = response.getMap();
+//        size = map.size();
+//
+////        reading command from cli and preparing it to send to server
+//        while (!s.equals("exit")) {
+//            System.out.print("Введите команду:");
+//            Scanner scanner = new Scanner(System.in);
+//            String str = scanner.nextLine();
+//            if (str.contains("null")) System.out.println("Параметр не может быль null");
+//            else ConsoleInput.reader(request, str);
+//            s = str;
+//
+////            if command type isn't local send request to server else do it local else
+//            if (request.getCommand().equals(ClientCommand.other)) continue;
+////            if (request.getCommand().isLocal()) {
+////                System.out.print("Ваша команда была выполнена локально: ");
+////                ConsoleOutput.write(map, request.getCommand());
+////            }
+////            else {
+//                write(request);
+////                send exit command to server to save collection to file
+//                if(request.getCommand().equals(ClientCommand.exit)) System.exit(0);
+////                waiting response and do sout it to cli
+//                response = read();
+//                assert response != null;
+//                if (response.getCommand().equals(ServerCommand.success)) {
+//                    map = response.getMap();
+//                    ConsoleOutput.write(response.getMap(), request.getCommand());
+//
+//                    size = map.size();
+//                } else System.out.println("Shit happens, server send error");
+////            }
+//        }
+//    }
     private static void write(Request request){
         try {
             DatagramChannel channel = DatagramChannel.open();

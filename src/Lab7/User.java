@@ -3,9 +3,9 @@ package Lab7;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    String name;
-    String password;
-    int id;
+    private final String name;
+    private final String password;
+    private int id;
 
     public User(String name, String password) {
         this.name = name;

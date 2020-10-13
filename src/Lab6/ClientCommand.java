@@ -13,6 +13,6 @@ public enum ClientCommand {
      other,
      get_map,
 
-     sign_in,
+//     sign_in,
      add_user;
 }

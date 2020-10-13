@@ -7,6 +7,7 @@
       </element>
       <element id="module-output" name="Prog" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.8.5/gson-2.8.5.jar" path-in-jar="/" />
+      <element id="library" level="project" name="org.postgresql:postgresql:42.5.5" />
     </root>
   </artifact>
 </component>

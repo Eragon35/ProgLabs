@@ -10,35 +10,27 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.List;
 import java.util.Scanner;
-import java.util.SortedMap;
+import java.util.concurrent.ConcurrentHashMap;
 
-@SuppressWarnings("DuplicatedCode")
 public class ClientV2 {
     /*
-    variant xxx
+    variant 777712
      */
     static int size = 0;
     static int port = 11111;
+    static int serverPort= 1111;
     private static final Scanner scanner = new Scanner(System.in);
     static Response response;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnknownHostException {
         String s = "";
         Request request = new Request();
-        SortedMap<Humanoid, List<Predmet>> map;
-//        if (args.length == 0){
-//            port = 1024 + (int) (Math.random() * 48128);
-//            if (port == 1111) port++;
-//            System.out.println("You haven't define port, you port is " + port);
-//        }
-//        else {
-//            port = Integer.parseInt(args[0]);
-//            if((port > 65536) || (port < 1024)) {
-//                System.out.println("You define bullshit port, try one more time");
-//                System.exit(0);
-//            }
-//        }
 
+        ConcurrentHashMap<Humanoid, List<Predmet>> map;
+        port = 1024 + (int) (Math.random() * 48128);
+        System.out.println("Your port is " + port);
+        if (args.length != 0){ serverPort = Integer.parseInt(args[0]); }
+        request.setAddress(port);
         signIn(request);
 
         map = response.getMap();
@@ -64,7 +56,7 @@ public class ClientV2 {
                 ConsoleOutput.write(map, request.getCommand());
 
                 size = map.size();
-            } else System.out.println("Shit happens, server send error");
+            } else System.out.println("Shit happens, server send " + response.getCommand());
         }
 
 
@@ -81,13 +73,11 @@ public class ClientV2 {
                 System.out.print("Password:");
                 String password = scanner.nextLine();
                 User user = new User(username, Cryptography.encrypt(password));
-                request.setCommand(ClientCommand.sign_in);
+                request.setCommand(ClientCommand.info);
                 request.setUser(user);
                 write(request);
                 response = read();
                 assert response != null;
-//                TODO: think about necessity of UserId
-                user.setId(response.getUserId());
                 if (response.getCommand().equals(ServerCommand.success)){
                     logIn = true;
                     System.out.println("Welcome to lab 7 by Antipin Arsentii,\nvariant xxxxxx");
@@ -129,7 +119,7 @@ public class ClientV2 {
     }
     private static void write(Request request){
         try (DatagramSocket socket = new DatagramSocket()){
-            request.setAddress(new InetSocketAddress(InetAddress.getLocalHost(), port));
+            request.setAddress(new InetSocketAddress(InetAddress.getLocalHost(), serverPort));
             ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
             ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(bos));
             oos.flush();
@@ -146,7 +136,7 @@ public class ClientV2 {
     }
     private static Response read(){
         try (DatagramChannel channel = DatagramChannel.open()){
-            byte[] recvBuf = new byte[1024];
+            byte[] recvBuf = new byte[4096];
             channel.socket().bind(new InetSocketAddress(port));
             ByteBuffer buffer = ByteBuffer.wrap(recvBuf);
             buffer.clear();
@@ -154,10 +144,11 @@ public class ClientV2 {
             if (check != null) {
                 ByteArrayInputStream bis = new ByteArrayInputStream(recvBuf);
                 ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(bis));
-                Response response = (Response) ois.readObject();
+                response = (Response) ois.readObject();
                 bis.close();
                 ois.close();
             }
+            else System.out.println("Problems with network, can't correctly read packets");
             channel.close();
             return response;
         }

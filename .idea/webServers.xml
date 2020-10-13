@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="91c53e3c-730a-4bba-b4f5-541d386871f2" name="helios">
+        <fileTransfer accessType="SFTP" host="se.ifmo.ru" port="2222" sshConfigId="b9a7d267-8965-45f7-96cc-ab9ee4d068fd" sshConfig="s207704@se.ifmo.ru:2222 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

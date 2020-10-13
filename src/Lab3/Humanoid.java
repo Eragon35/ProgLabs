@@ -1,7 +1,6 @@
 package Lab3;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class Humanoid implements Skill, Comparable<Humanoid>, Serializable {
 
@@ -10,40 +9,24 @@ public class Humanoid implements Skill, Comparable<Humanoid>, Serializable {
     private int user_id;
 
     public Humanoid(){}
-
-
-
     public Humanoid(String name, Palace place, int user_id) {
         this.name = name;
         this.place = place;
         this.user_id = user_id;
     }
-
     public Humanoid (String name, Palace place){
         this.name = name;
         this.place = place;
-
 }
-    public void Skill(){
-        System.out.println("pustoy blank pri otsutsvii otveta");
-    }
+    public void Skill(){ System.out.println("pustoy blank pri otsutsvii otveta"); }
     public Palace getPlace () { return place; }
     public String getName() { return name; }
+
     public int getUser_id() { return user_id; }
     public void setPlace(Palace p){
         place = p;
     }
-
-//    public Palace Peremeshenie(Humanoid h, Palace p){ //exception na train
-////        System.out.print(h.name + " peremestils9 iz " + h.place);
-//
-//        if (p == Palace.Dagestan) System.out.println(h.getName() + " iz " + h.getPlace() +" na zanigenoy vishnevoy Priore приехал в ДАГИСТАН\n");
-//        else if (p == Palace.Train) {
-//            System.out.println(h.getName() + " sel v poezd na stancii " + h.getPlace()+ "\n");}
-//        else System.out.println(h.getName() + " peremestils9 iz " + h.getPlace() + " v " + p);
-//        h.setPlace(p);
-//        return p;
-//    }
+    public void setUser_id(int user_id) { this.user_id = user_id; }
 
     @Override
     public int compareTo(Humanoid h) {
@@ -54,9 +37,7 @@ public class Humanoid implements Skill, Comparable<Humanoid>, Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Humanoid humanoid = (Humanoid) o;
-
         if (user_id != humanoid.user_id) return false;
         if (place != humanoid.place) return false;
         return name != null ? name.equals(humanoid.name) : humanoid.name == null;

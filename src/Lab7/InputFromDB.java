@@ -8,47 +8,53 @@ import Lab3.Predmet;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.SortedMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class InputFromDB {
-    private static List<Predmet> baggage = new LinkedList<>();
-    public static void read(SortedMap<Humanoid, List<Predmet>> map) {
+    private static final List<Predmet> baggage = new LinkedList<>();
+    public static void read(ConcurrentHashMap<Humanoid, List<Predmet>> map) {
         System.out.println("Reading data from DB");
-        try{
+        try {
             Class.forName("org.postgresql.Driver");
             Connection connection = DriverManager.getConnection(DBconfigs.url, DBconfigs.dbUser, DBconfigs.dbPassword);
             Statement statement = connection.createStatement();
             String sql = "SELECT * FROM s207704.human";
             ResultSet resultSet = statement.executeQuery(sql);
-            if (!resultSet.isBeforeFirst()) {
-                System.out.println("Data in table 'Human' in DB not found");
-            }
-            else while (resultSet.next()){
+            while (resultSet.next()) {
+
+//            if (resultSet.next() == false) {
+//                System.out.println("Data in table 'Human' in DB not found");
+//            } else do {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 String place = resultSet.getString("place");
                 int user_id = resultSet.getInt("user_id");
                 Humanoid hm = new Humanoid(name, Palace.valueOf(place), user_id);
                 baggage.clear();
-                addBaggage("hat", id, statement);
-                addBaggage("bottle", id, statement);
-                addBaggage("bag", id, statement);
+                readBaggage("hat", id, connection);
+                readBaggage("bottle", id, connection);
+                readBaggage("bag", id, connection);
                 map.put(hm, baggage);
-                connection.close();
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
+//            } while (resultSet.next());
 
+            }
+            resultSet.close();
+            connection.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Can't connect to DataBase");
+            e.printStackTrace();
+            System.exit(20);
+        }
         System.out.println("Data from DB was read");
     }
-    private static void addBaggage(String s, int id, Statement statement) throws SQLException {
-        String sql = "SELECT * FROM s207704." + s + "WHERE human_id = " + id;
-        ResultSet baggage = statement.executeQuery(sql);
+    private static void readBaggage(String s, int id, Connection connection) throws SQLException {
+        Statement baggageStatement = connection.createStatement();
+        String sql = "SELECT * FROM s207704." + s + " WHERE human_id = " + id;
+        ResultSet baggage = baggageStatement.executeQuery(sql);
         if (baggage.isBeforeFirst()) {
             while (baggage.next()){
                 String name = baggage.getString("name");
-                double value = baggage.getInt("value");
+                double value = baggage.getDouble("value");
                 switch (s){
                     case "hat": InputFromDB.baggage.add(new Predmet.Shlyapa(name, value)); break;
                     case "bottle": InputFromDB.baggage.add(new Predmet.Butilka(name, value)); break;
@@ -56,5 +62,6 @@ public class InputFromDB {
                 }
             }
         }
+        baggageStatement.close();
     }
 }

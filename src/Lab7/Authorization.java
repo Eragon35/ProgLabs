@@ -30,7 +30,7 @@ public class Authorization {
                     id = resultSet.getInt("id");
                 }
                 if (password.equals(user.getPassword())) {
-                    System.out.println("Password is right for " + user.getName());
+//                    System.out.println("Password is right for " + user.getName());
                     return id;
                 } else {
                     System.out.println("Wrong password for " + user.getName());
@@ -57,8 +57,8 @@ public class Authorization {
                 System.out.println("Trying to add user");
                 String sql = "INSERT INTO s207704.user (name, password) Values (?, ?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setString(1, user.name);
-                preparedStatement.setString(2, user.password);
+                preparedStatement.setString(1, user.getName());
+                preparedStatement.setString(2, user.getPassword());
                 int rows = preparedStatement.executeUpdate();
                 System.out.printf("%d rows added", rows);
                 response.setCommand(ServerCommand.success);
@@ -68,4 +68,3 @@ public class Authorization {
         }
     }
 }
-//    return authenticator.put(user, authenticator.size()+1) == null ? authenticator.get(user) : -1;

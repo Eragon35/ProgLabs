@@ -8,32 +8,27 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 
-public class SendResponse extends Thread{
-    private Response response;
-    private InetSocketAddress address;
+public class SendResponse implements Runnable {
+    private final Response response;
 
-    public SendResponse(Response response, InetSocketAddress address) {
-        this.response = response;
-        this.address = address;
-    }
+    public SendResponse(Response response) { this.response = response; }
 
     @Override
     public void run() {
         try (DatagramSocket socket = new DatagramSocket()) {
-            ByteArrayOutputStream byteStream = new ByteArrayOutputStream(1024);
+            ByteArrayOutputStream byteStream = new ByteArrayOutputStream(4096);
             ObjectOutputStream os = new ObjectOutputStream(new BufferedOutputStream(byteStream));
             os.flush();
             os.writeObject(response);
             os.flush();
             //retrieves byte array
             byte[] sendBuf = byteStream.toByteArray();
-            DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, address);
+            DatagramPacket packet = new DatagramPacket(sendBuf, sendBuf.length, response.getAddress());
             socket.send(packet);
             os.close();
             byteStream.close();
+            System.out.println("Send response to user with id = " + response.getUserId());
         } catch (IOException e) {
             e.printStackTrace();
         }
